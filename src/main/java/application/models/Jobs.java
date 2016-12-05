@@ -29,12 +29,6 @@ public class Jobs {
 
     public Jobs(){}
 
-    public Jobs(Long clientid, String jobcode, String jobname) {
-        this.JOBCODE = jobcode;
-        this.CLIENTID = clientid;
-        this.JOBNAME = jobname;
-    }
-
     /*Getters*/
     public Short getSAMPLESIZE() { return this.SAMPLESIZE; }
     public Date getCENSUSSTART() { return this.CENSUSSTART; }
@@ -42,12 +36,12 @@ public class Jobs {
     public Date getDELIVERYDATE() { return this.DELIVERYDATE; }
     public Date getPRESENTATIONDATE() { return this.PRESENTATIONDATE; }
     public Boolean getSTATUS() { return this.STATUS; }
-    public String getSURVEYNAME() { return this.JOBNAME; }
-    public Integer getSURVEYTYPE() { return this.LOGGEDIN; }
+    public String getJOBNAME() { return this.JOBNAME; }
+    public Integer getLOGGEDIN() { return this.LOGGEDIN; }
     public String getJOBCODE() { return this.JOBCODE; }
     public String getDELIVERYTYPE() { return this.DELIVERYTYPE; }
     public Long getCLIENTID() { return this.CLIENTID; }
-    public Short getLOCATION() { return this.RESPONSERATE; }
+    public Short getRESPONSERATE() { return this.RESPONSERATE; }
     public Long getID() { return this.ID; }
 
     /*Setters*/
@@ -57,11 +51,11 @@ public class Jobs {
     public void setDELIVERYDATE(Date deliverydate) { this.DELIVERYDATE = deliverydate; }
     public void setPRESENTATIONDATE(Date presentationdate) { this.PRESENTATIONDATE = presentationdate; }
     public void setSTATUS(Boolean status) { this.STATUS = status; }
-    public void setSURVEYNAME(String surveyname) { this.JOBNAME = surveyname; }
-    public void setSURVEYTYPE(Integer loggedin) { this.LOGGEDIN = loggedin; }
+    public void setJOBNAME(String surveyname) { this.JOBNAME = surveyname; }
+    public void setLOGGEDIN(Integer loggedin) { this.LOGGEDIN = loggedin; }
     public void setJOBCODE(String jobcode) { this.JOBCODE = jobcode; }
     public void setDELIVERYTYPE(String deliverytype) { this.DELIVERYTYPE = deliverytype; }
-    public void setCLIENTNAME( Long client_name ) { this.CLIENTID = client_name; }
-    public void setLOCATION( Short responserate ) { this.RESPONSERATE = responserate; }
+    public void setCLIENTID( Long client_name ) { this.CLIENTID = client_name; }
+    public void setRESPONSERATE( Short responserate ) { this.RESPONSERATE = responserate; }
     public void setID(Long id) { this.ID = id; }
 }

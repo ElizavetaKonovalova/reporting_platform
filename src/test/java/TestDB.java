@@ -10,13 +10,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by ekonovalova on 12/5/2016.
@@ -29,6 +37,11 @@ public class TestDB {
     private Jobs JOBS;
     private Organisations ORGANISATIONS;
     private WorkUnits WORKUNITS;
+    private MockMvc mockMvc;
+    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+            MediaType.APPLICATION_JSON.getSubtype(),
+            Charset.forName("utf8"));
+    private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Autowired
     JobRepository jobRepository;
@@ -41,10 +54,7 @@ public class TestDB {
 
     @Before
     public void setup() throws Exception {
-        this.jobRepository.deleteAll();
-        this.organisationRepository.deleteAll();
-        this.workUnitRepository.deleteAll();
-        this.JOBS = jobRepository.save(new Jobs(48975394L, "EAHJKJH", "Survey Test 2016"));
+
     }
 
     @Test
@@ -55,10 +65,5 @@ public class TestDB {
         properties.setProperty("password","Bpanz123");
         properties.setProperty("ssl","false");
         Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bpa_db", properties);
-    }
-
-    @Test
-    public void testReturnAllJobs() {
-        this.jobRepository.findAll();
     }
 }
