@@ -17,6 +17,8 @@ public class Organisations {
     private String ORGNAME;
     private String LOCATION;
 
+    public Organisations() {}
+
     public Organisations( String org_name, String location) {
         this.ORGNAME = org_name;
         this.LOCATION = location;

@@ -27,12 +27,5 @@ public class JobDAOImpl implements JobDAO{
     }
 
     @Override
-    public Iterable<Jobs> listAllJobsForClient() {
-        return null;
-    }
-
-    @Override
-    public Jobs save(Jobs job) {
-        return jobRepository.save(job);
-    }
+    public Jobs save(Jobs job) { return jobRepository.save(job); }
 }

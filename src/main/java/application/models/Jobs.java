@@ -27,6 +27,8 @@ public class Jobs {
     private Integer LOGGEDIN;
     private Short RESPONSERATE;
 
+    public Jobs(){}
+
     public Jobs(Long clientid, String jobcode, String jobname) {
         this.JOBCODE = jobcode;
         this.CLIENTID = clientid;

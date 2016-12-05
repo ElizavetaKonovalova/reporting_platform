@@ -8,7 +8,6 @@ import application.models.Jobs;
 public interface JobDAO {
 
     Iterable<Jobs> listAllJobs();
-    Iterable<Jobs> listAllJobsForClient();
     Jobs getByID( Long id);
     Jobs save(Jobs job);
 }

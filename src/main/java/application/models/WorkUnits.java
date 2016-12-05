@@ -20,6 +20,8 @@ public class WorkUnits {
     private String COHORT;
     private Integer DENOMINATOR;
 
+    public WorkUnits() {}
+
     public WorkUnits( String name, Integer id, Integer code){
         this.NAME = name;
         this.WORKUNITID = id;
