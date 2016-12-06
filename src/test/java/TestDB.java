@@ -34,29 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringApplicationConfiguration(classes = Application.class)
 public class TestDB {
 
-    private Jobs JOBS;
-    private Organisations ORGANISATIONS;
-    private WorkUnits WORKUNITS;
-    private MockMvc mockMvc;
-    private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
-            MediaType.APPLICATION_JSON.getSubtype(),
-            Charset.forName("utf8"));
-    private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-    @Autowired
-    JobRepository jobRepository;
-
-    @Autowired
-    OrganisationRepository organisationRepository;
-
-    @Autowired
-    WorkUnitRepository workUnitRepository;
-
-    @Before
-    public void setup() throws Exception {
-
-    }
-
     @Test
     public void testConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.postgresql.Driver");

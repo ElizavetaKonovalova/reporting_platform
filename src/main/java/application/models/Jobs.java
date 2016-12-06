@@ -8,16 +8,18 @@ import java.sql.Date;
  */
 
 @Entity
+@Table(indexes = {@Index(name = "jobIndex", unique = true, columnList = "jobcode")})
 public class Jobs {
 
     @Id
-    @Column(name ="id", columnDefinition = "serial")
+    @Column(name ="id", columnDefinition = "serial", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
     private Long CLIENTID;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String JOBCODE;
+    @Column(nullable = false)
     private String JOBNAME;
     private Date CENSUSSTART;
     private Date CENSUSEND;

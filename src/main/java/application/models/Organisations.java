@@ -6,20 +6,18 @@ package application.models;
 import javax.persistence.*;
 
 @Entity
+@Table(indexes = {@Index(name = "organisationIndex", columnList = "orgname", unique = true)})
 public class Organisations {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name ="id", columnDefinition = "serial", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
+    @Column(unique = true, nullable = false)
     private String ORGNAME;
     private String LOCATION;
 
     public Organisations() {}
-
-    public Organisations( String org_name, String location) {
-        this.ORGNAME = org_name;
-        this.LOCATION = location;
-    }
 
     /*Getters*/
     public String getORGNAME() { return this.ORGNAME; }

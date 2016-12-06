@@ -19,29 +19,29 @@ public class JobRepository  {
     /*Select a job by Job Code */
     public Jobs getJobByCode(String jobcode){
         String query = "SELECT * FROM jobs WHERE jobcode = ?";
-        try {
-            return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode);
-        } catch (Exception e) {
-            return new Jobs();
-        }
+        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode); }
+        catch (Exception e) { return new Jobs(); }
     }
 
     /* Select a job by ID in the database */
     public Jobs getJobByID(Long jobid){
-        return this.jdbcTemplate.queryForObject("SELECT * FROM jobs WHERE id=" + jobid, jobMapper);
+        String query = "SELECT * FROM jobs WHERE id = ?";
+        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobid); }
+        catch (Exception e) { return new Jobs(); }
     }
 
     /* Select all jobs with a specified name */
     public List<Jobs> getJobsByName(String jobname){
         String query = "SELECT * FROM jobs WHERE jobname= ?";
-        try {
-            return this.jdbcTemplate.query( query, jobMapper, jobname);
-        } catch(Exception e) { return new ArrayList<>();}
+        try { return this.jdbcTemplate.query( query, jobMapper, jobname);}
+        catch(Exception e) { return new ArrayList<>();}
     }
 
     /* Select all jobs with a specified client id */
     public List<Jobs> getJobsByClientID(Long clientid){
-        return this.jdbcTemplate.query("SELECT * FROM jobs WHERE clientid =" + clientid, jobMapper);
+        String query = "SELECT * FROM jobs WHERE clientid = ?";
+        try { return this.jdbcTemplate.query( query, jobMapper, clientid);}
+        catch(Exception e) { return new ArrayList<>();}
     }
 
     /* Create a new job in the database */
