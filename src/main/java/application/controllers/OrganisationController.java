@@ -26,8 +26,7 @@ public class OrganisationController {
     /* Select an organisation by its id */
     @RequestMapping(value = "getoi", produces = "application/json")
     public Organisations getOrgByID(@RequestParam("oi") String orgid) {
-        Long id = Long.parseLong(orgid);
-        return this.organisationRepository.getOrgByID(id);
+        return this.organisationRepository.getOrgByID(orgid);
     }
 
     /* Select an organisation by its location */

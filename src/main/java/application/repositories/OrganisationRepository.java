@@ -34,10 +34,11 @@ public class OrganisationRepository {
     }
 
     /* Select an organisation based on its database ID */
-    public Organisations getOrgByID(Long id) {
+    public Organisations getOrgByID(String id) {
+        Long orgid = Long.parseLong(id);
         String query = "SELECT * FROM organisations WHERE id = ?";
         try {
-            return this.jdbcTemplate.queryForObject(query, orgMapper, id);
+            return this.jdbcTemplate.queryForObject(query, orgMapper, orgid);
         } catch (Exception e) { return new Organisations(); }
     }
 

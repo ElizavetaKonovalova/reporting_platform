@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by ekonovalova on 12/5/2016.
@@ -45,16 +49,37 @@ public class JobRepository  {
     }
 
     /* Create a new job in the database */
-    public void createJob(String jobcode, String jobname, Long clientid, Date deliverydate, String deliverytype, Date censusstart,
-                          Date censusend, Date presentationdate, Short responserate, Integer loggedin, Integer samplesize, Boolean status,
-                          Integer surveysubtype) throws SQLException {
+    public void createJob(String jobcode, String jobname, String clientid, String deliverydate, String deliverytype, String censusstart,
+                          String censusend, String presentationdate, String responserate, String loggedin, String samplesize, Boolean status,
+                          String surveysubtype) throws SQLException, ParseException {
+
+        /* Make a default date format */
+        SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
+
+        /*Parse to proper types*/
+        Long clientidlong = Long.parseLong(clientid);
+        Integer loggedinint = Integer.parseInt(loggedin);
+        Short responserateshort = Short.parseShort(responserate);
+        Integer samplesizeint = Integer.parseInt(samplesize);
+        Integer subtypeidint = Integer.parseInt(surveysubtype);
+
+        /* Parse dates to the SQL Date format*/
+        java.util.Date csdate = sampledate.parse(censusstart);
+        Date censusstartdate = new Date(csdate.getTime());
+        java.util.Date cedate = sampledate.parse(censusend);
+        Date censusenddate = new Date(cedate.getTime());
+        java.util.Date ddate = sampledate.parse(deliverydate);
+        Date deliverdate = new Date(ddate.getTime());
+        java.util.Date pdate = sampledate.parse(presentationdate);
+        Date presentdate = new Date(pdate.getTime());
 
         String query = "INSERT INTO jobs (jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, " +
                 "presentationdate, responserate, loggedin,samplesize, status, surveysubtypeid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-        this.jdbcTemplate.update(query, jobcode, jobname, clientid,
-                deliverydate, deliverytype, censusstart, censusend, presentationdate, responserate, loggedin, samplesize, status,
-                surveysubtype);
+        this.jdbcTemplate.update(query, jobcode, jobname, clientidlong,
+                deliverdate, deliverytype, censusstartdate, censusenddate, presentdate, responserateshort, loggedinint, samplesizeint, status,
+                subtypeidint);
     }
 
     /*Delete a job by ID in the database*/

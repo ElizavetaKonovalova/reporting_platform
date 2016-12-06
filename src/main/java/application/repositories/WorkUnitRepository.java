@@ -44,18 +44,46 @@ public class WorkUnitRepository {
     }
 
     /* Select a work unit by its Work Unit ID */
-    public WorkUnits getWorkUnitByWUID(Integer wuid) {
+    public WorkUnits getWorkUnitByWUID(String wuid) {
+        Integer workunitid = Integer.parseInt(wuid);
         String query = "SELECT * FROM work_units WHERE workunitid = ?";
-        try { return this.jdbcTemplate.queryForObject( query, wuMapper, wuid); }
+        try { return this.jdbcTemplate.queryForObject( query, wuMapper, workunitid); }
         catch (Exception e) { return new WorkUnits(); }
     }
 
+    /* Select work units by level */
+    public List<WorkUnits> getWorkUnitsByLevel(Short level) {
+        String query = "SELECT * FROM work_units WHERE wulevel = ?";
+        try { return this.jdbcTemplate.query( query, wuMapper, level); }
+        catch (Exception e) { return new ArrayList<>(); }
+    }
+
+    /* Select work units by thier Cohort */
+    public List<WorkUnits> getWorkUnitsByCohort(String wucohort) {
+        String query = "SELECT * FROM work_units WHERE cohort = ?";
+        try { return this.jdbcTemplate.query( query, wuMapper, wucohort); }
+        catch (Exception e) { return new ArrayList<>(); }
+    }
+
+    /* Select work units by thier Cohort */
+    public List<WorkUnits> getWorkUnitsByMatrix(String matrix) {
+        String query = "SELECT * FROM work_units WHERE matrix = ?";
+        try { return this.jdbcTemplate.query( query, wuMapper, matrix); }
+        catch (Exception e) { return new ArrayList<>(); }
+    }
+
     /* Create a work unit */
-    public void create(String cohort, Integer denominator, Short level, String matrix, String name, Integer workunitcode,
-                       Integer workunitid) {
-        String query = "INSERT INTO work_units (cohort, denominator, level, matrix, wuname, workunitcode, workunitid) " +
+    public void create(String cohort, String denominator, String level, String matrix, String name, String workunitcode,
+                       String workunitid) {
+
+        Integer denominatorint = Integer.parseInt(denominator);
+        Integer wucodeint = Integer.parseInt(workunitcode);
+        Short levelshort = Short.parseShort(level);
+        Integer workunitidint = Integer.parseInt(workunitid);
+
+        String query = "INSERT INTO work_units (cohort, denominator, wulevel, matrix, wuname, workunitcode, workunitid) " +
                 "VALUES (?,?,?,?,?,?,?)";
-        this.jdbcTemplate.update(query, cohort, denominator, level, matrix, name, workunitcode, workunitid);
+        this.jdbcTemplate.update(query, cohort, denominatorint, levelshort, matrix, name, wucodeint, workunitidint);
     }
 
     /* Map data from the database to the WorkUnits model */
@@ -65,7 +93,7 @@ public class WorkUnitRepository {
             workUnits.setID(rs.getLong("id"));
             workUnits.setCOHORT(rs.getString("cohort"));
             workUnits.setDENOMINATOR(rs.getInt("denominator"));
-            workUnits.setLEVEL(rs.getShort("level"));
+            workUnits.setLEVEL(rs.getShort("wulevel"));
             workUnits.setMATRIX(rs.getString("matrix"));
             workUnits.setNAME(rs.getString("wuname"));
             workUnits.setWORKUNITCODE(rs.getInt("workunitcode"));

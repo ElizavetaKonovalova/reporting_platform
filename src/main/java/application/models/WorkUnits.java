@@ -20,7 +20,7 @@ public class WorkUnits {
     private Integer WORKUNITID;
     private Integer WORKUNITCODE;
     private String MATRIX;
-    private Short LEVEL;
+    private Short WULEVEL;
     private String COHORT;
     private Integer DENOMINATOR;
 
@@ -37,7 +37,7 @@ public class WorkUnits {
     public String getMATRIX() { return this.MATRIX; }
     public Integer getWORKUNITID() { return this.WORKUNITID; }
     public Integer getWORKUNITCODE() { return this.WORKUNITCODE; }
-    public Short getLEVEL() { return this.LEVEL; }
+    public Short getLEVEL() { return this.WULEVEL; }
     public String getCOHORT() { return this.COHORT; }
     public Integer getDENOMINATOR() { return this.DENOMINATOR; }
     public Long getID() { return this.ID; }
@@ -47,7 +47,7 @@ public class WorkUnits {
     public void setMATRIX( String matrix) { this.MATRIX = matrix; }
     public void setWORKUNITID( Integer workunitid ) { this.WORKUNITID = workunitid; }
     public void setWORKUNITCODE( Integer workunitcode ) {this.WORKUNITCODE = workunitcode; }
-    public void setLEVEL( Short level) { this.LEVEL = level; }
+    public void setLEVEL( Short level) { this.WULEVEL = level; }
     public void setDENOMINATOR(Integer denominator) { this.DENOMINATOR = denominator; }
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setID(Long id) { this.ID = id; }
