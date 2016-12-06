@@ -22,9 +22,10 @@ public class Organisations {
     /*Getters*/
     public String getORGNAME() { return this.ORGNAME; }
     public String getLOCATION() { return this.LOCATION; }
+    public Long getID() { return this.ID; }
 
     /*Setters*/
     public void setORGNAME( String org_name ) { this.ORGNAME = org_name; }
     public void setLOCATION( String location ) { this.LOCATION = location; }
-
+    public void setID( Long id ) { this.ID = id; }
 }

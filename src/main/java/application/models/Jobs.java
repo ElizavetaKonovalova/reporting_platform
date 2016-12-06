@@ -16,7 +16,6 @@ public class Jobs {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
     private Long CLIENTID;
-
     @Column(unique = true, nullable = false)
     private String JOBCODE;
     @Column(nullable = false)

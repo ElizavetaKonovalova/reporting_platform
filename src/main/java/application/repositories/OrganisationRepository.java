@@ -17,6 +17,7 @@ public class OrganisationRepository {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    /* Select an organisation based on its Name */
     public Organisations getOrgByName(String orgname) {
         String query = "SELECT * FROM organisations WHERE orgname = ?";
         try {
@@ -24,6 +25,15 @@ public class OrganisationRepository {
         } catch (Exception e) { return new Organisations(); }
     }
 
+    /* Select an organisation based on its Location*/
+    public Organisations getOrgByLocation(String location) {
+        String query = "SELECT * FROM organisations WHERE location = ?";
+        try {
+            return this.jdbcTemplate.queryForObject( query, orgMapper, location);
+        } catch (Exception e) { return new Organisations(); }
+    }
+
+    /* Select an organisation based on its database ID */
     public Organisations getOrgByID(Long id) {
         String query = "SELECT * FROM organisations WHERE id = ?";
         try {
@@ -31,25 +41,29 @@ public class OrganisationRepository {
         } catch (Exception e) { return new Organisations(); }
     }
 
+    /* Create an organisation */
     public void create(String orgname, String location) {
         String query = "INSERT INTO organisations (orgname, location) VALUES (?,?)";
         this.jdbcTemplate.update(query, orgname, location);
     }
 
+    /* Remove an organisation by its database ID */
     public void removeOrgByID(Long id) {
         String query = "DELETE FROM organisations WHERE id = ?";
         this.jdbcTemplate.update(query, id);
     }
 
+    /* Remove an organisation by its Name */
     public void removeOrgByName(String orgname) {
         String query = "DELETE FROM organisations WHERE orgname = ?";
         this.jdbcTemplate.update(query, orgname);
     }
 
-    /* Map data from the database to the Jobs model */
+    /* Map data from the database to the Organisations model */
     private static final RowMapper<Organisations> orgMapper = new RowMapper<Organisations>() {
         public Organisations mapRow(ResultSet rs, int rowNum) throws SQLException {
             Organisations organisation = new Organisations();
+            organisation.setID(rs.getLong("id"));
             organisation.setORGNAME(rs.getString("orgname"));
             organisation.setLOCATION(rs.getString("location"));
             return organisation;
