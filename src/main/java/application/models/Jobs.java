@@ -11,9 +11,12 @@ import java.sql.Date;
 public class Jobs {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name ="id", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
     private Long CLIENTID;
+
+    @Column(unique = true)
     private String JOBCODE;
     private String JOBNAME;
     private Date CENSUSSTART;
@@ -21,7 +24,7 @@ public class Jobs {
     private Date DELIVERYDATE;
     private Date PRESENTATIONDATE;
     private Boolean STATUS;
-    private Short SAMPLESIZE;
+    private Integer SAMPLESIZE;
     private Integer SURVEYSUBTYPEID;
     private String DELIVERYTYPE;
     private Integer LOGGEDIN;
@@ -30,7 +33,7 @@ public class Jobs {
     public Jobs(){}
 
     /*Getters*/
-    public Short getSAMPLESIZE() { return this.SAMPLESIZE; }
+    public Integer getSAMPLESIZE() { return this.SAMPLESIZE; }
     public Date getCENSUSSTART() { return this.CENSUSSTART; }
     public Date getCENSUSEND() { return this.CENSUSEND; }
     public Date getDELIVERYDATE() { return this.DELIVERYDATE; }
@@ -43,9 +46,10 @@ public class Jobs {
     public Long getCLIENTID() { return this.CLIENTID; }
     public Short getRESPONSERATE() { return this.RESPONSERATE; }
     public Long getID() { return this.ID; }
+    public Integer getSURVEYSUBTYPEID() { return this.SURVEYSUBTYPEID; }
 
     /*Setters*/
-    public void setSAMPLESIZE(Short samplesize) { this.SAMPLESIZE = samplesize; }
+    public void setSAMPLESIZE(Integer samplesize) { this.SAMPLESIZE = samplesize; }
     public void setCENSUSSTART(Date censusstart) { this.CENSUSSTART = censusstart; }
     public void setCENSUSEND(Date censusend) { this.CENSUSEND = censusend; }
     public void setDELIVERYDATE(Date deliverydate) { this.DELIVERYDATE = deliverydate; }
@@ -58,4 +62,10 @@ public class Jobs {
     public void setCLIENTID( Long client_name ) { this.CLIENTID = client_name; }
     public void setRESPONSERATE( Short responserate ) { this.RESPONSERATE = responserate; }
     public void setID(Long id) { this.ID = id; }
+    public void setSURVEYSUBTYPEID(Integer id) { this.SURVEYSUBTYPEID = id; }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }

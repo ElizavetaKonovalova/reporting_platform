@@ -3,10 +3,8 @@ import application.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
-
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,42 +16,77 @@ public class JobRepository  {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    /*Select a job by Job Code */
     public Jobs getJobByCode(String jobcode){
-        return this.jdbcTemplate.queryForObject("SELECT * FROM jobs WHERE jobcode=" + jobcode, jobMapper);
+        String query = "SELECT * FROM jobs WHERE jobcode = ?";
+        try {
+            return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode);
+        } catch (Exception e) {
+            return new Jobs();
+        }
     }
 
-    public Jobs getJobByID(String jobid){
+    /* Select a job by ID in the database */
+    public Jobs getJobByID(Long jobid){
         return this.jdbcTemplate.queryForObject("SELECT * FROM jobs WHERE id=" + jobid, jobMapper);
     }
 
-    public List<Jobs> getJobByName(String jobname){
-        return this.jdbcTemplate.query("SELECT * FROM jobs WHERE jobname=" + jobname, jobMapper);
+    /* Select all jobs with a specified name */
+    public List<Jobs> getJobsByName(String jobname){
+        String query = "SELECT * FROM jobs WHERE jobname= ?";
+        try {
+            return this.jdbcTemplate.query( query, jobMapper, jobname);
+        } catch(Exception e) { return new ArrayList<>();}
     }
 
+    /* Select all jobs with a specified client id */
+    public List<Jobs> getJobsByClientID(Long clientid){
+        return this.jdbcTemplate.query("SELECT * FROM jobs WHERE clientid =" + clientid, jobMapper);
+    }
+
+    /* Create a new job in the database */
     public void createJob(String jobcode, String jobname, Long clientid, Date deliverydate, String deliverytype, Date censusstart,
-                          Date censusend, Date presentationdate, Short responserate, Integer loggedin, Short samplesize, Boolean status) {
-        this.jdbcTemplate.update("INSERT INTO jobs (jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, " +
-                "presentationdate, responserate, loggedin,samplesize, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", jobcode, jobname, clientid,
-                deliverydate, deliverytype, censusstart, censusend, presentationdate, responserate, loggedin, samplesize, status);
+                          Date censusend, Date presentationdate, Short responserate, Integer loggedin, Integer samplesize, Boolean status,
+                          Integer surveysubtype) throws SQLException {
+
+        String query = "INSERT INTO jobs (jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, " +
+                "presentationdate, responserate, loggedin,samplesize, status, surveysubtypeid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        this.jdbcTemplate.update(query, jobcode, jobname, clientid,
+                deliverydate, deliverytype, censusstart, censusend, presentationdate, responserate, loggedin, samplesize, status,
+                surveysubtype);
     }
 
+    /*Delete a job by ID in the database*/
+    public void removeJobByID(Long jobid) {
+        this.jdbcTemplate.update("DELETE FROM jobs WHERE id = " + jobid);
+    }
+
+    /*Delete a job by ID in the database*/
+    public void removeJobByCode(String jobcode) {
+        String query = "DELETE FROM jobs WHERE jobcode = ?";
+        this.jdbcTemplate.update( query, jobcode);
+    }
+
+    /* Map data from the database to the Jobs model */
     private static final RowMapper<Jobs> jobMapper = new RowMapper<Jobs>() {
         public Jobs mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Jobs job = new Jobs();
-            job.setCENSUSSTART(rs.getDate("censusstart"));
-            job.setCENSUSEND(rs.getDate("censusend"));
-            job.setDELIVERYDATE(rs.getDate("deliverydate"));
-            job.setPRESENTATIONDATE(rs.getDate("presentationdate"));
-            job.setID(rs.getLong("id"));
-            job.setSTATUS(rs.getBoolean("status"));
-            job.setSAMPLESIZE(rs.getShort("samplesize"));
-            job.setRESPONSERATE(rs.getShort("responserate"));
-            job.setLOGGEDIN(rs.getInt("loggedin"));
-            job.setDELIVERYTYPE(rs.getString("deliverytype"));
-            job.setCLIENTID(rs.getLong("clientid"));
-            job.setJOBCODE(rs.getString("jobcode"));
-            job.setJOBNAME(rs.getString("jobname"));
-            return job;
+                Jobs job = new Jobs();
+                job.setCENSUSSTART(rs.getDate("censusstart"));
+                job.setCENSUSEND(rs.getDate("censusend"));
+                job.setDELIVERYDATE(rs.getDate("deliverydate"));
+                job.setPRESENTATIONDATE(rs.getDate("presentationdate"));
+                job.setID(rs.getLong("id"));
+                job.setSTATUS(rs.getBoolean("status"));
+                job.setSAMPLESIZE(rs.getInt("samplesize"));
+                job.setRESPONSERATE(rs.getShort("responserate"));
+                job.setLOGGEDIN(rs.getInt("loggedin"));
+                job.setDELIVERYTYPE(rs.getString("deliverytype"));
+                job.setCLIENTID(rs.getLong("clientid"));
+                job.setJOBCODE(rs.getString("jobcode"));
+                job.setJOBNAME(rs.getString("jobname"));
+                job.setSURVEYSUBTYPEID(rs.getInt("surveysubtypeid"));
+                return job;
         }
     };
 }
