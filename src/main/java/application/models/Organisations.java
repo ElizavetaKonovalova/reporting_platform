@@ -13,8 +13,9 @@ public class Organisations {
     @Column(name ="clientid", columnDefinition = "serial", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long CLIENTID;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String CLIENTNAME;
+    @Column(nullable = false)
     private String ORGNAME;
 
     public Organisations() {}

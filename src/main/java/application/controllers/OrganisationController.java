@@ -17,28 +17,28 @@ public class OrganisationController {
     @Autowired
     OrganisationRepository organisationRepository;
 
-    /* Select an organisation by its name */
-    @RequestMapping(value = "gname", produces = "application/json")
-    public Organisations getOrgByName(@RequestParam("name") String orgname) {
-        return this.organisationRepository.getOrgByName(orgname);
+    /* Select an organisation by its Org Name */
+    @RequestMapping(value = "gorg", produces = "application/json")
+    public Organisations getOrgByOrgName(@RequestParam("name") String orgname) {
+        return this.organisationRepository.getOrgByOrgName(orgname);
     }
 
-    /* Select an organisation by its id */
+    /* Select an organisation by its Client Id */
     @RequestMapping(value = "gid", produces = "application/json")
-    public Organisations getOrgByID(@RequestParam("id") String orgid) {
-        return this.organisationRepository.getOrgByID(orgid);
+    public Organisations getOrgByID(@RequestParam("id") String clientid) {
+        return this.organisationRepository.getOrgByClientID(clientid);
     }
 
-    /* Select an organisation by its location */
-    @RequestMapping(value = "gloc", produces = "application/json")
-    public Organisations getOrgByLocation(@RequestParam("loc") String location) {
-        return this.organisationRepository.getOrgByLocation(location);
+    /* Select an organisation by its Client Name */
+    @RequestMapping(value = "gclient", produces = "application/json")
+    public Organisations getOrgByClientName(@RequestParam("name") String clientname) {
+        return this.organisationRepository.getOrgByClientName(clientname);
     }
 
     /* Create an organisation */
     @RequestMapping(value = "create", produces = "application/json")
     public String create(@RequestParam("orgname") String orgname, @RequestParam("cname") String clientname) {
-        Organisations organisations = this.organisationRepository.getOrgByName(clientname);
+        Organisations organisations = this.organisationRepository.getOrgByClientName(clientname);
 
         if(organisations.getCLIENTNAME() != null) { return "This organisation already exists"; }
         else {
@@ -47,16 +47,21 @@ public class OrganisationController {
         }
     }
 
-    /* Remove an organisation by its name */
-    @RequestMapping(value = "rname", produces = "application/json")
-    public void removeByName(@RequestParam("name") String orgname) {
-        this.organisationRepository.removeOrgByName(orgname);
+    /* Remove an organisation by its Org Name */
+    @RequestMapping(value = "rorg", produces = "application/json")
+    public void removeByOrgName(@RequestParam("name") String orgname) {
+        this.organisationRepository.removeOrgByOrgName(orgname);
+    }
+
+    /* Remove an organisation by its Org Name */
+    @RequestMapping(value = "rclient", produces = "application/json")
+    public void removeByClientName(@RequestParam("name") String clientname) {
+        this.organisationRepository.removeOrgByClientName(clientname);
     }
 
     /* Remove an organisation by its Client Id */
-    @RequestMapping(value = "rcid", produces = "application/json")
+    @RequestMapping(value = "rid", produces = "application/json")
     public void removeByID(@RequestParam("id") String clientid) {
-        Long id = Long.parseLong(clientid);
-        this.organisationRepository.removeOrgByClientID(id);
+        this.organisationRepository.removeOrgByClientID(clientid);
     }
 }

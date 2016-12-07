@@ -17,28 +17,28 @@ public class OrganisationRepository {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
-    /* Select an organisation based on its Name */
-    public Organisations getOrgByName(String orgname) {
+    /* Select an organisation based on its ORGName */
+    public Organisations getOrgByOrgName(String orgname) {
         String query = "SELECT * FROM organisations WHERE orgname = ?";
         try {
             return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
         } catch (Exception e) { return new Organisations(); }
     }
 
-    /* Select an organisation based on its Location*/
-    public Organisations getOrgByLocation(String location) {
-        String query = "SELECT * FROM organisations WHERE location = ?";
+    /* Select an organisation based on its Name */
+    public Organisations getOrgByClientName(String clientname) {
+        String query = "SELECT * FROM organisations WHERE clientname = ?";
         try {
-            return this.jdbcTemplate.queryForObject( query, orgMapper, location);
+            return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
         } catch (Exception e) { return new Organisations(); }
     }
 
-    /* Select an organisation based on its database ID */
-    public Organisations getOrgByID(String id) {
-        Long orgid = Long.parseLong(id);
-        String query = "SELECT * FROM organisations WHERE id = ?";
+    /* Select an organisation based on its Location*/
+    public Organisations getOrgByClientID(String clientid) {
+        Long id = Long.parseLong(clientid);
+        String query = "SELECT * FROM organisations WHERE clientid = ?";
         try {
-            return this.jdbcTemplate.queryForObject(query, orgMapper, orgid);
+            return this.jdbcTemplate.queryForObject( query, orgMapper, id);
         } catch (Exception e) { return new Organisations(); }
     }
 
@@ -49,15 +49,22 @@ public class OrganisationRepository {
     }
 
     /* Remove an organisation by its database ID */
-    public void removeOrgByClientID(Long id) {
+    public void removeOrgByClientID(String clientid) {
+        Long id = Long.parseLong(clientid);
         String query = "DELETE FROM organisations WHERE clientid = ?";
         this.jdbcTemplate.update(query, id);
     }
 
-    /* Remove an organisation by its Name */
-    public void removeOrgByName(String orgname) {
+    /* Remove an organisation by its Org Name */
+    public void removeOrgByOrgName(String orgname) {
         String query = "DELETE FROM organisations WHERE orgname = ?";
         this.jdbcTemplate.update(query, orgname);
+    }
+
+    /* Remove an organisation by its Org Name */
+    public void removeOrgByClientName(String clientname) {
+        String query = "DELETE FROM organisations WHERE clientname = ?";
+        this.jdbcTemplate.update(query, clientname);
     }
 
     /* Map data from the database to the Organisations model */
