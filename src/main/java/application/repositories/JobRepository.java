@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Created by ekonovalova on 12/5/2016.
@@ -23,7 +21,7 @@ public class JobRepository  {
     /*Select a job by Job Code */
     public Jobs getJobByCode(String jobcode){
         String query = "SELECT * FROM jobs WHERE jobcode = ?";
-        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode); }
+        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase()); }
         catch (Exception e) { return new Jobs(); }
     }
 
@@ -57,12 +55,25 @@ public class JobRepository  {
         SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
 
-        /*Parse to proper types*/
+        Integer loggedinint, samplesizeint, subtypeidint;
+        Short responserateshort;
+
         Long clientidlong = Long.parseLong(clientid);
-        Integer loggedinint = Integer.parseInt(loggedin);
-        Short responserateshort = Short.parseShort(responserate);
-        Integer samplesizeint = Integer.parseInt(samplesize);
-        Integer subtypeidint = Integer.parseInt(surveysubtype);
+        jobcode = jobcode.toLowerCase();
+
+        if(status == null) { status = false; }
+        if(loggedin.isEmpty()) {  loggedinint = 0; } else { loggedinint = Integer.parseInt(loggedin); }
+        if(responserate.isEmpty()) { responserateshort = 0; } else { responserateshort = Short.parseShort(responserate); }
+        if(samplesize.isEmpty()) { samplesizeint = 0; } else { samplesizeint = Integer.parseInt(samplesize); }
+        if(surveysubtype.isEmpty()) { subtypeidint = 0; } else { subtypeidint = Integer.parseInt(surveysubtype); }
+        if(deliverydate.isEmpty()) { deliverydate = sampledate.format(new java.util.Date()); }
+        else { deliverydate = sampledate.format(sampledate.parse(deliverydate)); }
+        if(censusstart.isEmpty()) { censusstart = sampledate.format(new java.util.Date()); }
+        else { censusstart = sampledate.format(sampledate.parse(censusstart)); }
+        if(censusend.isEmpty()) { censusend = sampledate.format(new java.util.Date()); }
+        else { censusend = sampledate.format(sampledate.parse(censusend)); }
+        if(presentationdate.isEmpty()) { presentationdate = sampledate.format(new java.util.Date()); }
+        else { presentationdate = sampledate.format(sampledate.parse(presentationdate)); }
 
         /* Parse dates to the SQL Date format*/
         java.util.Date csdate = sampledate.parse(censusstart);

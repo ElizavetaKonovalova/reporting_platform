@@ -10,22 +10,22 @@ import javax.persistence.*;
 public class Organisations {
 
     @Id
-    @Column(name ="id", columnDefinition = "serial", nullable = false)
+    @Column(name ="clientid", columnDefinition = "serial", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long ID;
+    private Long CLIENTID;
     @Column(unique = true, nullable = false)
+    private String CLIENTNAME;
     private String ORGNAME;
-    private String LOCATION;
 
     public Organisations() {}
 
     /*Getters*/
     public String getORGNAME() { return this.ORGNAME; }
-    public String getLOCATION() { return this.LOCATION; }
-    public Long getID() { return this.ID; }
+    public String getCLIENTNAME() { return this.CLIENTNAME; }
+    public Long getCLIENTID() { return this.CLIENTID; }
 
     /*Setters*/
-    public void setORGNAME( String org_name ) { this.ORGNAME = org_name; }
-    public void setLOCATION( String location ) { this.LOCATION = location; }
-    public void setID( Long id ) { this.ID = id; }
+    public void setORGNAME( String orgname ) { this.ORGNAME = orgname; }
+    public void setCLIENTNAME( String clientname ) { this.CLIENTNAME = clientname; }
+    public void setCLIENTID( Long id ) { this.CLIENTID = id; }
 }

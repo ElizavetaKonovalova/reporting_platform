@@ -43,14 +43,14 @@ public class OrganisationRepository {
     }
 
     /* Create an organisation */
-    public void create(String orgname, String location) {
-        String query = "INSERT INTO organisations (orgname, location) VALUES (?,?)";
-        this.jdbcTemplate.update(query, orgname, location);
+    public void create(String orgname, String clientname) {
+        String query = "INSERT INTO organisations (orgname, clientname) VALUES (?,?)";
+        this.jdbcTemplate.update(query, orgname, clientname);
     }
 
     /* Remove an organisation by its database ID */
-    public void removeOrgByID(Long id) {
-        String query = "DELETE FROM organisations WHERE id = ?";
+    public void removeOrgByClientID(Long id) {
+        String query = "DELETE FROM organisations WHERE clientid = ?";
         this.jdbcTemplate.update(query, id);
     }
 
@@ -64,9 +64,9 @@ public class OrganisationRepository {
     private static final RowMapper<Organisations> orgMapper = new RowMapper<Organisations>() {
         public Organisations mapRow(ResultSet rs, int rowNum) throws SQLException {
             Organisations organisation = new Organisations();
-            organisation.setID(rs.getLong("id"));
+            organisation.setCLIENTID(rs.getLong("clientid"));
             organisation.setORGNAME(rs.getString("orgname"));
-            organisation.setLOCATION(rs.getString("location"));
+            organisation.setCLIENTNAME(rs.getString("clientname"));
             return organisation;
         }
     };

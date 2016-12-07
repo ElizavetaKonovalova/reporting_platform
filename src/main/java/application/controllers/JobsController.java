@@ -20,48 +20,56 @@ import java.util.TimeZone;
  */
 
 @RestController
-@RequestMapping("jobs")
+@RequestMapping("job")
 public class JobsController {
 
     @Autowired
     JobRepository jobRepository;
     protected Logger logger = LoggerFactory.getLogger(JobsController.class);
 
-    @RequestMapping(value = "getjc", produces = "application/json")
-    public Jobs getJobByCode(@RequestParam("jc") String jobcode) {
+    @RequestMapping(value = "gcode", produces = "application/json")
+    public Jobs getJobByCode(@RequestParam("code") String jobcode) {
         return this.jobRepository.getJobByCode(jobcode);
     }
 
-    @RequestMapping(value = "getji", produces = "application/json")
-    public Jobs getJobByID(@RequestParam("ji") String jobid) {
+    @RequestMapping(value = "gid", produces = "application/json")
+    public Jobs getJobByID(@RequestParam("id") String jobid) {
         Long id = Long.parseLong(jobid);
         return this.jobRepository.getJobByID(id);
     }
 
-    @RequestMapping(value = "getjn", produces = "application/json")
-    public List<Jobs> getJobByName(@RequestParam("jn") String jobname) {
+    @RequestMapping(value = "gname", produces = "application/json")
+    public List<Jobs> getJobByName(@RequestParam("name") String jobname) {
         return this.jobRepository.getJobsByName(jobname);
     }
 
-    @RequestMapping(value = "getjci", produces = "application/json")
-    public List<Jobs> getJobByClientID(@RequestParam("ci") String client) {
+    @RequestMapping(value = "gclient", produces = "application/json")
+    public List<Jobs> getJobByClientID(@RequestParam("client") String client) {
         Long clientid = Long.parseLong(client);
         return this.jobRepository.getJobsByClientID(clientid);
     }
 
-    @RequestMapping(value = "remji", produces = "application/json")
-    public void removeByID(@RequestParam("ji") String jobid) {
+    @RequestMapping(value = "rid", produces = "application/json")
+    public void removeByID(@RequestParam("id") String jobid) {
         Long id = Long.parseLong(jobid);
         this.jobRepository.removeJobByID(id);
     }
 
-    @RequestMapping(value = "remjc", produces = "application/json")
-    public void removeByCode(@RequestParam("jc") String jobcode) {
+    @RequestMapping(value = "rcode", produces = "application/json")
+    public void removeByCode(@RequestParam("code") String jobcode) {
         this.jobRepository.removeJobByCode(jobcode);
     }
 
+    /* Create a new job.
+    *
+    * Required: code, client id, and name
+    *
+    * Template request link :
+    * "/job/create?code=&name=&client=&ddate=&dtype=&cstart=&cend=&pdate=&rrate=&lin=&ssize=&status=&stype="
+    *
+    * */
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("jc") String jobcode, @RequestParam("jn") String jobname, @RequestParam("ci") String clientid,
+    public String create(@RequestParam("code") String jobcode, @RequestParam("name") String jobname, @RequestParam("client") String clientid,
                           @RequestParam("ddate") String deliverydate, @RequestParam("dtype") String deliverytype,
                           @RequestParam("cstart") String censusstart, @RequestParam("cend") String censusend,
                           @RequestParam("pdate") String presentationdate, @RequestParam("rrate") String responserate,

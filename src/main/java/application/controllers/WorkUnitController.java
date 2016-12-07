@@ -20,47 +20,47 @@ public class WorkUnitController {
     WorkUnitRepository workUnitRepository;
 
     /* Select a work unit by its Name */
-    @RequestMapping(value = "getwun", produces = "application/json")
-    public List<WorkUnits> getWorkUnitsByName(@RequestParam("wun") String wuname) {
+    @RequestMapping(value = "gname", produces = "application/json")
+    public List<WorkUnits> getWorkUnitsByName(@RequestParam("name") String wuname) {
         return this.workUnitRepository.getWorkUnitsByName(wuname);
     }
 
     /* Select a work unit by its Work Unit ID */
-    @RequestMapping(value = "getwuid", produces = "application/json")
-    public WorkUnits getWorkUnitByWUID(@RequestParam("wui") String wuid) {
+    @RequestMapping(value = "gwuid", produces = "application/json")
+    public WorkUnits getWorkUnitByWUID(@RequestParam("wuid") String wuid) {
         return this.workUnitRepository.getWorkUnitByWUID(wuid);
     }
 
     /* Select a work unit by its Work Unit Code */
-    @RequestMapping(value = "getwucode", produces = "application/json")
-    public WorkUnits getWorkUnitByWUCode(@RequestParam("wuc") String workunitcode) {
+    @RequestMapping(value = "gcode", produces = "application/json")
+    public WorkUnits getWorkUnitByWUCode(@RequestParam("code") String workunitcode) {
         Integer workunitcodeint = Integer.parseInt(workunitcode);
         return this.workUnitRepository.getWorkUnitByWUCode(workunitcodeint);
     }
 
     /* Select a work unit by its Database ID */
-    @RequestMapping(value = "getwudbid", produces = "application/json")
-    public WorkUnits getWorkUnitByID(@RequestParam("wudbid") String workunitdbid) {
+    @RequestMapping(value = "gid", produces = "application/json")
+    public WorkUnits getWorkUnitByID(@RequestParam("id") String workunitdbid) {
         Long workunitdbidL = Long.parseLong(workunitdbid);
         return this.workUnitRepository.getWorkUnitByID(workunitdbidL);
     }
 
     /* Select work units by their Cohorts */
-    @RequestMapping(value = "getwucohort", produces = "application/json")
-    public List<WorkUnits> getWorkUnitsByCohort(@RequestParam("wuc") String workunitcohort) {
+    @RequestMapping(value = "gcohort", produces = "application/json")
+    public List<WorkUnits> getWorkUnitsByCohort(@RequestParam("cohort") String workunitcohort) {
         return this.workUnitRepository.getWorkUnitsByCohort(workunitcohort);
     }
 
     /* Select work units by Levels */
-    @RequestMapping(value = "getwulvl", produces = "application/json")
+    @RequestMapping(value = "glvl", produces = "application/json")
     public List<WorkUnits> getWorkUnitsByLevel(@RequestParam("lvl") String level) {
         Short levelshort = Short.parseShort(level);
         return this.workUnitRepository.getWorkUnitsByLevel(levelshort);
     }
 
     /* Select work units by their Matrix */
-    @RequestMapping(value = "getwumtx", produces = "application/json")
-    public List<WorkUnits> getWorkUnitsByMatrix(@RequestParam("mtx") String matrix) {
+    @RequestMapping(value = "gm", produces = "application/json")
+    public List<WorkUnits> getWorkUnitsByMatrix(@RequestParam("matrix") String matrix) {
         return this.workUnitRepository.getWorkUnitsByMatrix(matrix);
     }
 
