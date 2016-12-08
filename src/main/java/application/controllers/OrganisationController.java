@@ -40,7 +40,7 @@ public class OrganisationController {
     public String create(@RequestParam("orgname") String orgname, @RequestParam("cname") String clientname) {
         Organisations organisations = this.organisationRepository.getOrgByClientName(clientname);
 
-        if(organisations.getCLIENTNAME() != null) { return "This organisation already exists"; }
+        if(organisations.getCLIENT_NAME() != null) { return "This organisation already exists"; }
         else {
             this.organisationRepository.create(orgname, clientname);
             return "Created";

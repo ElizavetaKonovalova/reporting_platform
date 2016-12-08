@@ -2,18 +2,11 @@ package application.controllers;
 
 import application.models.Jobs;
 import application.repositories.JobRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 /**
  * Created by ekonovalova on 12/5/2016.
@@ -25,7 +18,6 @@ public class JobsController {
 
     @Autowired
     JobRepository jobRepository;
-    protected Logger logger = LoggerFactory.getLogger(JobsController.class);
 
     @RequestMapping(value = "gcode", produces = "application/json")
     public Jobs getJobByCode(@RequestParam("code") String jobcode) {
@@ -77,7 +69,7 @@ public class JobsController {
                           @RequestParam("status") Boolean status, @RequestParam("stype") String subtypeid) throws SQLException, ParseException {
 
         Jobs checkjob = this.jobRepository.getJobByCode(jobcode);
-        if(checkjob.getJOBCODE() != null) {
+        if(checkjob.getJOB_CODE() != null) {
             return "This job already exists";
         } else {
             this.jobRepository.createJob(jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, presentationdate,

@@ -7,11 +7,11 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(indexes = {@Index(name = "workunitsIndex", unique = true, columnList = "workunitid")})
+@Table(name = "StructuralMaps", indexes = {@Index(name = "workunitsIndex", unique = true, columnList = "workunitid")})
 public class WorkUnits {
 
     @Id
-    @Column(name ="id", columnDefinition = "serial", nullable = false)
+    @Column(name ="id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
     @Column(nullable = false)

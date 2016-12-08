@@ -71,9 +71,9 @@ public class OrganisationRepository {
     private static final RowMapper<Organisations> orgMapper = new RowMapper<Organisations>() {
         public Organisations mapRow(ResultSet rs, int rowNum) throws SQLException {
             Organisations organisation = new Organisations();
-            organisation.setCLIENTID(rs.getLong("clientid"));
-            organisation.setORGNAME(rs.getString("orgname"));
-            organisation.setCLIENTNAME(rs.getString("clientname"));
+            organisation.setCLIENT_ID(rs.getLong("clientid"));
+            organisation.setORG_NAME(rs.getString("orgname"));
+            organisation.setCLIENT_NAME(rs.getString("clientname"));
             return organisation;
         }
     };

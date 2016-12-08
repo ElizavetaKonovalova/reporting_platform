@@ -2,71 +2,72 @@ package application.models;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by ekonovalova on 12/5/2016.
  */
 
 @Entity
-@Table(indexes = {@Index(name = "jobIndex", unique = true, columnList = "jobcode")})
+@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", unique = true, columnList = "job_code")})
 public class Jobs {
 
     @Id
-    @Column(name ="id", columnDefinition = "serial", nullable = false)
+    @Column(name ="job_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long ID;
-    private Long CLIENTID;
+    private Long JOB_ID;
+    @ManyToOne @JoinColumn(name="client_id")
+    private Organisations CLIENT_ID;
     @Column(unique = true, nullable = false)
-    private String JOBCODE;
+    private String JOB_CODE;
     @Column(nullable = false)
-    private String JOBNAME;
-    private Date CENSUSSTART;
-    private Date CENSUSEND;
-    private Date DELIVERYDATE;
-    private Date PRESENTATIONDATE;
+    private String JOB_NAME;
+    private Date CENSUS_START;
+    private Date CENSUS_END;
+    private Date DELIVERY_DATE;
+    private Date PRESENTATION_DATE;
     private Boolean STATUS;
-    private Integer SAMPLESIZE;
-    private Integer SURVEYSUBTYPEID;
-    private String DELIVERYTYPE;
-    private Integer LOGGEDIN;
-    private Short RESPONSERATE;
+    private Integer SAMPLE_SIZE;
+    private Integer SURVEY_SUBTYPEID;
+    private String DELIVERY_TYPE;
+    private Integer LOGGED_IN;
+    private Short RESPONSE_RATE;
+    @OneToMany(mappedBy = "JOB", targetEntity = Participants.class)
+    private List<Participants> PARTICIPANTS;
 
     public Jobs(){}
 
     /*Getters*/
-    public Integer getSAMPLESIZE() { return this.SAMPLESIZE; }
-    public Date getCENSUSSTART() { return this.CENSUSSTART; }
-    public Date getCENSUSEND() { return this.CENSUSEND; }
-    public Date getDELIVERYDATE() { return this.DELIVERYDATE; }
-    public Date getPRESENTATIONDATE() { return this.PRESENTATIONDATE; }
+    public Integer getSAMPLE_SIZE() { return this.SAMPLE_SIZE; }
+    public Date getCENSUS_START() { return this.CENSUS_START; }
+    public Date getCENSUS_END() { return this.CENSUS_END; }
+    public Date getDELIVERY_DATE() { return this.DELIVERY_DATE; }
+    public Date getPRESENTATION_DATE() { return this.PRESENTATION_DATE; }
     public Boolean getSTATUS() { return this.STATUS; }
-    public String getJOBNAME() { return this.JOBNAME; }
-    public Integer getLOGGEDIN() { return this.LOGGEDIN; }
-    public String getJOBCODE() { return this.JOBCODE; }
-    public String getDELIVERYTYPE() { return this.DELIVERYTYPE; }
-    public Long getCLIENTID() { return this.CLIENTID; }
-    public Short getRESPONSERATE() { return this.RESPONSERATE; }
-    public Long getID() { return this.ID; }
-    public Integer getSURVEYSUBTYPEID() { return this.SURVEYSUBTYPEID; }
+    public String getJOB_NAME() { return this.JOB_NAME; }
+    public Integer getLOGGED_IN() { return this.LOGGED_IN; }
+    public String getJOB_CODE() { return this.JOB_CODE; }
+    public String getDELIVERY_TYPE() { return this.DELIVERY_TYPE; }
+    public Organisations getCLIENT_ID() { return this.CLIENT_ID; }
+    public Short getRESPONSE_RATE() { return this.RESPONSE_RATE; }
+    public Long getJOB_ID() { return this.JOB_ID; }
+    public Integer getSURVEY_SUBTYPEID() { return this.SURVEY_SUBTYPEID; }
+    public List<Participants> getPARTICIPANTS() { return this.PARTICIPANTS; }
 
     /*Setters*/
-    public void setSAMPLESIZE(Integer samplesize) { this.SAMPLESIZE = samplesize; }
-    public void setCENSUSSTART(Date censusstart) { this.CENSUSSTART = censusstart; }
-    public void setCENSUSEND(Date censusend) { this.CENSUSEND = censusend; }
-    public void setDELIVERYDATE(Date deliverydate) { this.DELIVERYDATE = deliverydate; }
-    public void setPRESENTATIONDATE(Date presentationdate) { this.PRESENTATIONDATE = presentationdate; }
+    public void setSAMPLE_SIZE(Integer samplesize) { this.SAMPLE_SIZE = samplesize; }
+    public void setCENSUS_START(Date censusstart) { this.CENSUS_START = censusstart; }
+    public void setCENSUS_END(Date censusend) { this.CENSUS_END = censusend; }
+    public void setDELIVERY_DATE(Date deliverydate) { this.DELIVERY_DATE = deliverydate; }
+    public void setPRESENTATION_DATE(Date presentationdate) { this.PRESENTATION_DATE = presentationdate; }
     public void setSTATUS(Boolean status) { this.STATUS = status; }
-    public void setJOBNAME(String surveyname) { this.JOBNAME = surveyname; }
-    public void setLOGGEDIN(Integer loggedin) { this.LOGGEDIN = loggedin; }
-    public void setJOBCODE(String jobcode) { this.JOBCODE = jobcode; }
-    public void setDELIVERYTYPE(String deliverytype) { this.DELIVERYTYPE = deliverytype; }
-    public void setCLIENTID( Long client_name ) { this.CLIENTID = client_name; }
-    public void setRESPONSERATE( Short responserate ) { this.RESPONSERATE = responserate; }
-    public void setID(Long id) { this.ID = id; }
-    public void setSURVEYSUBTYPEID(Integer id) { this.SURVEYSUBTYPEID = id; }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
+    public void setJOB_NAME(String surveyname) { this.JOB_NAME = surveyname; }
+    public void setLOGGED_IN(Integer loggedin) { this.LOGGED_IN = loggedin; }
+    public void setJOB_CODE(String jobcode) { this.JOB_CODE = jobcode; }
+    public void setDELIVERY_TYPE(String deliverytype) { this.DELIVERY_TYPE = deliverytype; }
+    public void setCLIENT_ID(Organisations client_id) { this.CLIENT_ID = client_id; }
+    public void setRESPONSE_RATE(Short responserate ) { this.RESPONSE_RATE = responserate; }
+    public void setJOB_ID(Long id) { this.JOB_ID = id; }
+    public void setSURVEY_SUBTYPEID(Integer id) { this.SURVEY_SUBTYPEID = id; }
 }

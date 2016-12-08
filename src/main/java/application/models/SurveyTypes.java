@@ -7,11 +7,11 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table( indexes = {@Index(unique = true, name = "surveytypesIndex", columnList = "typename")})
+@Table( name = "SurveyTypes", indexes = {@Index(unique = true, name = "surveytypesIndex", columnList = "typename")})
 public class SurveyTypes {
 
     @Id
-    @Column(name ="id", columnDefinition = "serial", nullable = false)
+    @Column(name ="survey_type_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long ID;
     private String SUBTYPENAME;

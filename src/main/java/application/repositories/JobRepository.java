@@ -20,28 +20,28 @@ public class JobRepository  {
 
     /*Select a job by Job Code */
     public Jobs getJobByCode(String jobcode){
-        String query = "SELECT * FROM jobs WHERE jobcode = ?";
+        String query = "SELECT * FROM jobs WHERE job_code = ?";
         try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase()); }
         catch (Exception e) { return new Jobs(); }
     }
 
     /* Select a job by ID in the database */
     public Jobs getJobByID(Long jobid){
-        String query = "SELECT * FROM jobs WHERE id = ?";
+        String query = "SELECT * FROM jobs WHERE job_id= ?";
         try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobid); }
         catch (Exception e) { return new Jobs(); }
     }
 
     /* Select all jobs with a specified name */
     public List<Jobs> getJobsByName(String jobname){
-        String query = "SELECT * FROM jobs WHERE jobname= ?";
+        String query = "SELECT * FROM jobs WHERE job_name = ?";
         try { return this.jdbcTemplate.query( query, jobMapper, jobname);}
         catch(Exception e) { return new ArrayList<>();}
     }
 
     /* Select all jobs with a specified client id */
     public List<Jobs> getJobsByClientID(Long clientid){
-        String query = "SELECT * FROM jobs WHERE clientid = ?";
+        String query = "SELECT * FROM jobs WHERE client_id_client_id= ?";
         try { return this.jdbcTemplate.query( query, jobMapper, clientid);}
         catch(Exception e) { return new ArrayList<>();}
     }
@@ -108,20 +108,19 @@ public class JobRepository  {
     private static final RowMapper<Jobs> jobMapper = new RowMapper<Jobs>() {
         public Jobs mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Jobs job = new Jobs();
-                job.setCENSUSSTART(rs.getDate("censusstart"));
-                job.setCENSUSEND(rs.getDate("censusend"));
-                job.setDELIVERYDATE(rs.getDate("deliverydate"));
-                job.setPRESENTATIONDATE(rs.getDate("presentationdate"));
-                job.setID(rs.getLong("id"));
+                job.setCENSUS_START(rs.getDate("censusstart"));
+                job.setCENSUS_END(rs.getDate("censusend"));
+                job.setDELIVERY_DATE(rs.getDate("deliverydate"));
+                job.setPRESENTATION_DATE(rs.getDate("presentationdate"));
+                job.setJOB_ID(rs.getLong("id"));
                 job.setSTATUS(rs.getBoolean("status"));
-                job.setSAMPLESIZE(rs.getInt("samplesize"));
-                job.setRESPONSERATE(rs.getShort("responserate"));
-                job.setLOGGEDIN(rs.getInt("loggedin"));
-                job.setDELIVERYTYPE(rs.getString("deliverytype"));
-                job.setCLIENTID(rs.getLong("clientid"));
-                job.setJOBCODE(rs.getString("jobcode"));
-                job.setJOBNAME(rs.getString("jobname"));
-                job.setSURVEYSUBTYPEID(rs.getInt("surveysubtypeid"));
+                job.setSAMPLE_SIZE(rs.getInt("samplesize"));
+                job.setRESPONSE_RATE(rs.getShort("responserate"));
+                job.setLOGGED_IN(rs.getInt("loggedin"));
+                job.setDELIVERY_TYPE(rs.getString("deliverytype"));
+                job.setJOB_CODE(rs.getString("jobcode"));
+                job.setJOB_NAME(rs.getString("jobname"));
+                job.setSURVEY_SUBTYPEID(rs.getInt("surveysubtypeid"));
                 return job;
         }
     };

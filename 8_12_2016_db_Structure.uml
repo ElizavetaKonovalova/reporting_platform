@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>c7c64567-a77e-4849-a268-ec2eb110c329</OriginalElement>
+  <nodes>
+    <node x="430.0" y="0.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.structural_maps</node>
+    <node x="103.0" y="0.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.clients</node>
+    <node x="98.5" y="534.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.participants</node>
+    <node x="0.0" y="146.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.jobs</node>
+    <node x="106.0" y="658.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.text_data</node>
+    <node x="718.0" y="0.0">c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.survey_types</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.text_data" target="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.participants">
+      <point x="0.0" y="-48.0" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.participants" target="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.jobs">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="169.0" />
+    </edge>
+    <edge source="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.jobs" target="c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.clients">
+      <point x="0.0" y="-169.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7416020671834626" x="466.5" y="377.0" />
+  <SelectedNodes>
+    <node>c7c64567-a77e-4849-a268-ec2eb110c329.TABLE:bpa_db.public.structural_maps</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+
