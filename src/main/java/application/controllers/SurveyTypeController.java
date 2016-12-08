@@ -39,7 +39,7 @@ public class SurveyTypeController {
     @RequestMapping(value = "create", produces = "application/json")
     public String createFullWorkUnit(@RequestParam("type") String typename, @RequestParam("stype") String subtypename) {
         SurveyTypes surveyTypes = this.surveyTypeRepository.getBySubTypeName(subtypename);
-        if(surveyTypes.getSUBTYPENAME() != null) {
+        if(surveyTypes.getSUBTYPE_NAME() != null) {
             return "This work unit already exists";
         } else {
             this.surveyTypeRepository.create(subtypename, typename);

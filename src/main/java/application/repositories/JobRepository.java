@@ -41,7 +41,7 @@ public class JobRepository  {
 
     /* Select all jobs with a specified client id */
     public List<Jobs> getJobsByClientID(Long clientid){
-        String query = "SELECT * FROM jobs WHERE client_id_client_id= ?";
+        String query = "SELECT * FROM jobs WHERE client_id = ?";
         try { return this.jdbcTemplate.query( query, jobMapper, clientid);}
         catch(Exception e) { return new ArrayList<>();}
     }
@@ -85,8 +85,8 @@ public class JobRepository  {
         java.util.Date pdate = sampledate.parse(presentationdate);
         Date presentdate = new Date(pdate.getTime());
 
-        String query = "INSERT INTO jobs (jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, " +
-                "presentationdate, responserate, loggedin,samplesize, status, surveysubtypeid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO jobs (job_code, job_name, client_id, delivery_date, delivery_type, census_start, census_end, " +
+                "presentation_date, response_rate, logged_in, sample_size, status, survey_subtypeid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         this.jdbcTemplate.update(query, jobcode, jobname, clientidlong,
                 deliverdate, deliverytype, censusstartdate, censusenddate, presentdate, responserateshort, loggedinint, samplesizeint, status,
@@ -95,12 +95,12 @@ public class JobRepository  {
 
     /*Delete a job by ID in the database*/
     public void removeJobByID(Long jobid) {
-        this.jdbcTemplate.update("DELETE FROM jobs WHERE id = " + jobid);
+        this.jdbcTemplate.update("DELETE FROM jobs WHERE job_id = " + jobid);
     }
 
     /*Delete a job by ID in the database*/
     public void removeJobByCode(String jobcode) {
-        String query = "DELETE FROM jobs WHERE jobcode = ?";
+        String query = "DELETE FROM jobs WHERE job_code = ?";
         this.jdbcTemplate.update( query, jobcode);
     }
 
@@ -108,19 +108,19 @@ public class JobRepository  {
     private static final RowMapper<Jobs> jobMapper = new RowMapper<Jobs>() {
         public Jobs mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Jobs job = new Jobs();
-                job.setCENSUS_START(rs.getDate("censusstart"));
-                job.setCENSUS_END(rs.getDate("censusend"));
-                job.setDELIVERY_DATE(rs.getDate("deliverydate"));
-                job.setPRESENTATION_DATE(rs.getDate("presentationdate"));
-                job.setJOB_ID(rs.getLong("id"));
+                job.setCENSUS_START(rs.getDate("census_start"));
+                job.setCENSUS_END(rs.getDate("census_end"));
+                job.setDELIVERY_DATE(rs.getDate("delivery_date"));
+                job.setPRESENTATION_DATE(rs.getDate("presentation_date"));
+                job.setJOB_ID(rs.getLong("job_id"));
                 job.setSTATUS(rs.getBoolean("status"));
-                job.setSAMPLE_SIZE(rs.getInt("samplesize"));
-                job.setRESPONSE_RATE(rs.getShort("responserate"));
-                job.setLOGGED_IN(rs.getInt("loggedin"));
-                job.setDELIVERY_TYPE(rs.getString("deliverytype"));
-                job.setJOB_CODE(rs.getString("jobcode"));
-                job.setJOB_NAME(rs.getString("jobname"));
-                job.setSURVEY_SUBTYPEID(rs.getInt("surveysubtypeid"));
+                job.setSAMPLE_SIZE(rs.getInt("sample_size"));
+                job.setRESPONSE_RATE(rs.getShort("response_rate"));
+                job.setLOGGED_IN(rs.getInt("logged_in"));
+                job.setDELIVERY_TYPE(rs.getString("delivery_type"));
+                job.setJOB_CODE(rs.getString("job_code"));
+                job.setJOB_NAME(rs.getString("job_name"));
+                job.setSURVEY_SUBTYPEID(rs.getInt("survey_subtypeid"));
                 return job;
         }
     };

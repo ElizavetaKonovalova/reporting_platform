@@ -1,6 +1,5 @@
 package application.repositories;
 
-import application.models.Jobs;
 import application.models.WorkUnits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -96,8 +95,8 @@ public class WorkUnitRepository {
             workUnits.setLEVEL(rs.getShort("wulevel"));
             workUnits.setMATRIX(rs.getString("matrix"));
             workUnits.setNAME(rs.getString("wuname"));
-            workUnits.setWORKUNITCODE(rs.getInt("workunitcode"));
-            workUnits.setWORKUNITID(rs.getInt("workunitid"));
+            workUnits.setWU_CODE(rs.getInt("workunitcode"));
+            workUnits.setWU_ID(rs.getInt("workunitid"));
             return workUnits;
         }
     };
