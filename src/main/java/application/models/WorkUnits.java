@@ -4,10 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 
-/**
- * Created by ekonovalova on 12/5/2016.
- */
-
 @Entity
 @Table(name = "StructuralMaps", indexes = {@Index(name = "workunitsIndex", unique = true, columnList = "wu_id")},
         uniqueConstraints = {@UniqueConstraint(columnNames = "wu_code")})
@@ -29,17 +25,13 @@ public class WorkUnits {
     private Collection<Participants> PARTICIPANT;
     @Column(nullable = false, unique = true)
     private Integer WU_CODE;
-    @Column(length = 20)
-    @Size(max = 20)
+    @Column(length = 20)@Size(max = 20)
     private String MATRIX_ONE;
-    @Column(length = 20)
-    @Size(max = 20)
+    @Column(length = 20)@Size(max = 20)
     private String MATRIX_TWO;
-    @Column(length = 20)
-    @Size(max = 20)
+    @Column(length = 20)@Size(max = 20)
     private String MATRIX_THREE;
-    @Column(length = 20)
-    @Size(max = 20)
+    @Column(length = 20)@Size(max = 20)
     private String MATRIX_FOUR;
     @Column(length = 20)
     @Size(max = 20)
@@ -71,6 +63,7 @@ public class WorkUnits {
     public String getCOHORT() { return this.COHORT; }
     public Integer getDENOMINATOR() { return this.DENOMINATOR; }
     public Long getDB_ID() { return this.DB_ID; }
+    public Collection<Participants> getPARTICIPANT() { return this.PARTICIPANT; }
 
     /*Setters*/
     public void setNAME( String name ) { this.WU_NAME = name; }
@@ -85,4 +78,5 @@ public class WorkUnits {
     public void setDENOMINATOR(Integer denominator) { this.DENOMINATOR = denominator; }
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
+    public void setPARTICIPANT( Participants participant ) {this.PARTICIPANT.add(participant); }
 }

@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by ekonovalova on 12/6/2016.
- */
 @RestController
 @RequestMapping("org")
 public class OrganisationController {

@@ -9,9 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by ekonovalova on 12/5/2016.
- */
 @Repository
 public class JobRepository  {
 
@@ -119,6 +116,7 @@ public class JobRepository  {
                 job.setLOGGED_IN(rs.getInt("logged_in"));
                 job.setDELIVERY_TYPE(rs.getString("delivery_type"));
                 job.setJOB_CODE(rs.getString("job_code"));
+                job.setTARGET_RESPONSE_RATE(rs.getShort("target_response_rate"));
                 job.setJOB_NAME(rs.getString("job_name"));
                 job.setSURVEY_SUBTYPEID(rs.getInt("survey_subtypeid"));
                 return job;

@@ -2,10 +2,6 @@ package application.models;
 
 import javax.persistence.*;
 
-/**
- * Created by ekonovalova on 07-Dec-16.
- */
-
 @Entity
 @Table( name = "SurveyTypes", indexes = {@Index(unique = true, name = "surveytypesIndex", columnList = "type_name")})
 public class SurveyTypes {

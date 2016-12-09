@@ -1,8 +1,5 @@
 package application.models;
 
-/**
- * Created by ekonovalova on 12/5/2016.
- */
 import javax.persistence.*;
 import java.util.List;
 

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by ekonovalova on 12/6/2016.
- */
 @RestController
 @RequestMapping("wu")
 public class WorkUnitController {

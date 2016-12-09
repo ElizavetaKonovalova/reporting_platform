@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by ekonovalova on 07-Dec-16.
- */
 @RestController
 @RequestMapping("stype")
 public class SurveyTypeController {

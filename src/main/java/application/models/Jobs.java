@@ -3,11 +3,6 @@ package application.models;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
-
-/**
- * Created by ekonovalova on 12/5/2016.
- */
 
 @Entity
 @Table(name = "jobs", indexes = {@Index(name = "jobsIndex", unique = true, columnList = "job_code")})
@@ -32,7 +27,10 @@ public class Jobs {
     private Integer SURVEY_SUBTYPEID;
     private String DELIVERY_TYPE;
     private Integer LOGGED_IN;
+    @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
     private Short RESPONSE_RATE;
+    @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 65")
+    private Short TARGET_RESPONSE_RATE;
     @OneToMany(mappedBy = "JOB", targetEntity = Participants.class)
     private List<Participants> PARTICIPANTS;
 
@@ -51,6 +49,7 @@ public class Jobs {
     public String getDELIVERY_TYPE() { return this.DELIVERY_TYPE; }
     public Organisations getCLIENT_ID() { return this.CLIENT_ID; }
     public Short getRESPONSE_RATE() { return this.RESPONSE_RATE; }
+    public Short getTARGET_RESPONSE_RATE() { return this.TARGET_RESPONSE_RATE; }
     public Long getJOB_ID() { return this.JOB_ID; }
     public Integer getSURVEY_SUBTYPEID() { return this.SURVEY_SUBTYPEID; }
     public List<Participants> getPARTICIPANTS() { return this.PARTICIPANTS; }
@@ -68,6 +67,8 @@ public class Jobs {
     public void setDELIVERY_TYPE(String deliverytype) { this.DELIVERY_TYPE = deliverytype; }
     public void setCLIENT_ID(Organisations client_id) { this.CLIENT_ID = client_id; }
     public void setRESPONSE_RATE(Short responserate ) { this.RESPONSE_RATE = responserate; }
+    public void setTARGET_RESPONSE_RATE(Short target_response_rate ) { this.TARGET_RESPONSE_RATE = target_response_rate; }
     public void setJOB_ID(Long id) { this.JOB_ID = id; }
     public void setSURVEY_SUBTYPEID(Integer id) { this.SURVEY_SUBTYPEID = id; }
+    public void setPARTICIPANTS(Participants participants) {this.PARTICIPANTS.add(participants);}
 }

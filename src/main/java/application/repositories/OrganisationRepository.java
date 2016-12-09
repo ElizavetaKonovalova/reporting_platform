@@ -8,9 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by ekonovalova on 12/5/2016.
- */
 @Repository
 public class OrganisationRepository {
 

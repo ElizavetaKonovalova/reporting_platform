@@ -9,10 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by ekonovalova on 07-Dec-16.
- */
-
 @Repository
 public class SurveyTypesRepository {
 

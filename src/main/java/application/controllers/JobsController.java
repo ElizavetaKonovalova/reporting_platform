@@ -8,10 +8,6 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
 
-/**
- * Created by ekonovalova on 12/5/2016.
- */
-
 @RestController
 @RequestMapping("job")
 public class JobsController {
