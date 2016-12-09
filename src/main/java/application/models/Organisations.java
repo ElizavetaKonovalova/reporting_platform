@@ -12,7 +12,7 @@ public class Organisations {
 
     @Id
     @Column(columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long CLIENT_ID;
     @Column(nullable = false)
     private String CLIENT_NAME;

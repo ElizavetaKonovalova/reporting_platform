@@ -15,7 +15,7 @@ public class Jobs {
 
     @Id
     @Column(name ="job_id", columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long JOB_ID;
     @ManyToOne @JoinColumn(name="client_id")
     private Organisations CLIENT_ID;

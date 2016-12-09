@@ -12,7 +12,7 @@ public class SurveyTypes {
 
     @Id
     @Column(name ="surveytype_id", columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long SURVEYTYPE_ID;
     private String SUBTYPE_NAME;
     private String TYPE_NAME;

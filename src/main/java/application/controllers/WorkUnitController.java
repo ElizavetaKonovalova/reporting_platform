@@ -60,21 +60,27 @@ public class WorkUnitController {
 
     /* Select work units by their Matrix */
     @RequestMapping(value = "gm", produces = "application/json")
-    public List<WorkUnits> getWorkUnitsByMatrix(@RequestParam("matrix") String matrix) {
+    public List<WorkUnits> getWorkUnitsByMatrix(@RequestParam("mtx") String matrix) {
         return this.workUnitRepository.getWorkUnitsByMatrix(matrix);
     }
 
-    /* Create a work unit [FULL] */
+    /* Create a work unit [FULL]
+    *
+    * Template URL:
+    * */
     @RequestMapping(value = "createf", produces = "application/json")
     public String createFullWorkUnit(@RequestParam("cohort") String cohort, @RequestParam("den") String denominator,
-                                     @RequestParam("lvl") String level, @RequestParam("mtx") String matrix, @RequestParam("wun")
-                                     String wuname, @RequestParam("wucode") String workunitcode, @RequestParam("wui") String
-                                     workunitid) {
+                                     @RequestParam("lvl") String level, @RequestParam("mtx1") String matrixone,
+                                     @RequestParam("mtx2") String matrixtwo, @RequestParam("mtx3") String matrixthree,
+                                     @RequestParam("mtx4") String matrixfour, @RequestParam("mtx5") String matrixfive,
+                                     @RequestParam("wun") String wuname, @RequestParam("wucode") String workunitcode,
+                                     @RequestParam("wui") String workunitid) {
         WorkUnits workUnits = this.workUnitRepository.getWorkUnitByWUID(workunitid);
         if(workUnits.getNAME() != null) {
             return "This work unit already exists";
         } else {
-            this.workUnitRepository.create(cohort, denominator, level, matrix, wuname, workunitcode, workunitid);
+            this.workUnitRepository.create(cohort, denominator, level, matrixone, matrixtwo, matrixthree,
+                    matrixfour, matrixfive, wuname, workunitcode, workunitid);
             return "Created";
         }
     }
@@ -87,7 +93,9 @@ public class WorkUnitController {
         if(workUnits.getNAME() != null) {
             return "This work unit already exists";
         } else {
-            this.workUnitRepository.create("", "0", level, "", wuname, "0", workunitid);
+            this.workUnitRepository.create("", "0", level,
+                    "", "", "",
+                    "", "", wuname, "0", workunitid);
             return "Created";
         }
     }
