@@ -5,9 +5,9 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
-@Table(name = "StructuralMaps", indexes = {@Index(name = "workunitsIndex", unique = true, columnList = "wu_id")},
+@Table(name = "job_structural_maps", indexes = {@Index(name = "jobstrmapsIndex", unique = true, columnList = "wu_id")},
         uniqueConstraints = {@UniqueConstraint(columnNames = "wu_code")})
-public class WorkUnits {
+public class JobStructuralMaps {
 
     @Id
     @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
@@ -25,13 +25,17 @@ public class WorkUnits {
     private Collection<Participants> PARTICIPANT;
     @Column(nullable = false, unique = true)
     private Integer WU_CODE;
-    @Column(length = 20)@Size(max = 20)
+    @Column(length = 20)
+    @Size(max = 20)
     private String MATRIX_ONE;
-    @Column(length = 20)@Size(max = 20)
+    @Column(length = 20)
+    @Size(max = 20)
     private String MATRIX_TWO;
-    @Column(length = 20)@Size(max = 20)
+    @Column(length = 20)
+    @Size(max = 20)
     private String MATRIX_THREE;
-    @Column(length = 20)@Size(max = 20)
+    @Column(length = 20)
+    @Size(max = 20)
     private String MATRIX_FOUR;
     @Column(length = 20)
     @Size(max = 20)
@@ -42,15 +46,8 @@ public class WorkUnits {
     private String COHORT;
     private Integer DENOMINATOR;
 
-    public WorkUnits() {}
+    public JobStructuralMaps() {}
 
-    public WorkUnits( String name, Integer id, Integer code){
-        this.WU_NAME = name;
-        this.WU_ID = id;
-        this.WU_CODE = code;
-    }
-
-    /*Getters*/
     public String getNAME() { return this.WU_NAME; }
     public String getMATRIX_ONE() { return this.MATRIX_ONE; }
     public String getMATRIX_TWO() { return this.MATRIX_TWO; }
@@ -65,7 +62,6 @@ public class WorkUnits {
     public Long getDB_ID() { return this.DB_ID; }
     public Collection<Participants> getPARTICIPANT() { return this.PARTICIPANT; }
 
-    /*Setters*/
     public void setNAME( String name ) { this.WU_NAME = name; }
     public void setMATRIX_ONE(String matrix) { this.MATRIX_ONE = matrix; }
     public void setMATRIX_TWO(String matrix) { this.MATRIX_TWO = matrix; }
@@ -79,4 +75,5 @@ public class WorkUnits {
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
     public void setPARTICIPANT( Participants participant ) {this.PARTICIPANT.add(participant); }
+
 }

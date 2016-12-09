@@ -27,7 +27,7 @@ public class Participants {
     @ManyToOne @JoinColumn(name="job_id", insertable = false, updatable = false)
     private Jobs JOB;
     @ManyToMany(mappedBy = "PARTICIPANT", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<WorkUnits> WU_CODE;
+    private List<JobStructuralMaps> WU_CODE;
     @OneToMany(mappedBy = "PARTICIPANT_ID", targetEntity = TextData.class)
     private List<TextData> TEXT_RESPONSES;
     @OneToMany(mappedBy = "PARTICIPANT_ID", targetEntity = NumberData.class)
