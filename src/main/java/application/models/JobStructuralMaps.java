@@ -66,7 +66,7 @@ public class JobStructuralMaps {
     public String getCOHORT() { return this.COHORT; }
     public Integer getDENOMINATOR() { return this.DENOMINATOR; }
     public Long getDB_ID() { return this.DB_ID; }
-//    public Collection<Participants> getPARTICIPANT() { return this.PARTICIPANT; }
+    public Collection<Participants> getPARTICIPANT() { return this.PARTICIPANTS_PER_WU; }
     public Long getJOB_ID() { return this.JOB_ID; }
 
     public void setNAME( String name ) { this.WU_NAME = name; }
@@ -82,6 +82,6 @@ public class JobStructuralMaps {
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
     public void setJOB_ID(Long id) { this.JOB_ID = id; }
-//    public void setPARTICIPANT( Participants participant ) {this.PARTICIPANT.add(participant); }
+    public void setPARTICIPANT( Participants participant ) {this.PARTICIPANTS_PER_WU.add(participant); }
 
 }

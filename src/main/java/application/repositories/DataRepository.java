@@ -10,5 +10,6 @@ public class DataRepository {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+    public void createTextData() {}
 
 }
