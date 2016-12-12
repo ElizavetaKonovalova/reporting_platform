@@ -2,6 +2,7 @@ package application.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "cohorts", indexes = {@Index(columnList = "parent_id", name = "cohortIndex")})
@@ -11,13 +12,19 @@ public class Cohorts {
     @Column(name ="cohort_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long COHORT_ID;
-    @Column(length = 300)
-    @Size(max = 300)
+
+    @Column(length = 300) @Size(max = 300)
     private String DESCRIPTION;
-    @Column(length = 100)
-    @Size(max = 100)
+
+    @Column(length = 100) @Size(max = 100)
     private String COHORT_NAME;
+
     private Long PARENT_ID;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            targetEntity = DemoData.class)
+    @JoinColumn(name = "cohort_id", referencedColumnName = "demo_cohort_id")
+    private List<DemoData> DEMO_RESPONSES;
 
     /* Simple getters */
     public Long getCOHORT_ID() { return this.COHORT_ID; }

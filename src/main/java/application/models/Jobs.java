@@ -12,7 +12,8 @@ public class Jobs {
     @Column(name ="job_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long JOB_ID;
-    @ManyToOne @JoinColumn(name="client_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="client_id")
     private Organisations CLIENT_ID;
     @Column(unique = true, nullable = false)
     private String JOB_CODE;
@@ -24,7 +25,10 @@ public class Jobs {
     private Date PRESENTATION_DATE;
     private Boolean STATUS;
     private Integer SAMPLE_SIZE;
-    private Integer SURVEY_SUBTYPEID;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, targetEntity = SurveyTypes.class)
+    @JoinColumn(name = "SURVEYTYPE_ID", nullable = false)
+    private SurveyTypes SURVEY_SUBTYPEID;
     private String DELIVERY_TYPE;
     private Integer LOGGED_IN;
     @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
@@ -51,7 +55,7 @@ public class Jobs {
     public Short getRESPONSE_RATE() { return this.RESPONSE_RATE; }
     public Short getTARGET_RESPONSE_RATE() { return this.TARGET_RESPONSE_RATE; }
     public Long getJOB_ID() { return this.JOB_ID; }
-    public Integer getSURVEY_SUBTYPEID() { return this.SURVEY_SUBTYPEID; }
+    public SurveyTypes getSURVEY_SUBTYPEID() { return this.SURVEY_SUBTYPEID; }
     public List<Participants> getPARTICIPANTS() { return this.PARTICIPANTS; }
 
     /*Setters*/
@@ -69,6 +73,6 @@ public class Jobs {
     public void setRESPONSE_RATE(Short responserate ) { this.RESPONSE_RATE = responserate; }
     public void setTARGET_RESPONSE_RATE(Short target_response_rate ) { this.TARGET_RESPONSE_RATE = target_response_rate; }
     public void setJOB_ID(Long id) { this.JOB_ID = id; }
-    public void setSURVEY_SUBTYPEID(Integer id) { this.SURVEY_SUBTYPEID = id; }
+    public void setSURVEY_SUBTYPEID(SurveyTypes id) { this.SURVEY_SUBTYPEID = id; }
     public void setPARTICIPANTS(Participants participants) {this.PARTICIPANTS.add(participants);}
 }

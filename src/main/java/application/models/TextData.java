@@ -7,12 +7,15 @@ import java.sql.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "text_data", indexes = {@Index(unique = true, columnList = "redflag_status, shadow_status", name = "textdataIndex")})
+@Table(name = "text_data", indexes = {@Index(columnList = " text_field_id, redflag_status, shadow_status", name = "textdataIndex")})
 public class TextData {
 
-    @Id @Column(name ="field_id", nullable = false)
-    @Type(type = "pg-uuid")
-    private UUID FIELD_ID;
+    @Id @Type(type = "pg-uuid")
+    private Long DB_ID;
+
+    @Column(name ="text_field_id", nullable = false, insertable = false,
+            updatable = false)
+    private UUID TEXT_FIELD_ID;
 
     @ManyToOne @JoinColumn(name = "participant_id")
     private Participants PARTICIPANT_ID;
@@ -26,8 +29,13 @@ public class TextData {
     private Date DATE_MODIFIED;
     private String SHADOW_STATUS;
 
+    @ManyToOne(targetEntity = FieldRegistry.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "text_field_id", referencedColumnName = "field_id")
+    private FieldRegistry REGISRTY;
+
     /* Simple getters */
-    public UUID getFIELD_ID() { return this.FIELD_ID; }
+    public UUID getFIELD_ID() { return this.TEXT_FIELD_ID; }
     public String getREDFLAG_STATUS() { return this.REDFLAG_STATUS; }
     public String getRESPONSE_VALUE() { return  this.RESPONSE_VALUE; }
     public String getSHADOW_STATUS() { return this.SHADOW_STATUS; }
@@ -35,7 +43,7 @@ public class TextData {
     public Participants getPARTICIPANT_ID() { return this.PARTICIPANT_ID; }
 
     /* Simple setters */
-    public void setFIELD_ID( UUID field_id ) { this.FIELD_ID = field_id; }
+    public void setFIELD_ID( UUID field_id ) { this.TEXT_FIELD_ID = field_id; }
     public void setPARTICIPANT_ID( Participants participant_id ) { this.PARTICIPANT_ID = participant_id; }
     public void setREDFLAG_STATUS( String redflag_status ) { this.REDFLAG_STATUS = redflag_status; }
     public void setRESPONSE_VALUE( String response_value ) { this.RESPONSE_VALUE = response_value; }

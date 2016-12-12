@@ -15,8 +15,11 @@ public class Organisations {
     private String CLIENT_NAME;
     @Column(nullable = false)
     private String ORG_NAME;
-    @OneToMany(mappedBy = "CLIENT_ID", targetEntity = Jobs.class)
+    @OneToMany(mappedBy = "CLIENT_ID", fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            targetEntity = Jobs.class)
     private List<Jobs> JOBS;
+    @OneToMany(mappedBy = "CLIENT", targetEntity = ClientsStructuralMaps.class)
+    private List<ClientsStructuralMaps> STRUCTURAL_MAP;
 
     public Organisations() {}
 

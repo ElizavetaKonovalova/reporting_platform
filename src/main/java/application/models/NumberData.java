@@ -6,18 +6,30 @@ import java.sql.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "number_data", indexes = {@Index(unique = true, columnList = "positivity_result",
+@Table(name = "number_data", indexes = {@Index(columnList = "number_field_id, positivity_result",
         name = "numbdataIndex")})
 public class NumberData {
 
-    @Id
-    @Column(name ="field_id", nullable = false)
-    @Type(type = "pg-uuid")
+    @Id @Type(type = "pg-uuid")
+    private Long DB_ID;
+
+    @Column(name ="number_field_id", nullable = false, insertable = false,
+            updatable = false)
     private UUID NUMBER_FIELD_ID;
+
+    @ManyToOne(targetEntity = FieldRegistry.class,
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "number_field_id", referencedColumnName = "field_id")
+    private FieldRegistry REGISRTY;
+
     private char POSITIVITY_RESULT;
-    @ManyToOne @JoinColumn(name = "participant_id")
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "participant_id")
     private Participants PARTICIPANT_ID;
+
     private Date DATE_MODIFIED;
+
     private Short RESPONSE_VALUE;
 
     /* Simple getters */

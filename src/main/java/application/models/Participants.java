@@ -13,23 +13,35 @@ public class Participants {
     @Column(name ="participant_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long PARTICIPANT_ID;
-    @Column(length = 100)
-    @Size(max = 100)
+
+    @Column(length = 100) @Size(max = 100)
     private String PARTICIPANT_NAME;
-    @Column(length = 100)
-    @Size(max = 100)
+
+    @Column(length = 100) @Size(max = 100)
     private String PARTICIPANT_EMAIL;
-    @Column(length = 40)
-    @Size(max = 40)
+
+    @Column(length = 40) @Size(max = 40)
     private String PASSWORD;
+
     private char STATUS;
+
+    @Column(insertable = false, updatable = false)
+    private Long WU_CODE;
+
     private Date DATE_MODIFIED;
-    @ManyToOne @JoinColumn(name="job_id", insertable = false, updatable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name="job_id", insertable = false, updatable = false)
     private Jobs JOB;
-    @ManyToMany(mappedBy = "PARTICIPANT", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<JobStructuralMaps> WU_CODE;
-    @OneToMany(mappedBy = "PARTICIPANT_ID", targetEntity = TextData.class)
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, targetEntity = JobStructuralMaps.class)
+    @JoinColumn(name = "WU_CODE", referencedColumnName = "WU_CODE", nullable = false)
+    private JobStructuralMaps WU_FOR_PARTICIPANT;
+
+    @OneToMany(mappedBy = "PARTICIPANT_ID", fetch = FetchType.LAZY, targetEntity = TextData.class)
     private List<TextData> TEXT_RESPONSES;
+
     @OneToMany(mappedBy = "PARTICIPANT_ID", targetEntity = NumberData.class)
     private List<NumberData> NUMBER_RESPONSES;
 

@@ -1,6 +1,7 @@
 package application.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table( name = "SurveyTypes", indexes = {@Index(unique = true, name = "surveytypesIndex", columnList = "type_name")})
@@ -12,6 +13,8 @@ public class SurveyTypes {
     private Long SURVEYTYPE_ID;
     private String SUBTYPE_NAME;
     private String TYPE_NAME;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "SURVEY_SUBTYPEID")
+    private List<Jobs> JOBS;
 
     /* Simple getters for the properties */
     public Long getSURVEYTYPE_ID() { return this.SURVEYTYPE_ID; }

@@ -96,8 +96,8 @@ public class StructuralMapsRepository {
             JobStructuralMaps.setMATRIX_FOUR(rs.getString("matrix_four"));
             JobStructuralMaps.setMATRIX_FIVE(rs.getString("matrix_five"));
             JobStructuralMaps.setNAME(rs.getString("wu_name"));
-            JobStructuralMaps.setWU_CODE(rs.getInt("wu_code"));
-            JobStructuralMaps.setWU_ID(rs.getInt("wu_id"));
+//            JobStructuralMaps.setWU_CODE(rs.getLong("wu_code"));
+//            JobStructuralMaps.setWU_ID(rs.getInt("wu_id"));
             return JobStructuralMaps;
         }
     };
