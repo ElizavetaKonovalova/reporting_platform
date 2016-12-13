@@ -28,22 +28,8 @@ public class JobStructuralMaps {
             fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "WU_FOR_PARTICIPANT")
     private List<Participants> PARTICIPANTS_PER_WU;
 
-    @Column(length = 20) @Size(max = 20)
-    private String MATRIX_ONE;
-
-    @Column(length = 20) @Size(max = 20)
-    private String MATRIX_TWO;
-
-    @Column(length = 20) @Size(max = 20)
-    private String MATRIX_THREE;
-
-    @Column(length = 20) @Size(max = 20)
-    private String MATRIX_FOUR;
-
-    @Column(length = 20) @Size(max = 20)
-    private String MATRIX_FIVE;
-
-    private Short WU_LEVEL;
+    private String WU_LEVEL_ZERO;
+    private String WU_LEVEL_ONE;
 
     @Column(length = 100) @Size(max = 100)
     private String COHORT;
@@ -55,14 +41,10 @@ public class JobStructuralMaps {
     public JobStructuralMaps() {}
 
     public String getNAME() { return this.WU_NAME; }
-    public String getMATRIX_ONE() { return this.MATRIX_ONE; }
-    public String getMATRIX_TWO() { return this.MATRIX_TWO; }
-    public String getMATRIX_THREE() { return this.MATRIX_THREE; }
-    public String getMATRIX_FOUR() { return this.MATRIX_FOUR; }
-    public String getMATRIX_FIVE() { return this.MATRIX_FIVE; }
     public ClientsStructuralMaps getWU_ID() { return this.WU_ID; }
     public Long getWU_CODE() { return this.WU_CODE; }
-    public Short getLEVEL() { return this.WU_LEVEL; }
+    public String getWU_LEVEL_ZERO() { return this.WU_LEVEL_ZERO; }
+    public String getWU_LEVEL_ONE() { return this.WU_LEVEL_ONE; }
     public String getCOHORT() { return this.COHORT; }
     public Integer getDENOMINATOR() { return this.DENOMINATOR; }
     public Long getDB_ID() { return this.DB_ID; }
@@ -70,14 +52,10 @@ public class JobStructuralMaps {
     public Long getJOB_ID() { return this.JOB_ID; }
 
     public void setNAME( String name ) { this.WU_NAME = name; }
-    public void setMATRIX_ONE(String matrix) { this.MATRIX_ONE = matrix; }
-    public void setMATRIX_TWO(String matrix) { this.MATRIX_TWO = matrix; }
-    public void setMATRIX_THREE(String matrix) { this.MATRIX_THREE = matrix; }
-    public void setMATRIX_FOUR(String matrix) { this.MATRIX_FOUR = matrix; }
-    public void setMATRIX_FIVE(String matrix) { this.MATRIX_FIVE = matrix; }
     public void setWU_ID(ClientsStructuralMaps workunitid ) { this.WU_ID = workunitid; }
     public void setWU_CODE(Long workunitcode ) {this.WU_CODE = workunitcode; }
-    public void setLEVEL( Short level) { this.WU_LEVEL = level; }
+    public void setWU_LEVEL_ZERO( String level) { this.WU_LEVEL_ZERO = level; }
+    public void setWU_LEVEL_ONE( String level) { this.WU_LEVEL_ONE = level; }
     public void setDENOMINATOR(Integer denominator) { this.DENOMINATOR = denominator; }
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
