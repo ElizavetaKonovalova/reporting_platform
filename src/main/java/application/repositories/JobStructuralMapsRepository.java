@@ -18,8 +18,10 @@ public class JobStructuralMapsRepository {
 
     /* Select a work unit by its ID in the database */
     public JobStructuralMaps getWorkUnitByID(Long id) {
-        String query = "SELECT * FROM job_structural_maps WHERE db_id = ?";
-        return this.jdbcTemplate.queryForObject( query, wuMapper, id);
+        try {
+            String query = "SELECT * FROM job_structural_maps WHERE db_id = ?";
+            return this.jdbcTemplate.queryForObject( query, wuMapper, id);
+        } catch (Exception e) { return new JobStructuralMaps(); }
     }
 
     /* Select a work unit by its Name */
@@ -30,15 +32,19 @@ public class JobStructuralMapsRepository {
 
     /* Select a work unit by its Work Unit Code in the database */
     public JobStructuralMaps getWorkUnitByWUCode(Integer wucode) {
-        String query = "SELECT * FROM job_structural_maps WHERE wu_code = ?";
-        return this.jdbcTemplate.queryForObject( query, wuMapper, wucode);
+        try {
+            String query = "SELECT * FROM job_structural_maps WHERE wu_code = ?";
+            return this.jdbcTemplate.queryForObject( query, wuMapper, wucode);
+        } catch (Exception e) { return new JobStructuralMaps(); }
     }
 
     /* Select a work unit by its Work Unit ID */
     public JobStructuralMaps getWorkUnitByWUID(String wuid) {
-        Integer workunitid = Integer.parseInt(wuid);
-        String query = "SELECT * FROM job_structural_maps WHERE wu_id = ?";
-        return this.jdbcTemplate.queryForObject( query, wuMapper, workunitid);
+        try {
+            Integer workunitid = Integer.parseInt(wuid);
+            String query = "SELECT * FROM job_structural_maps WHERE wu_id = ?";
+            return this.jdbcTemplate.queryForObject( query, wuMapper, workunitid);
+        } catch (Exception e) { return new JobStructuralMaps(); }
     }
 
     /* Select work units by level */
@@ -76,7 +82,7 @@ public class JobStructuralMapsRepository {
     }
 
     /* Map data from the database to the JobStructuralMaps model */
-    private static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
+    public static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
         public JobStructuralMaps mapRow(ResultSet rs, int rowNum) throws SQLException {
             JobStructuralMaps JobStructuralMaps = new JobStructuralMaps();
             JobStructuralMaps.setDB_ID(rs.getLong("db_id"));

@@ -27,7 +27,7 @@ public class FieldRegistryController {
     @RequestMapping(value = "create", produces = "application/json")
     public String create(@RequestParam("fdone") String field_desc_one, @RequestParam("fdtwo") String field_desc_two,
                                 @RequestParam("fdthr") String field_desc_three, @RequestParam("fname") String field_name,
-                                @RequestParam("pname") String program_name, @RequestParam("t") String type) {
-        return this.fieldRegistryRepository.create(field_desc_one, field_desc_two, field_desc_three, field_name, program_name, type);
+                                @RequestParam("pname") String program_name, @RequestParam("mname") String module_name, @RequestParam("t") String type) {
+        return this.fieldRegistryRepository.create(field_desc_one, field_desc_two, field_desc_three, field_name, program_name, module_name, type);
     }
 }

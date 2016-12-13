@@ -19,19 +19,24 @@ public class FieldRegistryRepository {
     protected JdbcTemplate jdbcTemplate;
 
     public FieldRegistry getFieldByID(String uuid) {
-        UUID field_uuid = UUID.fromString(uuid);
-        String query = "SELECT * FROM field_registry WHERE field_id = ?";
-        return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, uuid);
+        try {
+            UUID field_uuid = UUID.fromString(uuid);
+            String query = "SELECT * FROM field_registry WHERE field_id = ?";
+            return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, uuid);
+        } catch (Exception e) { return new FieldRegistry(); }
     }
 
     public FieldRegistry getFieldByName(String field_name) {
-        String query = "SELECT * FROM field_registry WHERE field_name = ?";
-        return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, field_name);
+        try {
+            String query = "SELECT * FROM field_registry WHERE field_name = ?";
+            return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, field_name);
+        } catch (Exception e) { return new FieldRegistry(); }
     }
 
-    public String create(String field_desc_one, String field_desc_two, String field_desc_three, String field_name, String program_name, String type) {
+    public String create(String field_desc_one, String field_desc_two, String field_desc_three, String field_name,
+                         String program_name, String module_name, String type) {
 
-        Long program_id = getProgramIDByName(program_name);
+        Long program_id = getProgramIDByNames(program_name, module_name);
 
         /* Generate a new UUID for the field_id column */
         UUID uuid = UUID.randomUUID();
@@ -40,7 +45,7 @@ public class FieldRegistryRepository {
                 "field_name, program_mod_id, type) VALUES(?,?,?,?,?,?,?)";
 
         /* Check if there is already a field with this name in the database */
-        String check_query = "SELECT * FROM field_registry WHERE field_name = ?";
+        String check_query = "SELECT field_id FROM field_registry WHERE field_name = ?";
         List<FieldRegistry> fieldRegistry = this.jdbcTemplate.query(check_query, fieldRegistryRowMapper, field_name);
 
         /* If no such field create a new one */
@@ -57,16 +62,16 @@ public class FieldRegistryRepository {
                     this.jdbcTemplate.update(query, uuid, field_desc_one, field_desc_three, field_desc_two, field_name, program_id, type_char);
                     return "Created";
                 } else { return "Wrong type selected! Supported types Text, Number, and Demo."; }
-            } else { return "No such program!"; }
+            } else { return "No such program or module!"; }
         } else { return "A filed with this name already exists!"; }
     }
 
     /* Find a program id in the Program table based on a parsed name */
-    private Long getProgramIDByName(String program_name) {
-        String query = "SELECT * FROM programs WHERE program_name = ?";
+    private Long getProgramIDByNames(String program_name, String module_name) {
+        String query = "SELECT db_id FROM programs WHERE program_name = ? AND module_name = ?";
         try {
             /* Find a program with a parsed name */
-            List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name);
+            List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);
             if(programs.isEmpty()) {
                 return 0L;
             } else { return programs.get(0).getDB_ID(); }

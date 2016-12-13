@@ -17,21 +17,27 @@ public class SurveyTypeRepository {
 
     /* Select a survey type based on its Type Name [a.k.a Workforce, Partner] */
     public SurveyTypes getByTypeName(String typename) {
-        String query = "SELECT * FROM survey_types WHERE type_name = ?";
-        return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, typename);
+        try {
+            String query = "SELECT * FROM survey_types WHERE type_name = ?";
+            return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, typename);
+        } catch (Exception e) { return new SurveyTypes(); }
     }
 
     /* Select a survey type based on its SubType Name [a.k.a Employees, Volunteers, Ambulatory ] */
     public SurveyTypes getBySubTypeName(String subtypename) {
-        String query = "SELECT * FROM survey_types WHERE subtype_name = ?";
-        return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, subtypename);
+        try {
+            String query = "SELECT * FROM survey_types WHERE subtype_name = ?";
+            return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, subtypename);
+        } catch (Exception e) { return new SurveyTypes(); }
     }
 
     /* Select a survey type based on its SubType Name */
     public SurveyTypes getByID(String id) {
-        String query = "SELECT * FROM survey_types WHERE survey_type_id = ?";
-        Long subtypeid = Long.parseLong(id);
-        return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, subtypeid);
+        try {
+            String query = "SELECT * FROM survey_types WHERE survey_type_id = ?";
+            Long subtypeid = Long.parseLong(id);
+            return this.jdbcTemplate.queryForObject( query, surveyTypesRowMapper, subtypeid);
+        } catch (Exception e) { return new SurveyTypes(); }
     }
 
     /* Create a survey type */

@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("wu")
-public class StructuralMapController {
+public class JobStructuralMapController {
 
     @Autowired
     JobStructuralMapsRepository jobStructuralMapsRepository;

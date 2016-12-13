@@ -15,8 +15,8 @@ public class TextDataController {
     private TextDataRepository textDataRepository;
 
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("redfstat") String red_flag_status, @RequestParam("rv") String response_value,
-                         @RequestParam("shadow") String shadow_status, @RequestParam("fname") String text_field_name,
+    public String create(@RequestParam("rfst") String red_flag_status, @RequestParam("rv") String response_value,
+                         @RequestParam("s") String shadow_status, @RequestParam("fname") String text_field_name,
                          @RequestParam("pemail") String participant_email) throws Exception {
         return this.textDataRepository.createTextData(red_flag_status, response_value, shadow_status, text_field_name, participant_email);
     }

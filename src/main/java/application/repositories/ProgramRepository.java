@@ -17,15 +17,19 @@ public class ProgramRepository {
 
     /* Find a program by its id */
     public Programs getProgramByID(String program_id) {
-        Long p_id = Long.parseLong(program_id);
-        String query = "SELECT * FROM programs WHERE db_id = ?";
-        return this.jdbcTemplate.queryForObject(query, programsRowMapper, p_id);
+        try {
+            Long p_id = Long.parseLong(program_id);
+            String query = "SELECT * FROM programs WHERE db_id = ?";
+            return this.jdbcTemplate.queryForObject(query, programsRowMapper, p_id);
+        } catch (Exception e) { return new Programs(); }
     }
 
     /* Find a program by its name */
     public Programs getProgramByName(String program_name) {
-        String query = "SELECT * FROM programs WHERE program_name = ?";
-        return this.jdbcTemplate.queryForObject(query, programsRowMapper, program_name);
+        try {
+            String query = "SELECT * FROM programs WHERE program_name = ?";
+            return this.jdbcTemplate.queryForObject(query, programsRowMapper, program_name);
+        } catch (Exception e) { return new Programs(); }
     }
 
     /* Create a new program */

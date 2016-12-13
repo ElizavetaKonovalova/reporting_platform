@@ -17,14 +17,18 @@ public class JobRepository  {
 
     /*Select a job by Job Code */
     public Jobs getJobByCode(String jobcode) {
-        String query = "SELECT * FROM jobs WHERE job_code = ?";
-        return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase());
+        try {
+            String query = "SELECT * FROM jobs WHERE job_code = ?";
+            return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase());
+        } catch (Exception e) { return new Jobs(); }
     }
 
     /* Select a job by ID in the database */
     public Jobs getJobByID(Long jobid) {
-        String query = "SELECT * FROM jobs WHERE job_id= ?";
-        return this.jdbcTemplate.queryForObject( query, jobMapper, jobid);
+        try {
+            String query = "SELECT * FROM jobs WHERE job_id= ?";
+            return this.jdbcTemplate.queryForObject( query, jobMapper, jobid);
+        } catch (Exception e) { return new Jobs(); }
     }
 
     /* Select all jobs with a specified name */
@@ -79,7 +83,7 @@ public class JobRepository  {
         Date presentdate = new Date(pdate.getTime());
 
         String query = "INSERT INTO jobs (job_code, job_name, client_id, delivery_date, delivery_type, census_start, census_end, " +
-                "presentation_date, response_rate, logged_in, sample_size, status, survey_subtypeid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "presentation_date, response_rate, logged_in, sample_size, status, surveytype_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         this.jdbcTemplate.update(query, jobcode, jobname, clientidlong,
                 deliverdate, deliverytype, censusstartdate, censusenddate, presentdate, responserateshort, loggedinint, samplesizeint, status,

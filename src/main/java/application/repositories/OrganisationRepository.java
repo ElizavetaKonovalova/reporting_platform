@@ -17,21 +17,27 @@ public class OrganisationRepository {
 
     /* Select an organisation based on its ORGName */
     public Organisations getOrgByOrgName(String orgname) {
-        String query = "SELECT * FROM clients WHERE org_name = ?";
-        return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
+        try {
+            String query = "SELECT * FROM clients WHERE org_name = ?";
+            return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
+        } catch (Exception e) { return new Organisations(); }
     }
 
     /* Select an organisation based on its Name */
     public Organisations getOrgByClientName(String clientname) {
-        String query = "SELECT * FROM clients WHERE client_name = ?";
-        return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
+        try {
+            String query = "SELECT * FROM clients WHERE client_name = ?";
+            return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
+        } catch (Exception e) { return new Organisations(); }
     }
 
     /* Select an organisation based on its Location*/
     public Organisations getOrgByClientID(String clientid) {
-        Long id = Long.parseLong(clientid);
-        String query = "SELECT * FROM clients WHERE client_id = ?";
-        return this.jdbcTemplate.queryForObject( query, orgMapper, id);
+        try {
+            Long id = Long.parseLong(clientid);
+            String query = "SELECT * FROM clients WHERE client_id = ?";
+            return this.jdbcTemplate.queryForObject( query, orgMapper, id);
+        } catch (Exception e) { return new Organisations(); }
     }
 
     /* Create an organisation */
