@@ -16,21 +16,22 @@ public class ClientStructuralMapsRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    /* Select a work unit by its ID in the database */
-    public ClientsStructuralMaps getWorkUnitByID(Long id) {
+    /* Select a Work Unit by its ID in the database */
+    public ClientsStructuralMaps getWorkUnitByDBID(String id) {
         try {
+            Long db_id_long = Long.parseLong(id);
             String query = "SELECT * FROM client_structural_maps WHERE db_id = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, id);
+            return this.jdbcTemplate.queryForObject( query, wuMapper, db_id_long);
         } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
-    /* Select a work unit by its Name */
+    /* Select a Work Unit by its Name */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByName(String name) {
         String query = "SELECT * FROM client_structural_maps WHERE wu_name = ?";
         return this.jdbcTemplate.query( query, wuMapper, name);
     }
 
-    /* Select a work unit by its Work Unit ID */
+    /* Select a Work Unit by its Work Unit ID */
     public ClientsStructuralMaps getWorkUnitByWUID(String wuid) {
         try {
             Integer workunitid = Integer.parseInt(wuid);
@@ -39,26 +40,50 @@ public class ClientStructuralMapsRepository {
         } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
-    /* Select work units by level */
+    /* Select Work Units by Level */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByLevel(String level) {
         String query = "SELECT * FROM client_structural_maps WHERE ? IN (wu_level_zero, wu_level_one, " +
                 "wu_level_two, wu_level_three, wu_level_four, wu_level_five)";
         return this.jdbcTemplate.query( query, wuMapper, level);
     }
 
-    /* Select work units by thier Cohort */
+    /* Select Work Units by their Cohort */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByCohort(String wucohort) {
         String query = "SELECT * FROM client_structural_maps WHERE cohort = ?";
         return this.jdbcTemplate.query( query, wuMapper, wucohort);
     }
 
-    /* Select work units by thier Cohort */
+    /* Select Work Units by their Matrix */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByMatrix(String matrix) {
         String query = "SELECT * FROM client_structural_maps WHERE ? IN (matrix_one, matrix_two, matrix_three, matrix_four, matrix_five)";
         return this.jdbcTemplate.query( query, wuMapper, matrix);
     }
 
-    /* Create a work unit */
+    /* Select Work Units by their Niche */
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByNiche(String niche) {
+        String query = "SELECT * FROM client_structural_maps WHERE niche = ?";
+        return this.jdbcTemplate.query( query, wuMapper, niche);
+    }
+
+    /* Select Work Units by their Sector */
+    public List<ClientsStructuralMaps> getClientsStructuralMapsBySector(String sector) {
+        String query = "SELECT * FROM client_structural_maps WHERE sector = ?";
+        return this.jdbcTemplate.query( query, wuMapper, sector);
+    }
+
+    /* Select Work Units by their Location */
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByLocation(String location) {
+        String query = "SELECT * FROM client_structural_maps WHERE location = ?";
+        return this.jdbcTemplate.query( query, wuMapper, location);
+    }
+
+    /* Select Work Units by their Client ID */
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByClientID(String client_id) {
+        String query = "SELECT * FROM client_structural_maps WHERE client_id = ?";
+        return this.jdbcTemplate.query( query, wuMapper, client_id);
+    }
+
+    /* Create a Work Units */
     public void create(String cohort, String location, String niche, String matrixone, String matrixtwo,
                        String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
                        String sector, String wu_level_five, String wu_level_four, String wu_level_one,

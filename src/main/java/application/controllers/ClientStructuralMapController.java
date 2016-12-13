@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
 @RestController
 @RequestMapping("cwu")
@@ -13,6 +14,66 @@ public class ClientStructuralMapController {
 
     @Autowired
     ClientStructuralMapsRepository clientStructuralMapsRepository;
+
+    /* Select a Work Unit by its Name */
+    @RequestMapping(value = "gname", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByName(@RequestParam("name") String wu_name) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByName(wu_name);
+    }
+
+    /* Select a Work Unit by its Work Unit ID */
+    @RequestMapping(value = "gwui", produces = "application/json")
+    public ClientsStructuralMaps getClientStructuralMapsByWUID(@RequestParam("id") String wu_id) {
+        return this.clientStructuralMapsRepository.getWorkUnitByWUID(wu_id);
+    }
+
+    /* Select a Work Unit by its database ID */
+    @RequestMapping(value = "gdb", produces = "application/json")
+    public ClientsStructuralMaps getClientStructuralMapsByDBID(@RequestParam("id") String db_id) {
+        return this.clientStructuralMapsRepository.getWorkUnitByDBID(db_id);
+    }
+
+    /* Select a Work Unit by its Level */
+    @RequestMapping(value = "glvl", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByLevel(@RequestParam("name") String level) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByLevel(level);
+    }
+
+    /* Select a Work Unit by its Matrix */
+    @RequestMapping(value = "gmtx", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByMatrix(@RequestParam("name") String matrix) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByMatrix(matrix);
+    }
+
+    /* Select a Work Unit by its Location */
+    @RequestMapping(value = "gloc", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByLocation(@RequestParam("name") String location) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByLocation(location);
+    }
+
+    /* Select a Work Unit by its Cohort */
+    @RequestMapping(value = "gcohort", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByCohort(@RequestParam("name") String cohort) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByCohort(cohort);
+    }
+
+    /* Select a Work Unit by its Niche */
+    @RequestMapping(value = "gniche", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByNiche(@RequestParam("name") String niche) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByNiche(niche);
+    }
+
+    /* Select a Work Unit by its Sector */
+    @RequestMapping(value = "gsector", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsBySector(@RequestParam("name") String sector) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsBySector(sector);
+    }
+
+    /* Select Work Units by their Client ID */
+    @RequestMapping(value = "gclient", produces = "application/json")
+    public List<ClientsStructuralMaps> getClientStructuralMapsByClientID(@RequestParam("id") String client_id) {
+        return this.clientStructuralMapsRepository.getClientsStructuralMapsByClientID(client_id);
+    }
 
     @RequestMapping(value = "create", produces = "application/json")
     public void create(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
@@ -27,10 +88,5 @@ public class ClientStructuralMapController {
         this.clientStructuralMapsRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
                 matrixfour, matrixfive, wu_name, wu_id, sector, wu_level_five, wu_level_four, wu_level_one, wu_level_three,
                 wu_level_two, wu_level_zero, client_id);
-    }
-
-    @RequestMapping(value = "gwuid", produces = "application/json")
-    public ClientsStructuralMaps getByWUID(@RequestParam("id") String wu_id) {
-        return this.clientStructuralMapsRepository.getWorkUnitByWUID(wu_id);
     }
 }
