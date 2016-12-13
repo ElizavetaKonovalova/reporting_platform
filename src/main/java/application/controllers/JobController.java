@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("job")
-public class JobsController {
+public class JobController {
 
     @Autowired
     JobRepository jobRepository;
@@ -62,7 +62,7 @@ public class JobsController {
                           @RequestParam("cstart") String censusstart, @RequestParam("cend") String censusend,
                           @RequestParam("pdate") String presentationdate, @RequestParam("rrate") String responserate,
                           @RequestParam("lin") String loggedin, @RequestParam("ssize") String samplesize,
-                          @RequestParam("status") Boolean status, @RequestParam("stype") String subtypeid) throws SQLException, ParseException {
+                          @RequestParam("status") Boolean status, @RequestParam("stype") String subtypeid) throws Exception {
 
         Jobs checkjob = this.jobRepository.getJobByCode(jobcode);
         if(checkjob.getJOB_CODE() != null) {

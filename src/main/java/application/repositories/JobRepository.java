@@ -16,37 +16,33 @@ public class JobRepository  {
     protected JdbcTemplate jdbcTemplate;
 
     /*Select a job by Job Code */
-    public Jobs getJobByCode(String jobcode){
+    public Jobs getJobByCode(String jobcode) {
         String query = "SELECT * FROM jobs WHERE job_code = ?";
-        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase()); }
-        catch (Exception e) { return new Jobs(); }
+        return this.jdbcTemplate.queryForObject( query, jobMapper, jobcode.toLowerCase());
     }
 
     /* Select a job by ID in the database */
-    public Jobs getJobByID(Long jobid){
+    public Jobs getJobByID(Long jobid) {
         String query = "SELECT * FROM jobs WHERE job_id= ?";
-        try { return this.jdbcTemplate.queryForObject( query, jobMapper, jobid); }
-        catch (Exception e) { return new Jobs(); }
+        return this.jdbcTemplate.queryForObject( query, jobMapper, jobid);
     }
 
     /* Select all jobs with a specified name */
-    public List<Jobs> getJobsByName(String jobname){
+    public List<Jobs> getJobsByName(String jobname) {
         String query = "SELECT * FROM jobs WHERE job_name = ?";
-        try { return this.jdbcTemplate.query( query, jobMapper, jobname);}
-        catch(Exception e) { return new ArrayList<>();}
+        return this.jdbcTemplate.query( query, jobMapper, jobname);
     }
 
     /* Select all jobs with a specified client id */
-    public List<Jobs> getJobsByClientID(Long clientid){
+    public List<Jobs> getJobsByClientID(Long clientid) {
         String query = "SELECT * FROM jobs WHERE client_id = ?";
-        try { return this.jdbcTemplate.query( query, jobMapper, clientid);}
-        catch(Exception e) { return new ArrayList<>();}
+        return this.jdbcTemplate.query( query, jobMapper, clientid);
     }
 
     /* Create a new job in the database */
     public void createJob(String jobcode, String jobname, String clientid, String deliverydate, String deliverytype, String censusstart,
                           String censusend, String presentationdate, String responserate, String loggedin, String samplesize, Boolean status,
-                          String surveysubtype) throws SQLException, ParseException {
+                          String surveysubtype) throws Exception {
 
         /* Make a default date format */
         SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
@@ -91,8 +87,7 @@ public class JobRepository  {
     }
 
     /*Delete a job by ID in the database*/
-    public void removeJobByID(Long jobid) {
-        this.jdbcTemplate.update("DELETE FROM jobs WHERE job_id = " + jobid);
+    public void removeJobByID(Long jobid) { this.jdbcTemplate.update("DELETE FROM jobs WHERE job_id = " + jobid);
     }
 
     /*Delete a job by ID in the database*/

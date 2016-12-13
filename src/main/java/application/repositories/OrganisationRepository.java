@@ -1,5 +1,6 @@
 package application.repositories;
 import application.models.Organisations;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,26 +18,20 @@ public class OrganisationRepository {
     /* Select an organisation based on its ORGName */
     public Organisations getOrgByOrgName(String orgname) {
         String query = "SELECT * FROM clients WHERE org_name = ?";
-        try {
-            return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
-        } catch (Exception e) { return new Organisations(); }
+        return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
     }
 
     /* Select an organisation based on its Name */
     public Organisations getOrgByClientName(String clientname) {
         String query = "SELECT * FROM clients WHERE client_name = ?";
-        try {
-            return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
-        } catch (Exception e) { return new Organisations(); }
+        return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
     }
 
     /* Select an organisation based on its Location*/
     public Organisations getOrgByClientID(String clientid) {
         Long id = Long.parseLong(clientid);
         String query = "SELECT * FROM clients WHERE client_id = ?";
-        try {
-            return this.jdbcTemplate.queryForObject( query, orgMapper, id);
-        } catch (Exception e) { return new Organisations(); }
+        return this.jdbcTemplate.queryForObject( query, orgMapper, id);
     }
 
     /* Create an organisation */

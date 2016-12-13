@@ -10,7 +10,9 @@ import java.util.UUID;
         name = "numbdataIndex")})
 public class NumberData {
 
-    @Id @Type(type = "pg-uuid")
+    @Id
+    @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
 
     @Column(name ="number_field_id", nullable = false, insertable = false,

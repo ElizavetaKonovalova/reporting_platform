@@ -14,7 +14,13 @@ public class Import {
 
             }
 
-            if(filepath.contains("Text")) {}
+            if(filepath.contains("Text")) {
+
+            }
+
+            if(filepath.contains("Demo")) {
+
+            }
 
         } catch (Exception e) {
             System.out.println(e);

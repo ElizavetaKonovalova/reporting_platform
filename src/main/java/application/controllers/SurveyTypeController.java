@@ -1,7 +1,7 @@
 package application.controllers;
 
 import application.models.SurveyTypes;
-import application.repositories.SurveyTypesRepository;
+import application.repositories.SurveyTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SurveyTypeController {
 
     @Autowired
-    SurveyTypesRepository surveyTypeRepository;
+    SurveyTypeRepository surveyTypeRepository;
 
     /* Select a surveysubtype by its ID */
     @RequestMapping(value = "gid", produces = "application/json")

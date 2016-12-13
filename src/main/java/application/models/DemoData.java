@@ -11,7 +11,9 @@ import java.util.UUID;
 @Table(name = "demo_data", indexes = {@Index(name = "demoIndex", columnList = "demo_field_id")})
 public class DemoData {
 
-    @Id @Type(type = "pg-uuid")
+    @Id
+    @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
 
     @Column(name ="demo_field_id", nullable = false, insertable = false,

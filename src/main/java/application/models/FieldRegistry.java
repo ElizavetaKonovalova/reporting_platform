@@ -46,4 +46,32 @@ public class FieldRegistry {
 
     @OneToMany(mappedBy = "REGISRTY", targetEntity = DemoData.class)
     private List<DemoData> DEMO_RESPONSES;
+
+    /* Simple getters */
+    public UUID getFIELD_ID() { return this.FIELD_ID; }
+    public Long getPROGRAM_MOD_ID() { return this.PROGRAM_MOD_ID; }
+    public String getFIELD_NAME() { return this.FIELD_NAME; }
+    public char getTYPE() { return this.TYPE; }
+    public String getFIELD_DESCRIPTION_ONE() { return this.FIELD_DESCRIPTION_ONE; }
+    public String getFIELD_DESCRIPTION_TWO() { return this.FIELD_DESCRIPTION_TWO; }
+    public String getFIELD_DESCRIPTION_THREE() { return this.FIELD_DESCRIPTION_THREE; }
+    public Programs getPROGRAM() { return this.PROGRAM; }
+    public Long getPROGRAMID() { return this.PROGRAM.getDB_ID(); }
+    public List<TextData> getTEXT_RESPONSES() { return this.TEXT_RESPONSES; }
+    public List<NumberData> getNUMBER_RESPONSES() { return this.NUMBER_RESPONSES; }
+    public List<DemoData> getDEMO_RESPONSES() { return this.DEMO_RESPONSES; }
+
+    /* Simple setters */
+    public void setFIELD_ID(UUID field_id) { this.FIELD_ID = field_id; }
+    public void setPROGRAM_MOD_ID(Long program_mod_id) {this.PROGRAM_MOD_ID = program_mod_id; }
+    public void setFIELD_NAME(String field_name) { this.FIELD_NAME = field_name; }
+    public void setTYPE(String type) {this.TYPE = type.charAt(0); }
+    public void setFIELD_DESCRIPTION_ONE(String field_description_one) { this.FIELD_DESCRIPTION_ONE = field_description_one; }
+    public void setFIELD_DESCRIPTION_TWO(String field_description_two) { this.FIELD_DESCRIPTION_TWO = field_description_two; }
+    public void setFIELD_DESCRIPTION_THREE(String field_description_three) { this.FIELD_DESCRIPTION_THREE = field_description_three; }
+    public void setPROGRAMID(Long programid) { this.PROGRAM.setDB_ID(programid); }
+    public void setPROGRAM(Programs program) { this.PROGRAM = program; }
+    public void setTEXT_RESPONSES(TextData text_responses) { this.TEXT_RESPONSES.add(text_responses); }
+    public void setNUMBER_RESPONSES(NumberData number_responses) { this.NUMBER_RESPONSES.add(number_responses); }
+    public void setDEMO_RESPONSES(DemoData demo_responses) { this.DEMO_RESPONSES.add(demo_responses); }
 }

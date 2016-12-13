@@ -28,10 +28,13 @@ public class Participants {
     @Column(insertable = false, updatable = false)
     private Long WU_CODE;
 
+    @Column(insertable = false, updatable = false)
+    private Long JOB_ID;
+
     private Date DATE_MODIFIED;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="job_id", insertable = false, updatable = false)
+    @JoinColumn(name="job_id", referencedColumnName = "job_id", insertable = false, updatable = false)
     private Jobs JOB;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY,
@@ -39,7 +42,7 @@ public class Participants {
     @JoinColumn(name = "WU_CODE", referencedColumnName = "WU_CODE", nullable = false)
     private JobStructuralMaps WU_FOR_PARTICIPANT;
 
-    @OneToMany(mappedBy = "PARTICIPANT_ID", fetch = FetchType.LAZY, targetEntity = TextData.class)
+    @OneToMany(mappedBy = "PARTICIPANTS", fetch = FetchType.LAZY, targetEntity = TextData.class)
     private List<TextData> TEXT_RESPONSES;
 
     @OneToMany(mappedBy = "PARTICIPANT_ID", targetEntity = NumberData.class)
@@ -47,7 +50,8 @@ public class Participants {
 
     /* Simple getters */
     public Long getPARTICIPANT_ID() { return this.PARTICIPANT_ID; }
-    public Jobs getJOB() { return this.JOB; }
+    public Jobs getJOBS() { return this.JOB; }
+    public Long getJOB_ID() { return this.JOB_ID; }
     public List<TextData> getTEXT_RESPONSES() { return this.TEXT_RESPONSES; }
     public List<NumberData> getNUMBER_RESPONSES() { return this.NUMBER_RESPONSES; }
     public String getPARTICIPANT_NAME() { return this.PARTICIPANT_NAME; }
@@ -55,10 +59,12 @@ public class Participants {
     public String getPASSWORD() { return this.PASSWORD; }
     public char getSTATUS() { return this.STATUS; }
     public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
+    public Long getWU_CODE() { return this.WU_CODE; }
 
     /* Simple setters */
     public void setPARTICIPANT_ID( Long participant_id ) { this.PARTICIPANT_ID = participant_id; }
-    public void setJOB( Jobs job ) { this.JOB = job; }
+    public void setJOBS( Jobs job ) { this.JOB = job; }
+    public void setJOB_ID(Long job_id) { this.JOB_ID = job_id; }
     public void setTEXT_RESPONSES( TextData text_responses ) { this.TEXT_RESPONSES.add(text_responses);}
     public void setNUMBER_RESPONSES( NumberData number_responses ) { this.NUMBER_RESPONSES.add(number_responses);}
     public void setPARTICIPANT_NAME( String participant_name ) { this.PARTICIPANT_NAME = participant_name;}
@@ -66,4 +72,5 @@ public class Participants {
     public void setPASSWORD( String password ) { this.PASSWORD = password;}
     public void setSTATUS( char status ) { this.STATUS = status;}
     public void setDATE_MODIFIED( Date date_modified ) { this.DATE_MODIFIED = date_modified;}
+    public void setWU_CODE(Long wu_code) { this.WU_CODE = wu_code; }
 }
