@@ -158,6 +158,41 @@ public class ClientStructuralMapController {
         this.clientStructuralMapsRepository.removeMatrixFive(matrix);
     }
 
+    /* Remove Level Zero by its Name */
+    @RequestMapping(value = "rlvl0", produces = "application/json")
+    public void removeLevelZero(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelZero(level);
+    }
+
+    /* Remove Level One by its Name */
+    @RequestMapping(value = "rlvl1", produces = "application/json")
+    public void removeLevelOne(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelOne(level);
+    }
+
+    /* Remove Level Two by its Name */
+    @RequestMapping(value = "rlvl2", produces = "application/json")
+    public void removeLevelTwo(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelTwo(level);
+    }
+
+    /* Remove Level Three by its Name */
+    @RequestMapping(value = "rlvl3", produces = "application/json")
+    public void removeLevelThree(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelThree(level);
+    }
+
+    /* Remove Level Two by its Name */
+    @RequestMapping(value = "rlvl4", produces = "application/json")
+    public void removeLevelFour(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelFour(level);
+    }
+
+    /* Remove Level Two by its Name */
+    @RequestMapping(value = "rlvl5", produces = "application/json")
+    public void removeLevelFive(@RequestParam("name") String level) {
+        this.clientStructuralMapsRepository.removeLevelFive(level);
+    }
 
 
     /* CREATORS */

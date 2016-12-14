@@ -164,6 +164,42 @@ public class ClientStructuralMapsRepository {
         this.jdbcTemplate.update(query, matrix);
     }
 
+    /* Remove Level Zero by its Name */
+    public void removeLevelZero(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_zero = ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Level One by its Name */
+    public void removeLevelOne(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_one = ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Level Two by its Name */
+    public void removeLevelTwo(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_two = ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Level Three by its Name */
+    public void removeLevelThree(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_three = ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Level Four by its Name */
+    public void removeLevelFour(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_four= ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Level Five by its Name */
+    public void removeLevelFive(String level) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_level_five = ?";
+        this.jdbcTemplate.update(query, level);
+    }
+
 
 
     /* Create a Work Unit */
