@@ -134,6 +134,38 @@ public class ClientStructuralMapsRepository {
         this.jdbcTemplate.update(query, niche);
     }
 
+    /* Remove Matrix One by its Name */
+    public void removeMatrixOne(String matrix_one) {
+        String query = "DELETE FROM client_structural_maps WHERE matrix_one = ?";
+        this.jdbcTemplate.update(query, matrix_one);
+    }
+
+    /* Remove Matrix Two by its Name */
+    public void removeMatrixTwo(String matrix_two) {
+        String query = "DELETE FROM client_structural_maps WHERE matrix_two = ?";
+        this.jdbcTemplate.update(query, matrix_two);
+    }
+
+    /* Remove Matrix Three by its Name */
+    public void removeMatrixThree(String matrix) {
+        String query = "DELETE FROM client_structural_maps WHERE matrix_three = ?";
+        this.jdbcTemplate.update(query, matrix);
+    }
+
+    /* Remove Matrix Four by its Name */
+    public void removeMatrixFour(String matrix) {
+        String query = "DELETE FROM client_structural_maps WHERE matrix_four = ?";
+        this.jdbcTemplate.update(query, matrix);
+    }
+
+    /* Remove Matrix Five by its Name */
+    public void removeMatrixFive(String matrix) {
+        String query = "DELETE FROM client_structural_maps WHERE matrix_five = ?";
+        this.jdbcTemplate.update(query, matrix);
+    }
+
+
+
     /* Create a Work Unit */
     public void create(String cohort, String location, String niche, String matrixone, String matrixtwo,
                        String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,

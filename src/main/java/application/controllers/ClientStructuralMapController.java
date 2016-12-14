@@ -128,6 +128,36 @@ public class ClientStructuralMapController {
         this.clientStructuralMapsRepository.removeWUByNiche(niche);
     }
 
+    /* Remove Matrix One by its Name */
+    @RequestMapping(value = "rmtx1", produces = "application/json")
+    public void removeMatrixOne(@RequestParam("name") String matrix_one) {
+        this.clientStructuralMapsRepository.removeMatrixOne(matrix_one);
+    }
+
+    /* Remove Matrix Two by its Name */
+    @RequestMapping(value = "rmtx2", produces = "application/json")
+    public void removeMatrixTwo(@RequestParam("name") String matrix_two) {
+        this.clientStructuralMapsRepository.removeMatrixTwo(matrix_two);
+    }
+
+    /* Remove Matrix Three by its Name */
+    @RequestMapping(value = "rmtx3", produces = "application/json")
+    public void removeMatrixThree(@RequestParam("name") String matrix_three) {
+        this.clientStructuralMapsRepository.removeMatrixThree(matrix_three);
+    }
+
+    /* Remove Matrix Four by its Name */
+    @RequestMapping(value = "rmtx4", produces = "application/json")
+    public void removeMatrixFour(@RequestParam("name") String matrix) {
+        this.clientStructuralMapsRepository.removeMatrixFour(matrix);
+    }
+
+    /* Remove Matrix Five by its Name */
+    @RequestMapping(value = "rmtx4", produces = "application/json")
+    public void removeMatrixFive(@RequestParam("name") String matrix) {
+        this.clientStructuralMapsRepository.removeMatrixFive(matrix);
+    }
+
 
 
     /* CREATORS */
