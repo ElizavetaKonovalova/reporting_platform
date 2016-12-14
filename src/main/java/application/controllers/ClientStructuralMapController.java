@@ -15,6 +15,8 @@ public class ClientStructuralMapController {
     @Autowired
     ClientStructuralMapsRepository clientStructuralMapsRepository;
 
+    /* GETTERS */
+
     /* Select a Work Unit by its Name */
     @RequestMapping(value = "gname", produces = "application/json")
     public List<ClientsStructuralMaps> getClientStructuralMapsByName(@RequestParam("name") String wu_name) {
@@ -75,6 +77,60 @@ public class ClientStructuralMapController {
         return this.clientStructuralMapsRepository.getClientsStructuralMapsByClientID(client_id);
     }
 
+
+    /* REMOVALS */
+
+    /* Remove Work Units by their Name */
+    @RequestMapping(value = "rwun", produces = "application/json")
+    public void removeWUByName(@RequestParam("name") String wu_name) {
+        this.clientStructuralMapsRepository.removeWUByName(wu_name);
+    }
+
+    /* Remove Work Units by their Work Unit ID */
+    @RequestMapping(value = "rwui", produces = "application/json")
+    public void removeWUByWUID(@RequestParam("id") String wu_id) {
+        this.clientStructuralMapsRepository.removeWUByWUID(wu_id);
+    }
+
+    /* Remove Work Units by their database ID */
+    @RequestMapping(value = "rdb", produces = "application/json")
+    public void removeWUByDBID(@RequestParam("id") String db_id) {
+        this.clientStructuralMapsRepository.removeWUByDBID(db_id);
+    }
+
+    /* Remove Work Units by their Client ID */
+    @RequestMapping(value = "rclient", produces = "application/json")
+    public void removeWUByClientID(@RequestParam("id") String client_id) {
+        this.clientStructuralMapsRepository.removeWUByClientID(client_id);
+    }
+
+    /* Remove Work Units by their Location */
+    @RequestMapping(value = "rloc", produces = "application/json")
+    public void removeWUByLocation(@RequestParam("name") String location) {
+        this.clientStructuralMapsRepository.removeWUByLocation(location);
+    }
+
+    /* Remove Work Units by their Cohort */
+    @RequestMapping(value = "rcohort", produces = "application/json")
+    public void removeWUByCohort(@RequestParam("name") String cohort) {
+        this.clientStructuralMapsRepository.removeWUByCohort(cohort);
+    }
+
+    /* Remove Work Units by their Sector */
+    @RequestMapping(value = "rsector", produces = "application/json")
+    public void removeWUBySector(@RequestParam("name") String sector) {
+        this.clientStructuralMapsRepository.removeWUBySector(sector);
+    }
+
+    /* Remove Work Units by their Niche */
+    @RequestMapping(value = "rsector", produces = "application/json")
+    public void removeWUByNiche(@RequestParam("name") String niche) {
+        this.clientStructuralMapsRepository.removeWUByNiche(niche);
+    }
+
+
+
+    /* CREATORS */
     @RequestMapping(value = "create", produces = "application/json")
     public void create(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
                        @RequestParam("m1") String matrixone, @RequestParam("m2") String matrixtwo,

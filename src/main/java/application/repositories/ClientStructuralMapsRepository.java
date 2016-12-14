@@ -83,7 +83,58 @@ public class ClientStructuralMapsRepository {
         return this.jdbcTemplate.query( query, wuMapper, client_id);
     }
 
-    /* Create a Work Units */
+    /* Remove Work Units by Name */
+    public void removeWUByName(String wu_name) {
+        String query = "DELETE FROM client_structural_maps WHERE wu_name = ?";
+        this.jdbcTemplate.update(query, wu_name);
+    }
+
+    /* Remove Work Units by Work Unit ID */
+    public void removeWUByWUID(String wu_id) {
+        Integer wu_id_int = Integer.parseInt(wu_id);
+        String query = "DELETE FROM client_structural_maps WHERE wu_id = ?";
+        this.jdbcTemplate.update(query, wu_id);
+    }
+
+    /* Remove Work Units by database ID */
+    public void removeWUByDBID(String db_id) {
+        Long db_id_long = Long.parseLong(db_id);
+        String query = "DELETE FROM client_structural_maps WHERE db_id = ?";
+        this.jdbcTemplate.update(query, db_id_long);
+    }
+
+    /* Remove Work Units by Client ID */
+    public void removeWUByClientID(String client_id) {
+        Integer client_id_int = Integer.parseInt(client_id);
+        String query = "DELETE FROM client_structural_maps WHERE client_id = ?";
+        this.jdbcTemplate.update(query, client_id_int);
+    }
+
+    /* Remove Work Units by Location */
+    public void removeWUByLocation(String location) {
+        String query = "DELETE FROM client_structural_maps WHERE location = ?";
+        this.jdbcTemplate.update(query, location);
+    }
+
+    /* Remove Work Units by Cohort */
+    public void removeWUByCohort(String cohort) {
+        String query = "DELETE FROM client_structural_maps WHERE cohort = ?";
+        this.jdbcTemplate.update(query, cohort);
+    }
+
+    /* Remove Work Units by Sector */
+    public void removeWUBySector(String sector) {
+        String query = "DELETE FROM client_structural_maps WHERE sector = ?";
+        this.jdbcTemplate.update(query, sector);
+    }
+
+    /* Remove Work Units by Niche */
+    public void removeWUByNiche(String niche) {
+        String query = "DELETE FROM client_structural_maps WHERE niche = ?";
+        this.jdbcTemplate.update(query, niche);
+    }
+
+    /* Create a Work Unit */
     public void create(String cohort, String location, String niche, String matrixone, String matrixtwo,
                        String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
                        String sector, String wu_level_five, String wu_level_four, String wu_level_one,
