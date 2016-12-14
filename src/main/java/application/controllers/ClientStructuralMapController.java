@@ -99,100 +99,125 @@ public class ClientStructuralMapController {
     }
 
     /* Remove Work Units by their Client ID */
-    @RequestMapping(value = "rclient", produces = "application/json")
+    @RequestMapping(value = "rwuclient", produces = "application/json")
     public void removeWUByClientID(@RequestParam("id") String client_id) {
         this.clientStructuralMapsRepository.removeWUByClientID(client_id);
     }
 
     /* Remove Work Units by their Location */
-    @RequestMapping(value = "rloc", produces = "application/json")
+    @RequestMapping(value = "rwuloc", produces = "application/json")
     public void removeWUByLocation(@RequestParam("name") String location) {
         this.clientStructuralMapsRepository.removeWUByLocation(location);
     }
 
     /* Remove Work Units by their Cohort */
-    @RequestMapping(value = "rcohort", produces = "application/json")
+    @RequestMapping(value = "rwucohort", produces = "application/json")
     public void removeWUByCohort(@RequestParam("name") String cohort) {
         this.clientStructuralMapsRepository.removeWUByCohort(cohort);
     }
 
     /* Remove Work Units by their Sector */
-    @RequestMapping(value = "rsector", produces = "application/json")
+    @RequestMapping(value = "rwusector", produces = "application/json")
     public void removeWUBySector(@RequestParam("name") String sector) {
         this.clientStructuralMapsRepository.removeWUBySector(sector);
     }
 
     /* Remove Work Units by their Niche */
-    @RequestMapping(value = "rsector", produces = "application/json")
+    @RequestMapping(value = "rwuniche", produces = "application/json")
     public void removeWUByNiche(@RequestParam("name") String niche) {
         this.clientStructuralMapsRepository.removeWUByNiche(niche);
     }
 
     /* Remove Matrix One by its Name */
-    @RequestMapping(value = "rmtx1", produces = "application/json")
+    @RequestMapping(value = "rwumtx1", produces = "application/json")
     public void removeMatrixOne(@RequestParam("name") String matrix_one) {
         this.clientStructuralMapsRepository.removeMatrixOne(matrix_one);
     }
 
     /* Remove Matrix Two by its Name */
-    @RequestMapping(value = "rmtx2", produces = "application/json")
+    @RequestMapping(value = "rwumtx2", produces = "application/json")
     public void removeMatrixTwo(@RequestParam("name") String matrix_two) {
         this.clientStructuralMapsRepository.removeMatrixTwo(matrix_two);
     }
 
     /* Remove Matrix Three by its Name */
-    @RequestMapping(value = "rmtx3", produces = "application/json")
+    @RequestMapping(value = "rwumtx3", produces = "application/json")
     public void removeMatrixThree(@RequestParam("name") String matrix_three) {
         this.clientStructuralMapsRepository.removeMatrixThree(matrix_three);
     }
 
     /* Remove Matrix Four by its Name */
-    @RequestMapping(value = "rmtx4", produces = "application/json")
+    @RequestMapping(value = "rwumtx4", produces = "application/json")
     public void removeMatrixFour(@RequestParam("name") String matrix) {
         this.clientStructuralMapsRepository.removeMatrixFour(matrix);
     }
 
     /* Remove Matrix Five by its Name */
-    @RequestMapping(value = "rmtx4", produces = "application/json")
+    @RequestMapping(value = "rwumtx4", produces = "application/json")
     public void removeMatrixFive(@RequestParam("name") String matrix) {
         this.clientStructuralMapsRepository.removeMatrixFive(matrix);
     }
 
     /* Remove Level Zero by its Name */
-    @RequestMapping(value = "rlvl0", produces = "application/json")
+    @RequestMapping(value = "rwulvl0", produces = "application/json")
     public void removeLevelZero(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelZero(level);
     }
 
     /* Remove Level One by its Name */
-    @RequestMapping(value = "rlvl1", produces = "application/json")
+    @RequestMapping(value = "rwulvl1", produces = "application/json")
     public void removeLevelOne(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelOne(level);
     }
 
     /* Remove Level Two by its Name */
-    @RequestMapping(value = "rlvl2", produces = "application/json")
+    @RequestMapping(value = "rwulvl2", produces = "application/json")
     public void removeLevelTwo(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelTwo(level);
     }
 
     /* Remove Level Three by its Name */
-    @RequestMapping(value = "rlvl3", produces = "application/json")
+    @RequestMapping(value = "rwulvl3", produces = "application/json")
     public void removeLevelThree(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelThree(level);
     }
 
     /* Remove Level Two by its Name */
-    @RequestMapping(value = "rlvl4", produces = "application/json")
+    @RequestMapping(value = "rwulvl4", produces = "application/json")
     public void removeLevelFour(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelFour(level);
     }
 
     /* Remove Level Two by its Name */
-    @RequestMapping(value = "rlvl5", produces = "application/json")
+    @RequestMapping(value = "rwulvl5", produces = "application/json")
     public void removeLevelFive(@RequestParam("name") String level) {
         this.clientStructuralMapsRepository.removeLevelFive(level);
     }
+
+    /* Remove Niche */
+    @RequestMapping(value = "rniche", produces = "application/json")
+    public void removeNiche(@RequestParam("name") String niche) {
+        this.clientStructuralMapsRepository.removeNiche(niche);
+    }
+
+    /* Remove Cohort */
+    @RequestMapping(value = "rcohort", produces = "application/json")
+    public void removeCohort(@RequestParam("name") String cohort) {
+        this.clientStructuralMapsRepository.removeCohort(cohort);
+    }
+
+    /* Remove Sector */
+    @RequestMapping(value = "rsector", produces = "application/json")
+    public void removeSector(@RequestParam("name") String sector) {
+        this.clientStructuralMapsRepository.removeSector(sector);
+    }
+
+    /* Remove Location */
+    @RequestMapping(value = "rloc", produces = "application/json")
+    public void removeLocation(@RequestParam("name") String location) {
+        this.clientStructuralMapsRepository.removeLocation(location);
+    }
+
 
 
     /* CREATORS */

@@ -134,70 +134,94 @@ public class ClientStructuralMapsRepository {
         this.jdbcTemplate.update(query, niche);
     }
 
+    /* Remove Niche */
+    public void removeNiche(String niche) {
+        String query = "UPDATE client_structural_maps SET niche = NULL WHERE niche = ?";
+        this.jdbcTemplate.update(query, niche);
+    }
+
     /* Remove Matrix One by its Name */
     public void removeMatrixOne(String matrix_one) {
-        String query = "DELETE FROM client_structural_maps WHERE matrix_one = ?";
+        String query = "UPDATE client_structural_maps SET matrix_one = NULL WHERE matrix_one = ?";
         this.jdbcTemplate.update(query, matrix_one);
     }
 
     /* Remove Matrix Two by its Name */
     public void removeMatrixTwo(String matrix_two) {
-        String query = "DELETE FROM client_structural_maps WHERE matrix_two = ?";
+        String query = "UPDATE client_structural_maps SET matrix_two = NULL WHERE matrix_two = ?";
         this.jdbcTemplate.update(query, matrix_two);
     }
 
     /* Remove Matrix Three by its Name */
     public void removeMatrixThree(String matrix) {
-        String query = "DELETE FROM client_structural_maps WHERE matrix_three = ?";
+        String query = "UPDATE client_structural_maps SET matrix_three = NULL WHERE matrix_three = ?";
         this.jdbcTemplate.update(query, matrix);
     }
 
     /* Remove Matrix Four by its Name */
     public void removeMatrixFour(String matrix) {
-        String query = "DELETE FROM client_structural_maps WHERE matrix_four = ?";
+        String query = "UPDATE client_structural_maps SET matrix_four = NULL WHERE matrix_four = ?";
         this.jdbcTemplate.update(query, matrix);
     }
 
     /* Remove Matrix Five by its Name */
     public void removeMatrixFive(String matrix) {
-        String query = "DELETE FROM client_structural_maps WHERE matrix_five = ?";
+        String query = "UPDATE client_structural_maps SET matrix_five = NULL WHERE matrix_five = ?";
         this.jdbcTemplate.update(query, matrix);
     }
 
     /* Remove Level Zero by its Name */
     public void removeLevelZero(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_zero = ?";
+        String query = "UPDATE client_structural_maps SET wu_level_zero = NULL WHERE wu_level_zero = ?";
         this.jdbcTemplate.update(query, level);
     }
 
     /* Remove Level One by its Name */
     public void removeLevelOne(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_one = ?";
+        String query = "UPDATE client_structural_maps SET wu_level_one = NULL WHERE wu_level_one = ?";
         this.jdbcTemplate.update(query, level);
     }
 
     /* Remove Level Two by its Name */
     public void removeLevelTwo(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_two = ?";
+        String query = "UPDATE client_structural_maps SET wu_level_two = NULL WHERE wu_level_two = ?";
         this.jdbcTemplate.update(query, level);
     }
 
     /* Remove Level Three by its Name */
     public void removeLevelThree(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_three = ?";
+        String query = "UPDATE client_structural_maps SET wu_level_three = NULL WHERE wu_level_three = ?";
         this.jdbcTemplate.update(query, level);
     }
 
     /* Remove Level Four by its Name */
     public void removeLevelFour(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_four= ?";
+        String query = "UPDATE client_structural_maps SET wu_level_four = NULL WHERE wu_level_four= ?";
         this.jdbcTemplate.update(query, level);
     }
 
     /* Remove Level Five by its Name */
     public void removeLevelFive(String level) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_level_five = ?";
+        String query = "UPDATE client_structural_maps SET wu_level_five = NULL WHERE wu_level_five = ?";
         this.jdbcTemplate.update(query, level);
+    }
+
+    /* Remove Cohort */
+    public void removeCohort(String cohort) {
+        String query = "UPDATE client_structural_maps SET cohort = NULL WHERE cohort = ?";
+        this.jdbcTemplate.update(query, cohort);
+    }
+
+    /* Remove Sector */
+    public void removeSector(String sector) {
+        String query = "UPDATE client_structural_maps SET sector = NULL WHERE sector = ?";
+        this.jdbcTemplate.update(query, sector);
+    }
+
+    /* Remove Location */
+    public void removeLocation(String location) {
+        String query = "UPDATE client_structural_maps SET location = NULL WHERE location = ?";
+        this.jdbcTemplate.update(query, location);
     }
 
 
