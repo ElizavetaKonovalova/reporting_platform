@@ -31,7 +31,8 @@ public class TextDataRepository {
         UUID field_uuid = isTextFieldUUIDExist(field_name);
         if(!field_uuid.toString().equals("0")) {
             String info_query = "SELECT * FROM text_data WHERE text_field_id = ?";
-            return this.jdbcTemplate.query(info_query, textDataRowMapper, field_uuid);
+            List<TextData> result = this.jdbcTemplate.query(info_query, textDataRowMapper, field_uuid);
+            if(!result.isEmpty()) { return result; } else { return new ArrayList<>(); }
         } else { return new ArrayList<>(); }
     }
 
@@ -89,12 +90,14 @@ public class TextDataRepository {
         if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
     }
 
-    /* Find results based on its database ID */
+    /* Find results based on Participant Email */
     public List<TextData> getDataByParticipantEmail(String participant_email) {
         Long participant_id = isParticipantIDExist(participant_email);
-        String query = "SELECT * FROM text_data WHERE participant_id = ?";
-        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
-        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+        if(participant_id != 0) {
+            String query = "SELECT * FROM text_data WHERE participant_id = ?";
+            List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
+            if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+        } else { return new ArrayList<>(); }
     }
 
 
@@ -185,6 +188,26 @@ public class TextDataRepository {
             String query = "DELETE FROM text_data WHERE text_field_id = ?";
             this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
         } catch (Exception e) { return; }
+    }
+
+    /* Remove responses for a Participant by Email */
+    public String removeTextDataByParticipantEmail(String participant_email) {
+        Long participant_id = isParticipantIDExist(participant_email);
+        if(participant_id != 0) {
+            String query = "DELETE FROM text_data WHERE participant_id = ?";
+            this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
+            return "Deleted";
+        } else { return "Could not delete this participant"; }
+    }
+
+    /* Remove results based on Field Name */
+    public String removeTextDataByFieldName(String field_name) {
+        UUID field_uuid = isTextFieldUUIDExist(field_name);
+        if(!field_uuid.toString().equals("0")) {
+            String query = "DELETE FROM text_data WHERE text_field_id = ?";
+            this.jdbcTemplate.query(query, textDataRowMapper, field_uuid);
+            return "Deleted";
+        } else { return "Could not delete the field"; }
     }
 
 

@@ -86,15 +86,71 @@ public class TextDataController {
     /* NULLERS */
 
     /* Set the Red Flag Status to Null for a particular Field ID */
-    public void nullRedFlagStat(String field_id) {
+    @RequestMapping(value = "nredfs", produces = "application/json")
+    public void nullRedFlagStat(@RequestParam("status") String field_id) {
         this.textDataRepository.nullRedFlagStatus(field_id);
     }
 
     /* Set the Shadow Status to Null for a particular Field ID */
-    public void nullShadowStat(String field_id) {
+    @RequestMapping(value = "nshads", produces = "application/json")
+    public void nullShadowStat(@RequestParam("status") String field_id) {
         this.textDataRepository.nullShadowStatus(field_id);
     }
 
 
     /* REMOVALS */
+
+    /* Remove data by a database ID */
+    @RequestMapping(value = "rdb", produces = "application/json")
+    public void removeTextDataByDBID(@RequestParam("id") String db_id) {
+        this.textDataRepository.removeTextDataByDBID(db_id);
+    }
+
+    /* Remove data by a Participant ID */
+    @RequestMapping(value = "rpid", produces = "application/json")
+    public void removeTextDataByParticipantID(@RequestParam("id") String participant_id) {
+        this.textDataRepository.removeTextDataByPartID(participant_id);
+    }
+
+    /* Remove data by a Date Modified */
+    @RequestMapping(value = "rdm", produces = "application/json")
+    public void removeTextDataByDate(@RequestParam("date") String date_modified) throws Exception {
+        this.textDataRepository.removeTextDataByDateModif(date_modified);
+    }
+
+    /* Remove data by a Red Flag Status */
+    @RequestMapping(value = "rredfs", produces = "application/json")
+    public void removeTextDataByRedFlagStat(@RequestParam("status") String redflag_stat) {
+        this.textDataRepository.removeTextDataByRedFlagSt(redflag_stat);
+    }
+
+    /* Remove data by a Shadow Status */
+    @RequestMapping(value = "rshads", produces = "application/json")
+    public void removeTextDataByShadowStat(@RequestParam("status") String shadow_stat) {
+        this.textDataRepository.removeTextDataByShadowStat(shadow_stat);
+    }
+
+    /* Remove data by a Response Value */
+    @RequestMapping(value = "rrv", produces = "application/json")
+    public void removeTextDataByResponseValue(@RequestParam("value") String response_value) {
+        this.textDataRepository.removeTextDataByResponse(response_value);
+    }
+
+    /* Remove data by a Field ID */
+    @RequestMapping(value = "rfid", produces = "application/json")
+    public void removeTextDataByFieldID(@RequestParam("id") String field_id) {
+        this.textDataRepository.removeTextDataByFieldID(field_id);
+    }
+
+    /* Remove data by a Participant Email */
+    @RequestMapping(value = "rpemail", produces = "application/json")
+    public void removeTextDataByParticipantEmail(@RequestParam("email") String participant_email) {
+        this.textDataRepository.removeTextDataByParticipantEmail(participant_email);
+    }
+    /* Remove data by a Field Name */
+    @RequestMapping(value = "rfname", produces = "application/json")
+    public void removeTextDataByFieldName(@RequestParam("name") String field_name) {
+        this.textDataRepository.removeTextDataByFieldName(field_name);
+    }
+
 }
