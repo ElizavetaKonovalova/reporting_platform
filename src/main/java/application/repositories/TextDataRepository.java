@@ -145,14 +145,14 @@ public class TextDataRepository {
     public void removeTextDataByDBID(String db_id) {
         Long db_id_long = Long.parseLong(db_id);
         String query = "DELETE FROM text_data WHERE db_id = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, db_id_long);
+        this.jdbcTemplate.update(query, db_id_long);
     }
 
     /* Removes Text Data by its Participant ID */
     public void removeTextDataByPartID(String participant_id) {
         Long participant_id_long = Long.parseLong(participant_id);
         String query = "DELETE FROM text_data WHERE participant_id = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, participant_id_long);
+        this.jdbcTemplate.update(query, participant_id_long);
     }
 
     /* Removes Text Data by its Date of Modification */
@@ -160,25 +160,25 @@ public class TextDataRepository {
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
         String date_modified_formated = sampledate.format(date_modified);
         String query = "DELETE FROM text_data WHERE date_modified = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, new Date(sampledate.parse(date_modified_formated).getTime()));
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()));
     }
 
     /* Removes Text Data by its Red Flag Status */
     public void removeTextDataByRedFlagSt(String redflag_stat) {
         String query = "DELETE FROM text_data WHERE redflag_status = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, redflag_stat);
+        this.jdbcTemplate.update(query, redflag_stat);
     }
 
     /* Removes Text Data by its Response Value */
     public void removeTextDataByResponse(String response_value) {
         String query = "DELETE FROM text_data WHERE response_value = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, response_value);
+        this.jdbcTemplate.update(query, response_value);
     }
 
     /* Removes Text Data by its Shadow Status */
     public void removeTextDataByShadowStat(String shadow_stat) {
         String query = "DELETE FROM text_data WHERE shadow_status = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, shadow_stat);
+        this.jdbcTemplate.update(query, shadow_stat);
     }
 
     /* Removes Text Data by its Field ID */
@@ -186,7 +186,7 @@ public class TextDataRepository {
         try {
             UUID field_uuid = UUID.fromString(field_id);
             String query = "DELETE FROM text_data WHERE text_field_id = ?";
-            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+            this.jdbcTemplate.update(query, field_uuid);
         } catch (Exception e) { return; }
     }
 
@@ -195,7 +195,7 @@ public class TextDataRepository {
         Long participant_id = isParticipantIDExist(participant_email);
         if(participant_id != 0) {
             String query = "DELETE FROM text_data WHERE participant_id = ?";
-            this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
+            this.jdbcTemplate.update(query, participant_id);
             return "Deleted";
         } else { return "Could not delete this participant"; }
     }
@@ -205,7 +205,7 @@ public class TextDataRepository {
         UUID field_uuid = isTextFieldUUIDExist(field_name);
         if(!field_uuid.toString().equals("0")) {
             String query = "DELETE FROM text_data WHERE text_field_id = ?";
-            this.jdbcTemplate.query(query, textDataRowMapper, field_uuid);
+            this.jdbcTemplate.update(query, field_uuid);
             return "Deleted";
         } else { return "Could not delete the field"; }
     }
@@ -218,7 +218,7 @@ public class TextDataRepository {
         try {
             UUID field_uuid = UUID.fromString(field_id);
             String query = "UPDATE text_data SET redflag_status = NULL WHERE text_field_id = ?";
-            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+            this.jdbcTemplate.update(query, field_uuid);
         } catch (Exception e) { return; }
     }
 
@@ -227,7 +227,7 @@ public class TextDataRepository {
         try {
             UUID field_uuid = UUID.fromString(field_id);
             String query = "UPDATE text_data SET shadow_status = NULL WHERE text_field_id = ?";
-            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+            this.jdbcTemplate.update(query, field_uuid);
         } catch (Exception e) { return; }
     }
 

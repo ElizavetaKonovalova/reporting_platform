@@ -87,13 +87,13 @@ public class TextDataController {
 
     /* Set the Red Flag Status to Null for a particular Field ID */
     @RequestMapping(value = "nredfs", produces = "application/json")
-    public void nullRedFlagStat(@RequestParam("status") String field_id) {
+    public void nullRedFlagStat(@RequestParam("fieldid") String field_id) {
         this.textDataRepository.nullRedFlagStatus(field_id);
     }
 
     /* Set the Shadow Status to Null for a particular Field ID */
     @RequestMapping(value = "nshads", produces = "application/json")
-    public void nullShadowStat(@RequestParam("status") String field_id) {
+    public void nullShadowStat(@RequestParam("fieldid") String field_id) {
         this.textDataRepository.nullShadowStatus(field_id);
     }
 
@@ -152,5 +152,4 @@ public class TextDataController {
     public void removeTextDataByFieldName(@RequestParam("name") String field_name) {
         this.textDataRepository.removeTextDataByFieldName(field_name);
     }
-
 }
