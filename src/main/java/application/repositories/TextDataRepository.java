@@ -25,6 +25,9 @@ public class TextDataRepository {
     private Participants participants = new Participants();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
+
+    /* GETTERS */
+
     public TextData getDataByFieldName(String field_name) {
         UUID field_uuid = isTextFieldUUIDExist(field_name);
         try {
@@ -35,6 +38,10 @@ public class TextDataRepository {
             } else { return new TextData(); }
         } catch (Exception e) { return new TextData(); }
     }
+
+
+
+    /* CREATORS */
 
     public String createTextData(String red_flag_status, String response_value, String shadow_status,
                                  String text_field_name, String participant_email) throws Exception {
@@ -69,6 +76,61 @@ public class TextDataRepository {
             } else { return "There is no such participant"; }
         } else { return "There is no such field"; }
     }
+
+
+
+    /* REMOVALS */
+
+    /* Removes Text Data by its database ID */
+    public void removeTextDataByDBID(String db_id) {
+        Long db_id_long = Long.parseLong(db_id);
+        String query = "DELETE FROM text_data WHERE db_id = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, db_id_long);
+    }
+
+    /* Removes Text Data by its Participant ID */
+    public void removeTextDataByPartID(String participant_id) {
+        Long participant_id_long = Long.parseLong(participant_id);
+        String query = "DELETE FROM text_data WHERE participant_id = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, participant_id_long);
+    }
+
+    /* Removes Text Data by its Date of Modification */
+    public void removeTextDataByDateModif(String date_modified) throws Exception {
+        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
+        String date_modified_formated = sampledate.format(date_modified);
+        String query = "DELETE FROM text_data WHERE date_modified = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, new Date(sampledate.parse(date_modified_formated).getTime()));
+    }
+
+    /* Removes Text Data by its Red Flag Status */
+    public void removeTextDataByRedFlagSt(String redflag_stat) {
+        String query = "DELETE FROM text_data WHERE redflag_status = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, redflag_stat);
+    }
+
+    /* Removes Text Data by its Response Value */
+    public void removeTextDataByResponse(String response_value) {
+        String query = "DELETE FROM text_data WHERE response_value = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, response_value);
+    }
+
+    /* Removes Text Data by its Shadow Status */
+    public void removeTextDataByShadowStat(String shadow_stat) {
+        String query = "DELETE FROM text_data WHERE shadow_status = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, shadow_stat);
+    }
+
+    /* Removes Text Data by its Field ID */
+    public void removeTextDataByFieldID(String field_id) {
+        UUID field_uuid = UUID.fromString(field_id);
+        String query = "DELETE FROM text_data WHERE text_field_id = ?";
+        this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+    }
+
+
+
+    /* HELPERS */
 
     /* Check if a response for a participant for a field is already in the database */
     private Boolean isResponseAlreadyInDB(Long participant_id, UUID text_filed) {
