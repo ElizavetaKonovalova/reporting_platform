@@ -13,7 +13,7 @@ import java.util.List;
 public class JobController {
 
     @Autowired
-    JobRepository jobRepository;
+    private JobRepository jobRepository;
 
     @RequestMapping(value = "gcode", produces = "application/json")
     public Jobs getJobByCode(@RequestParam("code") String jobcode) {

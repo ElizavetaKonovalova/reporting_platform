@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProgramController {
 
     @Autowired
-    ProgramRepository programRepository;
+    private ProgramRepository programRepository;
 
     @RequestMapping(value = "gname", produces = "application/json")
     public Programs getProgramByName(@RequestParam("name") String program_name) {

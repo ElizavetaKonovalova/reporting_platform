@@ -101,7 +101,7 @@ public class JobRepository  {
     }
 
     /* Map data from the database to the Jobs model */
-    private static final RowMapper<Jobs> jobMapper = new RowMapper<Jobs>() {
+    public static final RowMapper<Jobs> jobMapper = new RowMapper<Jobs>() {
         public Jobs mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Jobs job = new Jobs();
                 job.setCENSUS_START(rs.getDate("census_start"));

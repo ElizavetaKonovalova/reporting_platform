@@ -21,16 +21,15 @@ public class TextDataRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private FieldRegistry fieldRegistry;
-    private Participants participants;
+    private FieldRegistry fieldRegistry = new FieldRegistry();
+    private Participants participants = new Participants();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
     public TextData getDataByFieldName(String field_name) {
-        String query = "SELECT * FROM field_registry WHERE field_name = ?";
         UUID field_uuid = isTextFieldUUIDExist(field_name);
         try {
             if(field_uuid.node() != 0L) {
-                String info_query = "SELECT DISTINCT * FROM text_data INNER JOIN field_registry ON " +
+                String info_query = "SELECT * FROM text_data INNER JOIN field_registry ON " +
                         "text_data.text_field_id = field_registry.field_id WHERE text_data.text_field_id = ?";
                 return this.jdbcTemplate.queryForObject(info_query, textDataRowMapper, field_uuid);
             } else { return new TextData(); }
@@ -74,20 +73,20 @@ public class TextDataRepository {
     /* Check if a response for a participant for a field is already in the database */
     private Boolean isResponseAlreadyInDB(Long participant_id, UUID text_filed) {
         try {
-            if(participant_id != 0L && text_filed.node() != 0L) {
+            if(participant_id != 0L && !text_filed.toString().equals("0") ) {
                 String query = "SELECT * FROM text_data WHERE participant_id = ? AND text_field_id = ?";
                 TextData textData = this.jdbcTemplate.queryForObject(query, textDataRowMapper, participant_id, text_filed);
-                return textData.getDB_ID().toString().isEmpty();
+                if(textData.getDB_ID().toString().isEmpty()) { return false; } else { return true; }
             } else { return false; }
         } catch (Exception e) { return false; }
     }
 
     /* Check if parsed field name exist in the FieldRegisrty table */
     private UUID isTextFieldUUIDExist(String text_field_name) {
-        String query = "SELECT * FROM field_registry WHERE field_name = ?";
         try {
+            String query = "SELECT * FROM field_registry WHERE field_name = ?";
             this.fieldRegistry = this.jdbcTemplate.queryForObject(query, FieldRegistryRepository.fieldRegistryRowMapper, text_field_name);
-            if(this.fieldRegistry.getFIELD_ID().toString().isEmpty()) { return new UUID(0L,0L); } else { return fieldRegistry.getFIELD_ID(); }
+            return fieldRegistry.getFIELD_ID();
         } catch (Exception e) { return new UUID(0L,0L);}
     }
 
@@ -96,7 +95,7 @@ public class TextDataRepository {
         String query = "SELECT * FROM participants WHERE participant_email = ?";
         try {
             this.participants = this.jdbcTemplate.queryForObject(query, ParticipantRepository.participantsRowMapper, participant_email);
-            if(this.participants.getPARTICIPANT_ID().toString().isEmpty()) { return 0L; } else { return this.participants.getPARTICIPANT_ID(); }
+            return this.participants.getPARTICIPANT_ID();
         } catch (Exception e) { return 0L; }
     }
 
@@ -104,7 +103,7 @@ public class TextDataRepository {
     private static final RowMapper<TextData> textDataRowMapper = new RowMapper<TextData>() {
         public TextData mapRow(ResultSet rs, int rowNum) throws SQLException {
             TextData textData = new TextData();
-            textData.setFIELD_ID((UUID) rs.getObject("db_id"));
+            textData.setFIELD_ID((UUID) rs.getObject("text_field_id"));
             textData.setDATE_MODIFIED(rs.getDate("date_modified"));
             textData.setDB_ID(rs.getLong("db_id"));
             textData.setREDFLAG_STATUS(rs.getString("redflag_status"));

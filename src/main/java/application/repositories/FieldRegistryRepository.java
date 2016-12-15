@@ -45,7 +45,7 @@ public class FieldRegistryRepository {
                 "field_name, program_mod_id, type) VALUES(?,?,?,?,?,?,?)";
 
         /* Check if there is already a field with this name in the database */
-        String check_query = "SELECT field_id FROM field_registry WHERE field_name = ?";
+        String check_query = "SELECT * FROM field_registry WHERE field_name = ?";
         List<FieldRegistry> fieldRegistry = this.jdbcTemplate.query(check_query, fieldRegistryRowMapper, field_name);
 
         /* If no such field create a new one */
@@ -68,7 +68,7 @@ public class FieldRegistryRepository {
 
     /* Find a program id in the Program table based on a parsed name */
     private Long getProgramIDByNames(String program_name, String module_name) {
-        String query = "SELECT db_id FROM programs WHERE program_name = ? AND module_name = ?";
+        String query = "SELECT * FROM programs WHERE program_name = ? AND module_name = ?";
         try {
             /* Find a program with a parsed name */
             List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);

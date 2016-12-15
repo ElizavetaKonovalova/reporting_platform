@@ -31,7 +31,7 @@ public class ParticipantRepository {
         Long check_participant = this.textDataRepository.isParticipantIDExist(participant_email);
         Long check_job = isJobExists(job_code);
 
-        if(check_participant != 0L && check_job != 0L ) {
+        if(check_participant == 0 && check_job != 0 ) {
 
             Long check_wu = isWUExists(check_job, wu_code);
 
@@ -49,16 +49,18 @@ public class ParticipantRepository {
 
     /* Check if a job with a specified job code exists or not in the Jobs table. */
     private Long isJobExists(String job_code) {
-        Jobs jobs = this.jobRepository.getJobByCode(job_code);
-        if(jobs.getJOB_NAME() == null) { return 0L; } else { return jobs.getJOB_ID(); }
+        try {
+            String query = "SELECT * FROM jobs WHERE job_code = ?";
+            return this.jdbcTemplate.queryForObject(query, this.jobRepository.jobMapper, job_code).getJOB_ID();
+        } catch (Exception e) { return 0L; }
     }
 
     /* Check if a work unit code exists in a parsed job. */
     private Long isWUExists(Long job_id, String wu_code) {
         try {
             Long wu_code_long = Long.parseLong(wu_code);
-            String query = "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
-            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, JobStructuralMapsRepository.wuMapper, job_id, wu_code);
+            String query = "SELECT * FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
+            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, JobStructuralMapRepository.wuMapper, job_id, wu_code_long);
             return jobs.getWU_CODE();
         } catch (Exception e) { return 0L; }
     }

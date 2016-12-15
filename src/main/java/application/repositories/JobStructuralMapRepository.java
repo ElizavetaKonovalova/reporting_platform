@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class JobStructuralMapsRepository {
+public class JobStructuralMapRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -135,19 +135,18 @@ public class JobStructuralMapsRepository {
     }
 
     /* Create a work unit */
-    public void create(String cohort, String denominator, String level, String matrixone, String matrixtwo,
-                       String matrixthree, String matrixfour, String matrixfive, String name, String workunitcode,
-                       String workunitid) throws Exception {
+    public void create(String cohort, String denominator, String job_id, String level_zero, String level_one,
+                       String name, String workunitcode, String workunitid) throws Exception {
 
         Integer denominatorint = Integer.parseInt(denominator);
         Integer wucodeint = Integer.parseInt(workunitcode);
-        Short levelshort = Short.parseShort(level);
         Integer workunitidint = Integer.parseInt(workunitid);
+        Long job_id_long = Long.parseLong(job_id);
 
-        String query = "INSERT INTO job_structural_maps (cohort, denominator, wu_level, matrix_one, matrix_two, matrix_three," +
-                "matrix_four, matrix_five, wu_name, wu_code, wu_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-        this.jdbcTemplate.update(query, cohort, denominatorint, levelshort, matrixone, matrixtwo, matrixthree,
-                matrixfour, matrixfive, name, wucodeint, workunitidint);
+
+        String query = "INSERT INTO job_structural_maps (cohort, denominator, job_id, wu_code, wu_level_one, " +
+                "wu_level_zero, wu_name, wu_id) VALUES (?,?,?,?,?,?,?,?)";
+        this.jdbcTemplate.update(query, cohort, denominatorint, job_id_long, wucodeint, level_one, level_zero, name, workunitidint);
     }
 
     /* Map data from the database to the JobStructuralMaps model */

@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Participants")
+@Table(name = "Participants", indexes = {@Index(name = "participantIndex", columnList = "participant_email")})
 public class Participants {
 
     @Id
@@ -17,7 +17,7 @@ public class Participants {
     @Column(length = 100) @Size(max = 100)
     private String PARTICIPANT_NAME;
 
-    @Column(length = 100) @Size(max = 100)
+    @Column(length = 100, unique = true) @Size(max = 100)
     private String PARTICIPANT_EMAIL;
 
     @Column(length = 40) @Size(max = 40)

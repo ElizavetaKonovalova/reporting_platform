@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganisationController {
 
     @Autowired
-    OrganisationRepository organisationRepository;
+    private OrganisationRepository organisationRepository;
 
     /* Select an organisation by its Org Name */
     @RequestMapping(value = "gorg", produces = "application/json")

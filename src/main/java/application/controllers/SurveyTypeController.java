@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SurveyTypeController {
 
     @Autowired
-    SurveyTypeRepository surveyTypeRepository;
+    private SurveyTypeRepository surveyTypeRepository;
 
     /* Select a surveysubtype by its ID */
     @RequestMapping(value = "gid", produces = "application/json")
