@@ -59,7 +59,7 @@ public class ParticipantRepository {
     private Long isWUExists(Long job_id, String wu_code) {
         try {
             Long wu_code_long = Long.parseLong(wu_code);
-            String query = "SELECT * FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
+            String query = "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
             JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, JobStructuralMapRepository.wuMapper, job_id, wu_code_long);
             return jobs.getWU_CODE();
         } catch (Exception e) { return 0L; }

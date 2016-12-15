@@ -12,9 +12,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class TextDataRepository {
@@ -28,17 +26,76 @@ public class TextDataRepository {
 
     /* GETTERS */
 
-    public TextData getDataByFieldName(String field_name) {
+    /* Find text response by a Field Name */
+    public List<TextData> getDataByFieldName(String field_name) {
         UUID field_uuid = isTextFieldUUIDExist(field_name);
-        try {
-            if(field_uuid.node() != 0L) {
-                String info_query = "SELECT * FROM text_data INNER JOIN field_registry ON " +
-                        "text_data.text_field_id = field_registry.field_id WHERE text_data.text_field_id = ?";
-                return this.jdbcTemplate.queryForObject(info_query, textDataRowMapper, field_uuid);
-            } else { return new TextData(); }
-        } catch (Exception e) { return new TextData(); }
+        if(!field_uuid.toString().equals("0")) {
+            String info_query = "SELECT * FROM text_data WHERE text_field_id = ?";
+            return this.jdbcTemplate.query(info_query, textDataRowMapper, field_uuid);
+        } else { return new ArrayList<>(); }
     }
 
+    /* Find results based on Response Values */
+    public List<TextData> getDataByResponseValue(String response_value) {
+        String query = "SELECT * FROM text_data WHERE response_value = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, response_value);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on Red Flag Statuses */
+    public List<TextData> getDataByRedFlagStat(String redflag_stat) {
+        String query = "SELECT * FROM text_data WHERE redflag_status = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, redflag_stat);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on Shadow Statuses */
+    public List<TextData> getDataByShadowStat(String shadow_stat) {
+        String query = "SELECT * FROM text_data WHERE shadow_status = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, shadow_stat);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on Field ID */
+    public List<TextData> getDataByFieldID(String field_id) {
+        UUID field_uuid = UUID.fromString(field_id);
+        String query = "SELECT * FROM text_data WHERE text_field_id = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, field_uuid);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on Participant ID */
+    public List<TextData> getDataByParticipantID(String participant_id) {
+        Long participant_id_long = Long.parseLong(participant_id);
+        String query = "SELECT * FROM text_data WHERE participant_id = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id_long);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on Date Modified */
+    public List<TextData> getDataByDate(String date_modified) throws Exception {
+        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
+        String date_modified_formated = sampledate.format(new java.util.Date());
+        String query = "SELECT * FROM text_data WHERE date_modified = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, new Date(sampledate.parse(date_modified_formated).getTime()));
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on its database ID */
+    public List<TextData> getDataByDBID(String db_id) {
+        Long db_id_long = Long.parseLong(db_id);
+        String query = "SELECT * FROM text_data WHERE db_id = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, db_id_long);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
+
+    /* Find results based on its database ID */
+    public List<TextData> getDataByParticipantEmail(String participant_email) {
+        Long participant_id = isParticipantIDExist(participant_email);
+        String query = "SELECT * FROM text_data WHERE participant_id = ?";
+        List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
+        if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
+    }
 
 
     /* CREATORS */
@@ -123,11 +180,33 @@ public class TextDataRepository {
 
     /* Removes Text Data by its Field ID */
     public void removeTextDataByFieldID(String field_id) {
-        UUID field_uuid = UUID.fromString(field_id);
-        String query = "DELETE FROM text_data WHERE text_field_id = ?";
-        this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+        try {
+            UUID field_uuid = UUID.fromString(field_id);
+            String query = "DELETE FROM text_data WHERE text_field_id = ?";
+            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+        } catch (Exception e) { return; }
     }
 
+
+    /* NULLERS */
+
+    /* Set a specific Red Flag Status to Null */
+    public void nullRedFlagStatus(String field_id) {
+        try {
+            UUID field_uuid = UUID.fromString(field_id);
+            String query = "UPDATE text_data SET redflag_status = NULL WHERE text_field_id = ?";
+            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+        } catch (Exception e) { return; }
+    }
+
+    /* Set a specific Shadow Status to Null */
+    public void nullShadowStatus(String field_id) {
+        try {
+            UUID field_uuid = UUID.fromString(field_id);
+            String query = "UPDATE text_data SET shadow_status = NULL WHERE text_field_id = ?";
+            this.jdbcTemplate.queryForObject(query, textDataRowMapper, field_uuid);
+        } catch (Exception e) { return; }
+    }
 
 
     /* HELPERS */
