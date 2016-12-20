@@ -19,6 +19,7 @@ public class NumberDataRepository {
     private JdbcTemplate jdbcTemplate;
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
     private final ParticipantRepository participantRepository = new ParticipantRepository();
+    private final TextDataRepository textDataRepository = new TextDataRepository();
 
 
     /* CREATORS */
@@ -86,14 +87,10 @@ public class NumberDataRepository {
 
     /* Find results by their Participant Emails */
     public List<NumberData> getNumberDataByParticipantEmail(String participant_email) {
-        try {
+        Long participant_id = this.textDataRepository.isParticipantIDExist(participant_email);
             String query = "SELECT * FROM number_data INNER JOIN participants ON " +
                     "number_data.participant_id = participants.participant_id WHERE participant_email = ?";
             return this.jdbcTemplate.query(query, numberDataRowMapper, participant_email);
-        } catch (Exception e) { return new ArrayList<>(); }
-        /*String query = "SELECT participant_id FROM participants WHERE participant_email = ?";
-        Long participant_id = this.jdbcTemplate.queryForObject(query, this.participantRepository
-                .participantsRowMapper, participant_email).getPARTICIPANT_ID();*/
     }
 
     /* Find results by their Field Name */

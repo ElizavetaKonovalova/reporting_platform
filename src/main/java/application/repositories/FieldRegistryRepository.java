@@ -18,6 +18,10 @@ public class FieldRegistryRepository {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+
+    /* GETTERS */
+
+    /* Find a Field by ID */
     public FieldRegistry getFieldByID(String uuid) {
         try {
             UUID field_uuid = UUID.fromString(uuid);
@@ -26,12 +30,36 @@ public class FieldRegistryRepository {
         } catch (Exception e) { return new FieldRegistry(); }
     }
 
+    /* Find a Field by Name */
     public FieldRegistry getFieldByName(String field_name) {
         try {
             String query = "SELECT * FROM field_registry WHERE field_name = ?";
             return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, field_name);
         } catch (Exception e) { return new FieldRegistry(); }
     }
+
+    /* Find a Program id in the Program table based on a parsed name */
+    private Long getProgramIDByNames(String program_name, String module_name) {
+        String query = "SELECT * FROM programs WHERE program_name = ? AND module_name = ?";
+        try {
+            /* Find a program with a parsed name */
+            List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);
+            if(programs.isEmpty()) {
+                return 0L;
+            } else { return programs.get(0).getDB_ID(); }
+        } catch (Exception e) { return 0L;}
+    }
+
+
+
+    /* NULLERS */
+
+
+    /* REMOVALS */
+
+
+    /* CREATORS */
+
 
     public String create(String field_desc_one, String field_desc_two, String field_desc_three, String field_name,
                          String program_name, String module_name, String type) {
@@ -66,17 +94,10 @@ public class FieldRegistryRepository {
         } else { return "A filed with this name already exists!"; }
     }
 
-    /* Find a program id in the Program table based on a parsed name */
-    private Long getProgramIDByNames(String program_name, String module_name) {
-        String query = "SELECT * FROM programs WHERE program_name = ? AND module_name = ?";
-        try {
-            /* Find a program with a parsed name */
-            List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);
-            if(programs.isEmpty()) {
-                return 0L;
-            } else { return programs.get(0).getDB_ID(); }
-        } catch (Exception e) { return 0L;}
-    }
+
+
+    /* HELPERS */
+
 
     /* Map data from the database to the FieldRegistry model */
     public static final RowMapper<FieldRegistry> fieldRegistryRowMapper = new RowMapper<FieldRegistry>() {

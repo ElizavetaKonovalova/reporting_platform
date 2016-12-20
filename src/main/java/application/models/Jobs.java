@@ -1,11 +1,12 @@
 package application.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", unique = true, columnList = "job_code")})
+@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", columnList = "job_code, census_start, census_end, response_rate")})
 public class Jobs {
 
     @Id
@@ -17,18 +18,21 @@ public class Jobs {
     private Organisations CLIENT_ID;
     @Column(unique = true, nullable = false)
     private String JOB_CODE;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
+    @Size(max = 100)
     private String JOB_NAME;
     private Date CENSUS_START;
     private Date CENSUS_END;
     private Date DELIVERY_DATE;
     private Date PRESENTATION_DATE;
-    private Boolean STATUS;
+    @Column(nullable = false, columnDefinition = "CHAR NOT NULL DEFAULT 'A'")
+    private char STATUS;
     private Integer SAMPLE_SIZE;
     @ManyToOne(optional = false, cascade = CascadeType.ALL,
             fetch = FetchType.LAZY, targetEntity = SurveyTypes.class)
     @JoinColumn(name = "SURVEYTYPE_ID", nullable = false)
     private SurveyTypes SURVEY_SUBTYPEID;
+    @Column(length = 100) @Size(max = 100)
     private String DELIVERY_TYPE;
     private Integer LOGGED_IN;
     @Column(columnDefinition = "SMALLINT NOT NULL DEFAULT 0")
@@ -46,7 +50,7 @@ public class Jobs {
     public Date getCENSUS_END() { return this.CENSUS_END; }
     public Date getDELIVERY_DATE() { return this.DELIVERY_DATE; }
     public Date getPRESENTATION_DATE() { return this.PRESENTATION_DATE; }
-    public Boolean getSTATUS() { return this.STATUS; }
+    public char getSTATUS() { return this.STATUS; }
     public String getJOB_NAME() { return this.JOB_NAME; }
     public Integer getLOGGED_IN() { return this.LOGGED_IN; }
     public String getJOB_CODE() { return this.JOB_CODE; }
@@ -64,7 +68,7 @@ public class Jobs {
     public void setCENSUS_END(Date censusend) { this.CENSUS_END = censusend; }
     public void setDELIVERY_DATE(Date deliverydate) { this.DELIVERY_DATE = deliverydate; }
     public void setPRESENTATION_DATE(Date presentationdate) { this.PRESENTATION_DATE = presentationdate; }
-    public void setSTATUS(Boolean status) { this.STATUS = status; }
+    public void setSTATUS(char status) { this.STATUS = status; }
     public void setJOB_NAME(String surveyname) { this.JOB_NAME = surveyname; }
     public void setLOGGED_IN(Integer loggedin) { this.LOGGED_IN = loggedin; }
     public void setJOB_CODE(String jobcode) { this.JOB_CODE = jobcode; }

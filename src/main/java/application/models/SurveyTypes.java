@@ -4,13 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table( name = "SurveyTypes", indexes = {@Index(unique = true, name = "surveytypesIndex", columnList = "type_name")})
+@Table( name = "SurveyTypes", indexes = {@Index(name = "surveytypesIndex", columnList = "subtype_name, type_name")})
 public class SurveyTypes {
 
     @Id
     @Column(name ="surveytype_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long SURVEYTYPE_ID;
+    @Column(unique = true)
     private String SUBTYPE_NAME;
     private String TYPE_NAME;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "SURVEY_SUBTYPEID")

@@ -16,6 +16,9 @@ public class ClientStructuralMapRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+    /* GETTERS */
+
     /* Select a Work Unit by its ID in the database */
     public ClientsStructuralMaps getWorkUnitByDBID(String id) {
         try {
@@ -83,6 +86,10 @@ public class ClientStructuralMapRepository {
         return this.jdbcTemplate.query( query, wuMapper, client_id);
     }
 
+
+    /* REMOVALS */
+
+
     /* Remove Work Units by Name */
     public void removeWUByName(String wu_name) {
         String query = "DELETE FROM client_structural_maps WHERE wu_name = ?";
@@ -133,6 +140,11 @@ public class ClientStructuralMapRepository {
         String query = "DELETE FROM client_structural_maps WHERE niche = ?";
         this.jdbcTemplate.update(query, niche);
     }
+
+
+    /* NULLERS */
+
+
 
     /* Remove Niche */
     public void removeNiche(String niche) {
@@ -225,6 +237,8 @@ public class ClientStructuralMapRepository {
     }
 
 
+    /* CREATORS */
+
 
     /* Create a Work Unit */
     public void create(String cohort, String location, String niche, String matrixone, String matrixtwo,
@@ -243,6 +257,10 @@ public class ClientStructuralMapRepository {
                 matrixtwo, niche, sector, wu_id_int, wu_level_five, wu_level_four, wu_level_one,
                 wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id_int);
     }
+
+
+    /* HELPERS */
+
 
     /* Map data from the database to the ClientsStructuralMaps model */
     public static final RowMapper<ClientsStructuralMaps> wuMapper = new RowMapper<ClientsStructuralMaps>() {

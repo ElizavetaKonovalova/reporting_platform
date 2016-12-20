@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "clients", indexes = {@Index(name = "clientIndex", columnList = "org_name", unique = true)})
+@Table(name = "clients", indexes = {@Index(name = "clientIndex", columnList = "client_name, org_name", unique = true)})
 public class Organisations {
 
     @Id

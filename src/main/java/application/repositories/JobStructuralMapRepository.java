@@ -16,6 +16,9 @@ public class JobStructuralMapRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+    /* GETTERS */
+
     /* Select a work unit by its ID in the database */
     public JobStructuralMaps getWorkUnitByID(Long id) {
         try {
@@ -74,6 +77,11 @@ public class JobStructuralMapRepository {
         String query = "SELECT * FROM job_structural_maps WHERE denominator = ?";
         return this.jdbcTemplate.query( query, wuMapper, denominator_int);
     }
+
+
+    /* REMOVALS */
+
+
 
     /* Remove a Work Unit by its Work Unit Code */
     public void removeByWUCode(String wu_code) {
@@ -134,6 +142,14 @@ public class JobStructuralMapRepository {
         this.jdbcTemplate.update(query, denominator_int);
     }
 
+
+    /* NULLERS */
+
+
+
+
+    /* CREATORS */
+
     /* Create a work unit */
     public void create(String cohort, String denominator, String job_id, String level_zero, String level_one,
                        String name, String workunitcode, String workunitid) throws Exception {
@@ -149,8 +165,21 @@ public class JobStructuralMapRepository {
         this.jdbcTemplate.update(query, cohort, denominatorint, job_id_long, wucodeint, level_one, level_zero, name, workunitidint);
     }
 
+
+    /* HELPERS */
+
+    /* Check if a work unit code exists in a parsed job. */
+    public Long isWUExists(Long job_id, String wu_code) {
+        try {
+            Long wu_code_long = Long.parseLong(wu_code);
+            String query = "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
+            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, wuMapper, job_id, wu_code_long);
+            return jobs.getWU_CODE();
+        } catch (Exception e) { return 0L; }
+    }
+
     /* Map data from the database to the JobStructuralMaps model */
-    public static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
+    private static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
         public JobStructuralMaps mapRow(ResultSet rs, int rowNum) throws SQLException {
             JobStructuralMaps JobStructuralMaps = new JobStructuralMaps();
             JobStructuralMaps.setDB_ID(rs.getLong("db_id"));

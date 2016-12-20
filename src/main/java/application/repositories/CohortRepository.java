@@ -6,4 +6,12 @@ public class CohortRepository {
 
     @Autowired
     private CohortRepository cohortRepository;
+
+    /* CREATORS */
+
+    /* HELPERS*/
+
+    /* REMOVALS*/
+
+    /* GETTERS */
 }

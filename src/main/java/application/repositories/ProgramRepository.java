@@ -15,6 +15,9 @@ public class ProgramRepository {
     @Autowired
     protected JdbcTemplate jdbcTemplate;
 
+
+    /* GETTERS */
+
     /* Find a program by its id */
     public Programs getProgramByID(String program_id) {
         try {
@@ -32,12 +35,20 @@ public class ProgramRepository {
         } catch (Exception e) { return new Programs(); }
     }
 
+
+    /* CREATORS */
+
+
     /* Create a new program */
     public String create(String program_name, String module_name) throws Exception {
         String query = "INSERT INTO programs (program_name, module_name) VALUES (?,?)";
         this.jdbcTemplate.update(query, program_name, module_name);
         return "Created";
     }
+
+
+    /* HELPERS */
+
 
     /* Map data from the database to the Programs model */
     public static final RowMapper<Programs> programsRowMapper = new RowMapper<Programs>() {

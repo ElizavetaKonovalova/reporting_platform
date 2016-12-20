@@ -8,12 +8,17 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class SurveyTypeRepository {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
+
+
+    /* GETTERS */
+
 
     /* Select a survey type based on its Type Name [a.k.a Workforce, Partner] */
     public SurveyTypes getByTypeName(String typename) {
@@ -40,11 +45,18 @@ public class SurveyTypeRepository {
         } catch (Exception e) { return new SurveyTypes(); }
     }
 
+
+    /* CREATORS */
+
+
     /* Create a survey type */
     public void create(String subtypename, String typename) {
         String query = "INSERT INTO survey_types (subtype_name, type_name) VALUES (?,?)";
         this.jdbcTemplate.update(query, subtypename, typename);
     }
+
+
+    /* REMOVALS */
 
     /* Remove a survey type by its ID */
     public void removeSubTypeByID(String id) {
@@ -63,6 +75,15 @@ public class SurveyTypeRepository {
     public void removeSubTypeByTypeName(String typename) {
         String query = "DELETE FROM survey_types WHERE type_name = ?";
         this.jdbcTemplate.update(query, typename);
+    }
+
+
+    /* HELPERS */
+
+    /* Check if a Survey Type exists in the database */
+    public List<SurveyTypes> surveyTypeExist(String subtype_name) {
+        return this.jdbcTemplate.query( "SELECT * FROM survey_types WHERE ? IN (subtype_name, type_name)",
+                surveyTypesRowMapper, subtype_name);
     }
 
     /* Map data from the database to the SurveyTypes model */

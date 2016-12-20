@@ -22,18 +22,31 @@ public class ParticipantRepository {
     protected JdbcTemplate jdbcTemplate;
     private TextDataRepository textDataRepository = new TextDataRepository();
     private JobRepository jobRepository = new JobRepository();
+    private JobStructuralMapRepository jobStructuralMapRepository = new JobStructuralMapRepository();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+
+
+    /* GETTERS */
+
+
+    /* REMOVALS */
+
+
+    /* NULLERS */
+
+
+    /* CREATORS */
 
     public String create(String participant_email, String participant_name, String job_code,
                          String password, String status, String wu_code) throws Exception {
 
         /* Check if a participant is already in the database */
-        Long check_participant = this.textDataRepository.isParticipantIDExist(participant_email);
-        Long check_job = isJobExists(job_code);
+        Long check_participant = this.isParticipantIDExist(participant_email);
+        Long check_job = this.jobRepository.isJobExists(job_code);
 
         if(check_participant == 0 && check_job != 0 ) {
 
-            Long check_wu = isWUExists(check_job, wu_code);
+            Long check_wu = this.jobStructuralMapRepository.isWUExists(check_job, wu_code);
 
             if(check_wu != 0L) {
                 String query = "INSERT INTO participants (date_modified, job_id, participant_email, participant_name, password, " +
@@ -47,26 +60,20 @@ public class ParticipantRepository {
         } else { return "Either this participant is already in db, or this job does not exist!"; }
     }
 
-    /* Check if a job with a specified job code exists or not in the Jobs table. */
-    private Long isJobExists(String job_code) {
-        try {
-            String query = "SELECT * FROM jobs WHERE job_code = ?";
-            return this.jdbcTemplate.queryForObject(query, this.jobRepository.jobMapper, job_code).getJOB_ID();
-        } catch (Exception e) { return 0L; }
-    }
 
-    /* Check if a work unit code exists in a parsed job. */
-    private Long isWUExists(Long job_id, String wu_code) {
+    /* HELPERS */
+
+    /* Check if a participant with a parsed email address exists in the Participants database */
+    public Long isParticipantIDExist(String participant_email) {
+        String query = "SELECT * FROM participants WHERE participant_email = ?";
         try {
-            Long wu_code_long = Long.parseLong(wu_code);
-            String query = "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
-            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, JobStructuralMapRepository.wuMapper, job_id, wu_code_long);
-            return jobs.getWU_CODE();
+            Participants participants = this.jdbcTemplate.queryForObject(query, participantsRowMapper, participant_email);
+            return participants.getPARTICIPANT_ID();
         } catch (Exception e) { return 0L; }
     }
 
     /* Map data from the database to the Participants model */
-    public static final RowMapper<Participants> participantsRowMapper = new RowMapper<Participants>() {
+    private static final RowMapper<Participants> participantsRowMapper = new RowMapper<Participants>() {
         public Participants mapRow(ResultSet rs, int rowNum) throws SQLException {
             Participants participants = new Participants();
             participants.setPARTICIPANT_ID(rs.getLong("participant_id"));

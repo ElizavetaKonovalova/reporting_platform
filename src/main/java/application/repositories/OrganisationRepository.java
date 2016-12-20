@@ -8,12 +8,17 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class OrganisationRepository {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
+
+
+    /* GETTERS */
+
 
     /* Select an organisation based on its ORGName */
     public Organisations getOrgByOrgName(String orgname) {
@@ -40,11 +45,18 @@ public class OrganisationRepository {
         } catch (Exception e) { return new Organisations(); }
     }
 
+
+    /* CREATORS */
+
     /* Create an organisation */
     public void create(String orgname, String clientname) {
         String query = "INSERT INTO clients (org_name, client_name) VALUES (?,?)";
         this.jdbcTemplate.update(query, orgname, clientname);
     }
+
+
+    /* REMOVALS */
+
 
     /* Remove an organisation by its database ID */
     public void removeOrgByClientID(String clientid) {
@@ -63,6 +75,18 @@ public class OrganisationRepository {
     public void removeOrgByClientName(String clientname) {
         String query = "DELETE FROM clients WHERE client_name = ?";
         this.jdbcTemplate.update(query, clientname);
+    }
+
+
+    /* NULLERS */
+
+
+    /* HELPERS */
+
+    /* Check if a Client exists in the database */
+    public Long checkClientExists(String client_name) {
+        List<Organisations> organisations = this.jdbcTemplate.query("SELECT * FROM clients WHERE client_name = ?", orgMapper, client_name);
+        if(!organisations.get(0).getCLIENT_NAME().isEmpty()) { return organisations.get(0).getCLIENT_ID(); } else { return 0L; }
     }
 
     /* Map data from the database to the Organisations model */

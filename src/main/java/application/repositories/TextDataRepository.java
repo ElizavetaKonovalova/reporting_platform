@@ -20,7 +20,7 @@ public class TextDataRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     private FieldRegistry fieldRegistry = new FieldRegistry();
-    private Participants participants = new Participants();
+    private ParticipantRepository participantRepository = new ParticipantRepository();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
 
@@ -92,7 +92,7 @@ public class TextDataRepository {
 
     /* Find results based on Participant Email */
     public List<TextData> getDataByParticipantEmail(String participant_email) {
-        Long participant_id = isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
         if(participant_id != 0) {
             String query = "SELECT * FROM text_data WHERE participant_id = ?";
             List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
@@ -108,7 +108,7 @@ public class TextDataRepository {
 
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
         UUID text_field_id = isTextFieldUUIDExist(text_field_name);
-        Long participants_id = isParticipantIDExist(participant_email);
+        Long participants_id = this.participantRepository.isParticipantIDExist(participant_email);
         Boolean response_exists = isResponseAlreadyInDB(participants_id, text_field_id);
 
         String query = "INSERT INTO text_data (date_modified, redflag_status, response_value, shadow_status, text_field_id, participant_id)" +
@@ -192,7 +192,7 @@ public class TextDataRepository {
 
     /* Remove responses for a Participant by Email */
     public String removeTextDataByParticipantEmail(String participant_email) {
-        Long participant_id = isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
         if(participant_id != 0) {
             String query = "DELETE FROM text_data WHERE participant_id = ?";
             this.jdbcTemplate.update(query, participant_id);
@@ -252,15 +252,6 @@ public class TextDataRepository {
             this.fieldRegistry = this.jdbcTemplate.queryForObject(query, FieldRegistryRepository.fieldRegistryRowMapper, text_field_name);
             return fieldRegistry.getFIELD_ID();
         } catch (Exception e) { return new UUID(0L,0L);}
-    }
-
-    /* Check if a participant with a parsed email address exists in the Participants database */
-    public Long isParticipantIDExist(String participant_email) {
-        String query = "SELECT * FROM participants WHERE participant_email = ?";
-        try {
-            this.participants = this.jdbcTemplate.queryForObject(query, ParticipantRepository.participantsRowMapper, participant_email);
-            return this.participants.getPARTICIPANT_ID();
-        } catch (Exception e) { return 0L; }
     }
 
     /* Map data from the database to the TextData model */
