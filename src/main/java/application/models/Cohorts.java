@@ -10,7 +10,7 @@ public class Cohorts {
 
     @Id
     @Column(name ="cohort_id", columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long COHORT_ID;
 
     @Column(length = 300) @Size(max = 300)

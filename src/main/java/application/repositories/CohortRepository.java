@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class CohortRepository {
@@ -18,10 +20,18 @@ public class CohortRepository {
     /* CREATORS */
 
     /* Create a new cohort */
-    public String create(String cohort_name, String cohort_description) {
-        if(!cohort_name.isEmpty()) {
-            this.jdbcTemplate.update("INSERT INTO cohorts (cohort_name, description) VALUES (?,?)",
-                    cohort_name,cohort_description);
+    public String create(String cohort_name, String cohort_description, String parent_name) {
+        if(cohort_name != null) {
+            if(parent_name != null) {
+                Long check_parent = checkCohort(parent_name);
+                if(check_parent != 0) {
+                    this.jdbcTemplate.update("INSERT INTO cohorts (cohort_name, description, parent_id) VALUES (?,?,?)",
+                            cohort_name,cohort_description, check_parent);
+                } else { return "There is no such cohort"; }
+            } else {
+                this.jdbcTemplate.update("INSERT INTO cohorts (cohort_name, description) VALUES (?,?)",
+                        cohort_name,cohort_description);
+            }
             return "Created";
         } else { return "Cohort name cannot be blank"; }
     }
@@ -41,9 +51,7 @@ public class CohortRepository {
 
     /* Update Cohort Name by Cohort Name */
     public String updateCohortName(String cohort_name_old, String cohort_name_new) {
-        if(cohort_name_new != null) {
-            return this.update("UPDATE cohorts SET cohort_name = ? WHERE cohort_id = ?", cohort_name_old, cohort_name_new);
-        } else { return "A new name cannot be blank"; }
+        return this.update("UPDATE cohorts SET cohort_name = ? WHERE cohort_id = ?", cohort_name_old, cohort_name_new);
     }
 
     /* Update Cohort Description by Cohort Name */
@@ -56,43 +64,74 @@ public class CohortRepository {
 
     /* Remove a cohort by its Cohort Name */
     public String removeCohortByName(String cohort_name) {
-        return this.remove("DELETE FROM cohorts WHERE cohort_id = ?", cohort_name);
+        return this.update("DELETE FROM cohorts WHERE cohort_id = ?", cohort_name, "");
     }
 
     /* Remove a cohort by its Parent ID */
     public String removeCohortByParentID(String parent_name) {
-       return this.remove("DELETE FROM cohorts WHERE parent_id = ?", parent_name);
+       return this.update("DELETE FROM cohorts WHERE parent_id = ?", parent_name, "");
     }
 
 
     /* NULLERS */
 
+    /* Set a Parent ID to Null */
+    public String nullParentID(String cohort_name) {
+        return this.update("UPDATE cohorts SET parent_id = NULL WHERE cohort_id = ?", cohort_name, "");
+    }
+
+    /* Set a Description to Null */
+    public String nullDescription(String cohort_name) {
+        return this.update("UPDATE cohorts SET description = NULL WHERE cohort_id = ?", cohort_name, "");
+    }
+
     /* GETTERS */
+
+    /* Find a Cohort by its Name */
+    public List<Cohorts> getCohortByName(String cohort_name) {
+        return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE cohort_name = ?", cohortsRowMapper, cohort_name);
+    }
+
+    /* Find a Cohort by its Parent Name */
+    public List<Cohorts> getCohortByParentName(String parent_name) {
+        Long check_parent = checkCohort(parent_name);
+        if(check_parent != 0) {
+            return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE parent_id = ?", cohortsRowMapper, check_parent);
+        } else { return new ArrayList<>(); }
+    }
+
+    /* Find a Cohort by its Description */
+    public List<Cohorts> getCohortByDescription(String description) {
+        return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE description LIKE %?%", cohortsRowMapper, description);
+    }
+
+    /* Find a Cohort by its DB ID */
+    public List<Cohorts> getCohortByDBID(String db_id) {
+        Long db_id_long = Long.parseLong(db_id);
+        return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE cohort_id = ?", cohortsRowMapper, db_id_long);
+    }
 
     /* HELPERS*/
 
     private String update(String query, String parameter_one, String parameter_two) {
-        Long check_cohort = checkCohort(parameter_one);
-        if(check_cohort != 0) {
-            this.jdbcTemplate.update(query, parameter_two, check_cohort);
-            return "Updated";
-        } else { return "There is no such cohort"; }
-    }
-
-    /* Helper for removing rows form the database */
-    private String remove(String query, String parameter) {
-        Long check_cohort = checkCohort(parameter);
-        if(check_cohort != 0) {
-            this.jdbcTemplate.update(query, check_cohort);
-            return "Removed";
-        } else { return "There is no such cohort"; }
+        if(parameter_one != null) {
+            Long check_cohort = checkCohort(parameter_one);
+            if(check_cohort != 0) {
+                if(!parameter_two.isEmpty()) {
+                    this.jdbcTemplate.update(query, parameter_two, check_cohort);
+                } else {
+                    this.jdbcTemplate.update(query, check_cohort);
+                }
+                return "Updated";
+            } else { return "There is no such cohort"; }
+        } else { return "Parameter one cannot be blank"; }
     }
 
     /* Check if a specified Parent Name exists in the database */
-    private Long checkCohort(String parent_name) {
+    private Long checkCohort(String cohort_name) {
         try {
             return this.jdbcTemplate.queryForObject("SELECT * FROM cohorts WHERE cohort_name = ?",
-                    cohortsRowMapper, parent_name).getCOHORT_ID();
+                    cohortsRowMapper, cohort_name).getCOHORT_ID();
         } catch (Exception e) { return 0L; }
     }
 
