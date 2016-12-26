@@ -1,17 +1,21 @@
 package application.controllers;
 
+import application.models.DemoData;
 import application.repositories.DemoDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("demodata")
 public class DemoDataController {
 
     @Autowired
-    DemoDataRepository demoDataRepository;
+    private DemoDataRepository demoDataRepository;
 
     /* CREATORS */
 
@@ -71,5 +75,59 @@ public class DemoDataController {
 
         /* Remove by a date modified */
         if(date_modified != null) { this.demoDataRepository.removeDemoDataByDateModified(date_modified);}
+    }
+
+
+    /* GETTERS */
+
+    @RequestMapping(value = "/get", produces = "application/json")
+    public List<DemoData> get(@RequestParam(value = "pid", required = false) String participant_id,
+                              @RequestParam(value = "fid", required = false) String field_id,
+                              @RequestParam(value = "date", required = false) String date_modified,
+                              @RequestParam(value = "cid", required = false) String cohort_id,
+                              @RequestParam(value = "response", required = false) String response,
+                              @RequestParam(value = "dbid", required = false) String db_id) throws Exception {
+
+        /* Get Demo Data by a Participant ID */
+        if(participant_id != null) {
+
+            /* Get Demo Data by both a Participant ID and a Field ID */
+            if(field_id != null) {
+                return this.demoDataRepository.getDataByParticipantIDFieldID(participant_id, field_id);
+            } else {
+                return this.demoDataRepository.getDataByParticipantID(participant_id);
+            }
+        }
+
+        /* Get Demo Data by a Field ID */
+        if(field_id != null) {
+
+            /* Get Demo Data by both a Field ID and a Response Value */
+            if(response != null) {
+                return this.demoDataRepository.getDataByResponseValueFieldID(response, field_id);
+            } else {
+                return this.demoDataRepository.getDataByFieldID(field_id);
+            }
+        }
+
+        /* Get Demo Data by a Response Value */
+        if(response != null) {
+            return this.demoDataRepository.getDataByResponseValue(response);
+        }
+
+        /* Get Demo Data by a Modification Date */
+        if(date_modified != null) {
+            return this.demoDataRepository.getDataByDateModified(date_modified);
+        }
+
+        /* Get Demo Data by a Cohort ID */
+        if(cohort_id != null) {
+            return this.demoDataRepository.getDataByCohortID(cohort_id);
+        }
+
+        /* Get Demo Data by a Database ID */
+        if(db_id != null) {
+            return this.demoDataRepository.getDataByDBID(db_id);
+        } else { return new ArrayList<>(); }
     }
 }
