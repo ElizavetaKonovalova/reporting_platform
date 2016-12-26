@@ -178,7 +178,15 @@ public class DemoDataRepository {
 
     /* NULLERS */
 
+    /* Set a Cohort ID to Null by Participant and Field IDs */
+    public void nullCohortID(String participant_id, String field_id) throws Exception {
+        DemoData demoData = checkParticipantFieldResponse(participant_id, field_id);
 
+        if(demoData != null) {
+            this.jdbcTemplate.update("UPDATE demo_data SET demo_cohort_id = NULL, date_modified = ? WHERE participant_id = ? AND demo_field_id = ?",
+                    new Date(sampledate.parse(date_modified_formated).getTime()), demoData.getPARTICIPANT_ID(), demoData.getFIELD_ID());
+        }
+    }
 
 
     /* HELPERS*/
