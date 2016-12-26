@@ -28,7 +28,7 @@ public class NumberDataRepository {
     /* Create a new Number Data row */
     public String create(String field_name, String participant_email, String positivity_result, String response_value) throws Exception {
         UUID number_field_uuid = this.fieldRegistryRepository.checkFieldExists(field_name);
-        Long participant_id_int = this.participantRepository.checkParticipantExists(participant_email);
+        Long participant_id_int = this.participantRepository.checkParticipantIDExists(participant_email);
         Short response_value_short = Short.parseShort(response_value);
 
         if(participant_id_int != 0 && number_field_uuid != new UUID(0L,0L) ) {
@@ -85,7 +85,7 @@ public class NumberDataRepository {
 
     /* Find results by their Participant Emails */
     public List<NumberData> getNumberDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.checkParticipantIDExists(participant_email);
             String query = "SELECT * FROM number_data INNER JOIN participants ON " +
                     "number_data.participant_id = participants.participant_id WHERE participant_email = ?";
             return this.jdbcTemplate.query(query, numberDataRowMapper, participant_email);

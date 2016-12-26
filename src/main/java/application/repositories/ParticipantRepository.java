@@ -1,18 +1,15 @@
 package application.repositories;
 
-import application.models.JobStructuralMaps;
-import application.models.Jobs;
 import application.models.Participants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -21,12 +18,19 @@ public class ParticipantRepository {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
-    private JobRepository jobRepository;
+    private JobRepository jobRepository = new JobRepository();
     private JobStructuralMapRepository jobStructuralMapRepository = new JobStructuralMapRepository();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
 
     /* GETTERS */
+
+    /* Get a Participant by Participant ID */
+    public List<Participants> getParticipantByPID(String participant_id) {
+        Long participant_id_long = Long.parseLong(participant_id);
+        return this.jdbcTemplate.query("SELECT * FROM participants WHERE participant_id = ?",
+                participantsRowMapper, participant_id_long);
+    }
 
 
     /* REMOVALS */
@@ -41,7 +45,7 @@ public class ParticipantRepository {
                          String password, String status, String wu_code) throws Exception {
 
         /* Check if a participant is already in the database */
-        Long check_participant = this.isParticipantIDExist(participant_email);
+        Long check_participant = this.checkParticipantIDExists(participant_email);
         Long check_job = this.jobRepository.isJobExists(job_code);
 
         if(check_participant == 0 && check_job != 0 ) {
@@ -64,21 +68,11 @@ public class ParticipantRepository {
     /* HELPERS */
 
     /* Check if current participant exists in the database */
-    public Long checkParticipantExists(String participant_email) {
+    public Long checkParticipantIDExists(String participant_email) {
         try {
             return this.jdbcTemplate.queryForObject(
                     "SELECT * FROM participants WHERE participant_email = ?",
                     participantsRowMapper, participant_email).getPARTICIPANT_ID();
-        } catch (Exception e) { return 0L; }
-    }
-
-    /* Check if a participant with a parsed email address exists in the Participants database */
-    public Long isParticipantIDExist(String participant_email) {
-        try {
-            Participants participants = this.jdbcTemplate.queryForObject(
-                    "SELECT * FROM participants WHERE participant_email = ?",
-                    participantsRowMapper, participant_email);
-            return participants.getPARTICIPANT_ID();
         } catch (Exception e) { return 0L; }
     }
 

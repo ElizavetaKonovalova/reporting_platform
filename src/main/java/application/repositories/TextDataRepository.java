@@ -92,7 +92,7 @@ public class TextDataRepository {
 
     /* Find results based on Participant Email */
     public List<TextData> getDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.checkParticipantIDExists(participant_email);
         if(participant_id != 0) {
             String query = "SELECT * FROM text_data WHERE participant_id = ?";
             List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
@@ -108,7 +108,7 @@ public class TextDataRepository {
 
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
         UUID text_field_id = this.fieldRegistryRepository.checkFieldExists(text_field_name);
-        Long participants_id = this.participantRepository.isParticipantIDExist(participant_email);
+        Long participants_id = this.participantRepository.checkParticipantIDExists(participant_email);
         Boolean response_exists = isResponseAlreadyInDB(participants_id, text_field_id);
 
         String query = "INSERT INTO text_data (date_modified, redflag_status, response_value, shadow_status, text_field_id, participant_id)" +
@@ -192,7 +192,7 @@ public class TextDataRepository {
 
     /* Remove responses for a Participant by Email */
     public String removeTextDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.checkParticipantIDExists(participant_email);
         if(participant_id != 0) {
             String query = "DELETE FROM text_data WHERE participant_id = ?";
             this.jdbcTemplate.update(query, participant_id);

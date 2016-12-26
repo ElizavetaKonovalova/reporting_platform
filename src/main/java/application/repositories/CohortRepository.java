@@ -128,7 +128,7 @@ public class CohortRepository {
     }
 
     /* Check if a specified Parent Name exists in the database */
-    private Long checkCohort(String cohort_name) {
+    public Long checkCohort(String cohort_name) {
         try {
             return this.jdbcTemplate.queryForObject("SELECT * FROM cohorts WHERE cohort_name = ?",
                     cohortsRowMapper, cohort_name).getCOHORT_ID();

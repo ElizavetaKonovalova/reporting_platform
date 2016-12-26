@@ -341,7 +341,6 @@ public class JobRepository  {
                           String surveysubtype, String target_response_rate) throws Exception {
 
         /* Make a default date format */
-        SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
 
         Integer loggedinint, samplesizeint, subtypeidint;
