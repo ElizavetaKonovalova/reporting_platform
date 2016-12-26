@@ -22,16 +22,16 @@ public class ProgramRepository {
     public Programs getProgramByID(String program_id) {
         try {
             Long p_id = Long.parseLong(program_id);
-            String query = "SELECT * FROM programs WHERE db_id = ?";
-            return this.jdbcTemplate.queryForObject(query, programsRowMapper, p_id);
+            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE db_id = ?",
+                    programsRowMapper, p_id);
         } catch (Exception e) { return new Programs(); }
     }
 
     /* Find a program by its name */
     public Programs getProgramByName(String program_name) {
         try {
-            String query = "SELECT * FROM programs WHERE program_name = ?";
-            return this.jdbcTemplate.queryForObject(query, programsRowMapper, program_name);
+            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ?",
+                    programsRowMapper, program_name);
         } catch (Exception e) { return new Programs(); }
     }
 
@@ -41,8 +41,8 @@ public class ProgramRepository {
 
     /* Create a new program */
     public String create(String program_name, String module_name) throws Exception {
-        String query = "INSERT INTO programs (program_name, module_name) VALUES (?,?)";
-        this.jdbcTemplate.update(query, program_name, module_name);
+        this.jdbcTemplate.update("INSERT INTO programs (program_name, module_name) VALUES (?,?)",
+                program_name, module_name);
         return "Created";
     }
 

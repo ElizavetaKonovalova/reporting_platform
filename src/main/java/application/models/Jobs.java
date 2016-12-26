@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", columnList = "job_code, census_start, census_end, response_rate")})
+@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", columnList = "job_code, status, census_start, census_end, response_rate")})
 public class Jobs {
 
     @Id
@@ -18,8 +18,7 @@ public class Jobs {
     private Organisations CLIENT_ID;
     @Column(unique = true, nullable = false)
     private String JOB_CODE;
-    @Column(nullable = false, length = 100)
-    @Size(max = 100)
+    @Column(nullable = false)
     private String JOB_NAME;
     private Date CENSUS_START;
     private Date CENSUS_END;

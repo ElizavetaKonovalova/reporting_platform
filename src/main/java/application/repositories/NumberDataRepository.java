@@ -19,7 +19,7 @@ public class NumberDataRepository {
     private JdbcTemplate jdbcTemplate;
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
     private final ParticipantRepository participantRepository = new ParticipantRepository();
-    private final TextDataRepository textDataRepository = new TextDataRepository();
+    private final FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository();
 
 
     /* CREATORS */
@@ -27,11 +27,11 @@ public class NumberDataRepository {
 
     /* Create a new Number Data row */
     public String create(String field_name, String participant_email, String positivity_result, String response_value) throws Exception {
-        UUID number_field_uuid = checkFieldExists(field_name);
-        Long participant_id_int = checkParticipantExists(participant_email);
+        UUID number_field_uuid = this.fieldRegistryRepository.checkFieldExists(field_name);
+        Long participant_id_int = this.participantRepository.checkParticipantExists(participant_email);
         Short response_value_short = Short.parseShort(response_value);
 
-        if(participant_id_int != 0 && number_field_uuid.toString() != "0" ) {
+        if(participant_id_int != 0 && number_field_uuid != new UUID(0L,0L) ) {
             if(positivity_result.contains("positive") || positivity_result.contains("middle")
                     || positivity_result.contains("negative")) {
                 sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
@@ -50,18 +50,16 @@ public class NumberDataRepository {
     /* Find results by their Participant IDs */
     public List<NumberData> getNumberDataByParticipantID(String participant_id) {
         try {
-            Long participant_id_long = Long.parseLong(participant_id);
             String query = "SELECT * FROM number_data INNER JOIN participants ON " +
                     "number_data.participant_id = participants.participant_id WHERE participant_id = ?";
-            return this.jdbcTemplate.query(query, numberDataRowMapper, participant_id_long);
+            return this.jdbcTemplate.query(query, numberDataRowMapper, Long.parseLong(participant_id));
         } catch (Exception e) { return new ArrayList<>(); }
     }
 
     /* Find results by their Field IDs */
     public List<NumberData> getNumberDataByFieldID(String field_id) {
-        UUID field_uuid = UUID.fromString(field_id);
         String query = "SELECT * FROM number_data WHERE number_field_id = ?";
-        return this.jdbcTemplate.query(query, numberDataRowMapper, field_uuid);
+        return this.jdbcTemplate.query(query, numberDataRowMapper, UUID.fromString(field_id));
     }
 
     /* Find results by a Date they were Modified */
@@ -87,7 +85,7 @@ public class NumberDataRepository {
 
     /* Find results by their Participant Emails */
     public List<NumberData> getNumberDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.textDataRepository.isParticipantIDExist(participant_email);
+        Long participant_id = this.participantRepository.isParticipantIDExist(participant_email);
             String query = "SELECT * FROM number_data INNER JOIN participants ON " +
                     "number_data.participant_id = participants.participant_id WHERE participant_email = ?";
             return this.jdbcTemplate.query(query, numberDataRowMapper, participant_email);
@@ -108,24 +106,6 @@ public class NumberDataRepository {
 
 
     /* HELPERS */
-
-    /* Check if current participant exists in the database */
-    private Long checkParticipantExists(String participant_email) {
-        try {
-            String query = "SELECT * FROM participants WHERE participant_email = ?";
-            return this.jdbcTemplate.queryForObject(query, this.participantRepository.participantsRowMapper,
-                    participant_email).getPARTICIPANT_ID();
-        } catch (Exception e) { return 0L; }
-    }
-
-    /* Check if a field with a passed field name exists in the database */
-    private UUID checkFieldExists(String field_name) {
-        try {
-            String query = "SELECT * FROM field_registry WHERE field_name = ?";
-            return this.jdbcTemplate.queryForObject(query, FieldRegistryRepository.fieldRegistryRowMapper,
-                    field_name).getFIELD_ID();
-        } catch (Exception e) { return new UUID(0L, 0L); }
-    }
 
     /* Map data from the database to the NumberData model */
     private static final RowMapper<NumberData> numberDataRowMapper = new RowMapper<NumberData>() {

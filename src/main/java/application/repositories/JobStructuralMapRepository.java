@@ -20,62 +20,48 @@ public class JobStructuralMapRepository {
     /* GETTERS */
 
     /* Select a work unit by its ID in the database */
-    public JobStructuralMaps getWorkUnitByID(Long id) {
-        try {
-            String query = "SELECT * FROM job_structural_maps WHERE db_id = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, id);
-        } catch (Exception e) { return new JobStructuralMaps(); }
+    public List<JobStructuralMaps> getWorkUnitByID(Long id) {
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE db_id = ?", wuMapper, id);
     }
 
     /* Select a work unit by its Name */
     public List<JobStructuralMaps> getJobStructuralMapsByName(String name) {
-        String query = "SELECT * FROM job_structural_maps WHERE wu_name = ?";
-        return this.jdbcTemplate.query( query, wuMapper, name);
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE wu_name = ?", wuMapper, name);
     }
 
     /* Select a work unit by its Work Unit Code */
-    public JobStructuralMaps getWorkUnitByWUCode(Integer wucode) {
-        try {
-            String query = "SELECT * FROM job_structural_maps WHERE wu_code = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, wucode);
-        } catch (Exception e) { return new JobStructuralMaps(); }
+    public List<JobStructuralMaps> getWorkUnitByWUCode(String wu_code) {
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE wu_code = ?",
+                    wuMapper, Integer.parseInt(wu_code));
     }
 
     /* Select a work unit by its Job ID */
     public List<JobStructuralMaps> getWUByJobID(String job_id) {
-        try {
-            Long job_id_int = Long.parseLong(job_id);
-            String query = "SELECT * FROM job_structural_maps WHERE job_id = ?";
-            return this.jdbcTemplate.query( query, wuMapper, job_id_int);
-        } catch (Exception e) { return new ArrayList<>(); }
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE job_id = ?",
+                    wuMapper, Long.parseLong(job_id));
     }
 
     /* Select a work unit by its Work Unit ID */
-    public JobStructuralMaps getWorkUnitByWUID(String wuid) {
-        try {
-            Integer workunitid = Integer.parseInt(wuid);
-            String query = "SELECT * FROM job_structural_maps WHERE wu_id = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, workunitid);
-        } catch (Exception e) { return new JobStructuralMaps(); }
+    public List<JobStructuralMaps> getWorkUnitByWUID(String wuid) {
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE wu_id = ?",
+                    wuMapper, Integer.parseInt(wuid));
     }
 
     /* Select work units by level */
     public List<JobStructuralMaps> getJobStructuralMapsByLevel(String level) {
-        String query = "SELECT * FROM job_structural_maps WHERE ? IN (wu_level_one, wu_level_zero)";
-        return this.jdbcTemplate.query( query, wuMapper, level);
+        return this.jdbcTemplate.query( "SELECT * FROM job_structural_maps WHERE ? IN (wu_level_one, wu_level_zero)",
+                wuMapper, level);
     }
 
     /* Select work units by their Cohort */
     public List<JobStructuralMaps> getJobStructuralMapsByCohort(String wucohort) {
-        String query = "SELECT * FROM job_structural_maps WHERE cohort = ?";
-        return this.jdbcTemplate.query( query, wuMapper, wucohort);
+        return this.jdbcTemplate.query("SELECT * FROM job_structural_maps WHERE cohort = ?", wuMapper, wucohort);
     }
 
     /* Select work units by their Denominator */
     public List<JobStructuralMaps> getJobByDenominator(String denominator) {
-        Integer denominator_int = Integer.parseInt(denominator);
-        String query = "SELECT * FROM job_structural_maps WHERE denominator = ?";
-        return this.jdbcTemplate.query( query, wuMapper, denominator_int);
+        return this.jdbcTemplate.query("SELECT * FROM job_structural_maps WHERE denominator = ?",
+                wuMapper, Integer.parseInt(denominator));
     }
 
 
@@ -85,29 +71,19 @@ public class JobStructuralMapRepository {
 
     /* Remove a Work Unit by its Work Unit Code */
     public void removeByWUCode(String wu_code) {
-        Long wu_code_long = Long.parseLong(wu_code);
-        String query = "DELETE FROM job_structural_maps WHERE wu_code = ?";
-        this.jdbcTemplate.update(query, wu_code_long);
-    }
-
-    /* Remove a Work Unit by its Work Unit Name */
-    public void removeByWUName(String wu_name) {
-        String query = "DELETE FROM job_structural_maps WHERE wu_name = ?";
-        this.jdbcTemplate.update(query, wu_name);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE wu_code = ?",
+                Long.parseLong(wu_code));
     }
 
     /* Remove a Work Unit by its Work Unit ID */
     public void removeByWUID(String wu_id) {
-        Integer wu_id_int = Integer.parseInt(wu_id);
-        String query = "DELETE FROM job_structural_maps WHERE wu_id = ?";
-        this.jdbcTemplate.update(query, wu_id_int);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE wu_id = ?",
+                Integer.parseInt(wu_id));
     }
 
     /* Remove a Work Unit by its database ID */
     public void removeByDBID(String db_id) {
-        Long db_id_long = Long.parseLong(db_id);
-        String query = "DELETE FROM job_structural_maps WHERE db_id = ?";
-        this.jdbcTemplate.update(query, db_id_long);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE db_id = ?", Long.parseLong(db_id));
     }
 
     /* Remove a Work Unit by its cohort */
@@ -118,33 +94,34 @@ public class JobStructuralMapRepository {
 
     /* Remove Work Units by their Job ID */
     public void removeByJobID(String job_id) {
-        Long job_id_long = Long.parseLong(job_id);
-        String query = "DELETE FROM job_structural_maps WHERE job_id = ?";
-        this.jdbcTemplate.update(query, job_id_long);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE job_id = ?", Long.parseLong(job_id));
     }
 
     /* Remove Work Units by level one */
     public void removeByLevelOne(String wu_lvl_one) {
-        String query = "DELETE FROM job_structural_maps WHERE wu_level_one = ?";
-        this.jdbcTemplate.update(query, wu_lvl_one);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE wu_level_one = ?", wu_lvl_one);
     }
 
     /* Remove Work Units by level zero */
     public void removeByLevelZero(String wu_lvl_zero) {
-        String query = "DELETE FROM job_structural_maps WHERE wu_level_zero = ?";
-        this.jdbcTemplate.update(query, wu_lvl_zero);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE wu_level_zero = ?", wu_lvl_zero);
     }
 
     /* Remove Work Units by their Denominator */
     public void removeByDenominator(String denominator) {
-        Integer denominator_int = Integer.parseInt(denominator);
-        String query = "DELETE FROM job_structural_maps WHERE denominator = ?";
-        this.jdbcTemplate.update(query, denominator_int);
+        this.jdbcTemplate.update("DELETE FROM job_structural_maps WHERE denominator = ?", Integer.parseInt(denominator));
     }
 
 
     /* NULLERS */
 
+
+    /* UPDATERS */
+
+    /* Set a Work Unit Name to null by its Work Unit Code */
+    public void updateWUNameByWUCode(String wu_code, String wu_name) {
+        this.jdbcTemplate.update("UPDATE job_structural_maps SET wu_name = ? WHERE wu_code = ?", wu_name, Long.parseLong(wu_code));
+    }
 
 
 
@@ -154,26 +131,22 @@ public class JobStructuralMapRepository {
     public void create(String cohort, String denominator, String job_id, String level_zero, String level_one,
                        String name, String workunitcode, String workunitid) throws Exception {
 
-        Integer denominatorint = Integer.parseInt(denominator);
-        Integer wucodeint = Integer.parseInt(workunitcode);
-        Integer workunitidint = Integer.parseInt(workunitid);
-        Long job_id_long = Long.parseLong(job_id);
-
-
         String query = "INSERT INTO job_structural_maps (cohort, denominator, job_id, wu_code, wu_level_one, " +
                 "wu_level_zero, wu_name, wu_id) VALUES (?,?,?,?,?,?,?,?)";
-        this.jdbcTemplate.update(query, cohort, denominatorint, job_id_long, wucodeint, level_one, level_zero, name, workunitidint);
+        this.jdbcTemplate.update(query, cohort, Integer.parseInt(denominator), Long.parseLong(job_id),
+                Integer.parseInt(workunitcode), level_one, level_zero, name, Integer.parseInt(workunitid));
     }
 
 
     /* HELPERS */
 
+
     /* Check if a work unit code exists in a parsed job. */
     public Long isWUExists(Long job_id, String wu_code) {
         try {
-            Long wu_code_long = Long.parseLong(wu_code);
-            String query = "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?";
-            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(query, wuMapper, job_id, wu_code_long);
+            JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(
+                    "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?",
+                    wuMapper, job_id, Long.parseLong(wu_code));
             return jobs.getWU_CODE();
         } catch (Exception e) { return 0L; }
     }

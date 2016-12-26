@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("org")
 public class OrganisationController {
@@ -16,28 +18,28 @@ public class OrganisationController {
 
     /* Select an organisation by its Org Name */
     @RequestMapping(value = "gorg", produces = "application/json")
-    public Organisations getOrgByOrgName(@RequestParam("name") String orgname) {
+    public List<Organisations>  getOrgByOrgName(@RequestParam("name") String orgname) {
         return this.organisationRepository.getOrgByOrgName(orgname);
     }
 
     /* Select an organisation by its Client Id */
     @RequestMapping(value = "gid", produces = "application/json")
-    public Organisations getOrgByID(@RequestParam("id") String clientid) {
+    public List<Organisations> getOrgByID(@RequestParam("id") String clientid) {
         return this.organisationRepository.getOrgByClientID(clientid);
     }
 
     /* Select an organisation by its Client Name */
     @RequestMapping(value = "gclient", produces = "application/json")
-    public Organisations getOrgByClientName(@RequestParam("name") String clientname) {
+    public List<Organisations>  getOrgByClientName(@RequestParam("name") String clientname) {
         return this.organisationRepository.getOrgByClientName(clientname);
     }
 
     /* Create an organisation */
     @RequestMapping(value = "create", produces = "application/json")
     public String create(@RequestParam("orgname") String orgname, @RequestParam("cname") String clientname) {
-        Organisations organisations = this.organisationRepository.getOrgByClientName(clientname);
+        List<Organisations>  organisations = this.organisationRepository.getOrgByClientName(clientname);
 
-        if(organisations.getCLIENT_NAME() != null) { return "This organisation already exists"; }
+        if(organisations.size() != 0) { return "This organisation already exists"; }
         else {
             this.organisationRepository.create(orgname, clientname);
             return "Created";

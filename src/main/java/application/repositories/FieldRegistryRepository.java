@@ -24,17 +24,16 @@ public class FieldRegistryRepository {
     /* Find a Field by ID */
     public FieldRegistry getFieldByID(String uuid) {
         try {
-            UUID field_uuid = UUID.fromString(uuid);
-            String query = "SELECT * FROM field_registry WHERE field_id = ?";
-            return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, uuid);
+            return this.jdbcTemplate.queryForObject("SELECT * FROM field_registry WHERE field_id = ?",
+                    fieldRegistryRowMapper, UUID.fromString(uuid));
         } catch (Exception e) { return new FieldRegistry(); }
     }
 
     /* Find a Field by Name */
     public FieldRegistry getFieldByName(String field_name) {
         try {
-            String query = "SELECT * FROM field_registry WHERE field_name = ?";
-            return this.jdbcTemplate.queryForObject(query, fieldRegistryRowMapper, field_name);
+            return this.jdbcTemplate.queryForObject("SELECT * FROM field_registry WHERE field_name = ?",
+                    fieldRegistryRowMapper, field_name);
         } catch (Exception e) { return new FieldRegistry(); }
     }
 
@@ -44,7 +43,7 @@ public class FieldRegistryRepository {
         try {
             /* Find a program with a parsed name */
             List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);
-            if(programs.isEmpty()) {
+            if(programs.size() == 0) {
                 return 0L;
             } else { return programs.get(0).getDB_ID(); }
         } catch (Exception e) { return 0L;}
@@ -77,7 +76,7 @@ public class FieldRegistryRepository {
         List<FieldRegistry> fieldRegistry = this.jdbcTemplate.query(check_query, fieldRegistryRowMapper, field_name);
 
         /* If no such field create a new one */
-        if(fieldRegistry.isEmpty()) {
+        if(fieldRegistry.size() != 0) {
 
             /* If a program with a provided name exists in the Program table, create a new field */
             if( program_id != 0L) {
@@ -98,9 +97,17 @@ public class FieldRegistryRepository {
 
     /* HELPERS */
 
+    /* Check if a field with a passed field name exists in the database */
+    public UUID checkFieldExists(String field_name) {
+        try {
+            return this.jdbcTemplate.queryForObject("SELECT * FROM field_registry WHERE field_name = ?",
+                    fieldRegistryRowMapper, field_name).getFIELD_ID();
+        } catch (Exception e) { return new UUID(0L, 0L); }
+    }
+
 
     /* Map data from the database to the FieldRegistry model */
-    public static final RowMapper<FieldRegistry> fieldRegistryRowMapper = new RowMapper<FieldRegistry>() {
+    private static final RowMapper<FieldRegistry> fieldRegistryRowMapper = new RowMapper<FieldRegistry>() {
         public FieldRegistry mapRow(ResultSet rs, int rowNum) throws SQLException {
             FieldRegistry fieldRegistry = new FieldRegistry();
             fieldRegistry.setFIELD_ID((java.util.UUID)rs.getObject("field_id"));

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("jobwu")
+@RequestMapping("jwu")
 public class JobStructuralMapController {
 
     @Autowired
@@ -24,20 +24,19 @@ public class JobStructuralMapController {
 
     /* Select a work unit by its Work Unit ID */
     @RequestMapping(value = "gwuid", produces = "application/json")
-    public JobStructuralMaps getWorkUnitByWUID(@RequestParam("wuid") String wuid) {
+    public List<JobStructuralMaps> getWorkUnitByWUID(@RequestParam("wuid") String wuid) {
         return this.jobStructuralMapRepository.getWorkUnitByWUID(wuid);
     }
 
     /* Select a work unit by its Work Unit Code */
     @RequestMapping(value = "gcode", produces = "application/json")
-    public JobStructuralMaps getWorkUnitByWUCode(@RequestParam("code") String workunitcode) {
-        Integer workunitcodeint = Integer.parseInt(workunitcode);
-        return this.jobStructuralMapRepository.getWorkUnitByWUCode(workunitcodeint);
+    public List<JobStructuralMaps> getWorkUnitByWUCode(@RequestParam("code") String wu_code) {
+        return this.jobStructuralMapRepository.getWorkUnitByWUCode(wu_code);
     }
 
     /* Select a work unit by its Database ID */
     @RequestMapping(value = "gid", produces = "application/json")
-    public JobStructuralMaps getWorkUnitByID(@RequestParam("id") String workunitdbid) {
+    public List<JobStructuralMaps> getWorkUnitByID(@RequestParam("id") String workunitdbid) {
         Long workunitdbidL = Long.parseLong(workunitdbid);
         return this.jobStructuralMapRepository.getWorkUnitByID(workunitdbidL);
     }
@@ -70,12 +69,6 @@ public class JobStructuralMapController {
     @RequestMapping(value = "rwu", produces = "application/json")
     public void removeWUByWUCode(@RequestParam("code") String wu_code) {
         this.jobStructuralMapRepository.removeByWUCode(wu_code);
-    }
-
-    /* Remove Work Units by their Work Unit Name */
-    @RequestMapping(value = "rwn", produces = "application/json")
-    public void removeWUByWUName(@RequestParam("name") String wu_name) {
-        this.jobStructuralMapRepository.removeByWUName(wu_name);
     }
 
     /* Remove Work Units by their Work Unit ID */
@@ -120,17 +113,14 @@ public class JobStructuralMapController {
         this.jobStructuralMapRepository.removeByDenominator(denominator);
     }
 
-    /* Create a work unit
-    *
-    * Template URL: /jobwu/create?cohort=&den=0&lvl0=Zero&lvl1=One&jid=1&wun=Name&wucode=238&wui=(one you've created before)
-    * */
+    /* Create a work unit */
     @RequestMapping(value = "create", produces = "application/json")
     public String createFullWorkUnit(@RequestParam("cohort") String cohort, @RequestParam("den") String denominator,
                                      @RequestParam("lvl0") String level_zero, @RequestParam("lvl1") String level_one,
                                      @RequestParam("jid") String job_id, @RequestParam("wun") String wuname,
                                      @RequestParam("wucode") String workunitcode, @RequestParam("wui") String workunitid) throws Exception {
-        JobStructuralMaps JobStructuralMaps = this.jobStructuralMapRepository.getWorkUnitByWUID(workunitid);
-        if(JobStructuralMaps.getNAME() != null) {
+        List<JobStructuralMaps> jobStructuralMaps = this.jobStructuralMapRepository.getWorkUnitByWUID(workunitid);
+        if(jobStructuralMaps.size() != 0) {
             return "This work unit already exists";
         } else {
             this.jobStructuralMapRepository.create(cohort, denominator, job_id, level_zero, level_one, wuname, workunitcode, workunitid);

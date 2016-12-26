@@ -241,7 +241,7 @@ public class ClientStructuralMapRepository {
 
 
     /* Create a Work Unit */
-    public void create(String cohort, String location, String niche, String matrixone, String matrixtwo,
+    public String create(String cohort, String location, String niche, String matrixone, String matrixtwo,
                        String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
                        String sector, String wu_level_five, String wu_level_four, String wu_level_one,
                        String wu_level_three, String wu_level_two, String wu_level_zero, String client_id) throws Exception {
@@ -256,6 +256,8 @@ public class ClientStructuralMapRepository {
         this.jdbcTemplate.update(query, cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
                 matrixtwo, niche, sector, wu_id_int, wu_level_five, wu_level_four, wu_level_one,
                 wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id_int);
+
+        return "Created";
     }
 
 
@@ -263,7 +265,7 @@ public class ClientStructuralMapRepository {
 
 
     /* Map data from the database to the ClientsStructuralMaps model */
-    public static final RowMapper<ClientsStructuralMaps> wuMapper = new RowMapper<ClientsStructuralMaps>() {
+    private static final RowMapper<ClientsStructuralMaps> wuMapper = new RowMapper<ClientsStructuralMaps>() {
         public ClientsStructuralMaps mapRow(ResultSet rs, int rowNum) throws SQLException {
             ClientsStructuralMaps client_structural_maps = new ClientsStructuralMaps();
             client_structural_maps.setDB_ID(rs.getLong("db_id"));

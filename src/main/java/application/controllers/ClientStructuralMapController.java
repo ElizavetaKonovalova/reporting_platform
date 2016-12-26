@@ -222,7 +222,7 @@ public class ClientStructuralMapController {
 
     /* CREATORS */
     @RequestMapping(value = "create", produces = "application/json")
-    public void create(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
+    public String create(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
                        @RequestParam("m1") String matrixone, @RequestParam("m2") String matrixtwo,
                        @RequestParam("m3") String matrixthree, @RequestParam("m4") String matrixfour,
                        @RequestParam("m5") String matrixfive, @RequestParam("wun") String wu_name, @RequestParam("wuid") String wu_id,
@@ -231,7 +231,7 @@ public class ClientStructuralMapController {
                        @RequestParam("lvl3") String wu_level_three, @RequestParam("lvl4") String wu_level_four,
                        @RequestParam("lvl5") String wu_level_five, @RequestParam("cid") String client_id) throws Exception {
 
-        this.clientStructuralMapRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
+        return this.clientStructuralMapRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
                 matrixfour, matrixfive, wu_name, wu_id, sector, wu_level_five, wu_level_four, wu_level_one, wu_level_three,
                 wu_level_two, wu_level_zero, client_id);
     }

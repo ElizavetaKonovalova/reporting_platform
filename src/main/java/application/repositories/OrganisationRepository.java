@@ -14,35 +14,27 @@ import java.util.List;
 public class OrganisationRepository {
 
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
-
+    private JdbcTemplate jdbcTemplate;
 
     /* GETTERS */
 
 
     /* Select an organisation based on its ORGName */
-    public Organisations getOrgByOrgName(String orgname) {
-        try {
-            String query = "SELECT * FROM clients WHERE org_name = ?";
-            return this.jdbcTemplate.queryForObject( query, orgMapper, orgname);
-        } catch (Exception e) { return new Organisations(); }
+    public List<Organisations> getOrgByOrgName(String orgname) {
+            return this.jdbcTemplate.query( "SELECT * FROM clients WHERE org_name = ?",
+                    orgMapper, orgname);
     }
 
     /* Select an organisation based on its Name */
-    public Organisations getOrgByClientName(String clientname) {
-        try {
-            String query = "SELECT * FROM clients WHERE client_name = ?";
-            return this.jdbcTemplate.queryForObject( query, orgMapper, clientname);
-        } catch (Exception e) { return new Organisations(); }
+    public List<Organisations> getOrgByClientName(String clientname) {
+        return this.jdbcTemplate.query("SELECT * FROM clients WHERE client_name = ?",
+                orgMapper, clientname);
     }
 
     /* Select an organisation based on its Location*/
-    public Organisations getOrgByClientID(String clientid) {
-        try {
-            Long id = Long.parseLong(clientid);
-            String query = "SELECT * FROM clients WHERE client_id = ?";
-            return this.jdbcTemplate.queryForObject( query, orgMapper, id);
-        } catch (Exception e) { return new Organisations(); }
+    public List<Organisations> getOrgByClientID(String clientid) {
+            return this.jdbcTemplate.query("SELECT * FROM clients WHERE client_id = ?",
+                    orgMapper, Long.parseLong(clientid));
     }
 
 
@@ -50,8 +42,8 @@ public class OrganisationRepository {
 
     /* Create an organisation */
     public void create(String orgname, String clientname) {
-        String query = "INSERT INTO clients (org_name, client_name) VALUES (?,?)";
-        this.jdbcTemplate.update(query, orgname, clientname);
+        this.jdbcTemplate.update("INSERT INTO clients (org_name, client_name) VALUES (?,?)",
+                orgname, clientname);
     }
 
 
@@ -59,22 +51,19 @@ public class OrganisationRepository {
 
 
     /* Remove an organisation by its database ID */
-    public void removeOrgByClientID(String clientid) {
-        Long id = Long.parseLong(clientid);
-        String query = "DELETE FROM clients WHERE client_id = ?";
-        this.jdbcTemplate.update(query, id);
+    public void removeOrgByClientID(String client_id) {
+        this.jdbcTemplate.update("DELETE FROM clients WHERE client_id = ?",
+                Long.parseLong(client_id));
     }
 
     /* Remove an organisation by its Org Name */
-    public void removeOrgByOrgName(String orgname) {
-        String query = "DELETE FROM clients WHERE org_name = ?";
-        this.jdbcTemplate.update(query, orgname);
+    public void removeOrgByOrgName(String org_name) {
+        this.jdbcTemplate.update("DELETE FROM clients WHERE org_name = ?", org_name);
     }
 
     /* Remove an organisation by its Org Name */
-    public void removeOrgByClientName(String clientname) {
-        String query = "DELETE FROM clients WHERE client_name = ?";
-        this.jdbcTemplate.update(query, clientname);
+    public void removeOrgByClientName(String client_name) {
+        this.jdbcTemplate.update("DELETE FROM clients WHERE client_name = ?", client_name);
     }
 
 
@@ -86,7 +75,7 @@ public class OrganisationRepository {
     /* Check if a Client exists in the database */
     public Long checkClientExists(String client_name) {
         List<Organisations> organisations = this.jdbcTemplate.query("SELECT * FROM clients WHERE client_name = ?", orgMapper, client_name);
-        if(!organisations.get(0).getCLIENT_NAME().isEmpty()) { return organisations.get(0).getCLIENT_ID(); } else { return 0L; }
+        if(organisations.size() != 0) { return organisations.get(0).getCLIENT_ID(); } else { return 0L; }
     }
 
     /* Map data from the database to the Organisations model */

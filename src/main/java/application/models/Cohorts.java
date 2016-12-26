@@ -5,7 +5,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "cohorts", indexes = {@Index(columnList = "parent_id", name = "cohortIndex")})
+@Table(name = "cohorts", indexes = {@Index(columnList = "cohort_name, parent_id", name = "cohortIndex")})
 public class Cohorts {
 
     @Id
@@ -16,7 +16,8 @@ public class Cohorts {
     @Column(length = 300) @Size(max = 300)
     private String DESCRIPTION;
 
-    @Column(length = 100) @Size(max = 100)
+    @Column(length = 100, nullable = false, unique = true)
+    @Size(max = 100)
     private String COHORT_NAME;
 
     private Long PARENT_ID;

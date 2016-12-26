@@ -4,6 +4,7 @@ import application.models.JobStructuralMaps;
 import application.models.Jobs;
 import application.models.Participants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,7 @@ public class ParticipantRepository {
 
     @Autowired
     protected JdbcTemplate jdbcTemplate;
-    private TextDataRepository textDataRepository = new TextDataRepository();
-    private JobRepository jobRepository = new JobRepository();
+    private JobRepository jobRepository;
     private JobStructuralMapRepository jobStructuralMapRepository = new JobStructuralMapRepository();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
@@ -63,11 +63,21 @@ public class ParticipantRepository {
 
     /* HELPERS */
 
+    /* Check if current participant exists in the database */
+    public Long checkParticipantExists(String participant_email) {
+        try {
+            return this.jdbcTemplate.queryForObject(
+                    "SELECT * FROM participants WHERE participant_email = ?",
+                    participantsRowMapper, participant_email).getPARTICIPANT_ID();
+        } catch (Exception e) { return 0L; }
+    }
+
     /* Check if a participant with a parsed email address exists in the Participants database */
     public Long isParticipantIDExist(String participant_email) {
-        String query = "SELECT * FROM participants WHERE participant_email = ?";
         try {
-            Participants participants = this.jdbcTemplate.queryForObject(query, participantsRowMapper, participant_email);
+            Participants participants = this.jdbcTemplate.queryForObject(
+                    "SELECT * FROM participants WHERE participant_email = ?",
+                    participantsRowMapper, participant_email);
             return participants.getPARTICIPANT_ID();
         } catch (Exception e) { return 0L; }
     }

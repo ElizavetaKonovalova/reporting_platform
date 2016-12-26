@@ -19,7 +19,7 @@ public class TextDataRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private FieldRegistry fieldRegistry = new FieldRegistry();
+    private FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository();
     private ParticipantRepository participantRepository = new ParticipantRepository();
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
@@ -28,7 +28,7 @@ public class TextDataRepository {
 
     /* Find text response by a Field Name */
     public List<TextData> getDataByFieldName(String field_name) {
-        UUID field_uuid = isTextFieldUUIDExist(field_name);
+        UUID field_uuid = this.fieldRegistryRepository.checkFieldExists(field_name);
         if(!field_uuid.toString().equals("0")) {
             String info_query = "SELECT * FROM text_data WHERE text_field_id = ?";
             List<TextData> result = this.jdbcTemplate.query(info_query, textDataRowMapper, field_uuid);
@@ -107,7 +107,7 @@ public class TextDataRepository {
                                  String text_field_name, String participant_email) throws Exception {
 
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
-        UUID text_field_id = isTextFieldUUIDExist(text_field_name);
+        UUID text_field_id = this.fieldRegistryRepository.checkFieldExists(text_field_name);
         Long participants_id = this.participantRepository.isParticipantIDExist(participant_email);
         Boolean response_exists = isResponseAlreadyInDB(participants_id, text_field_id);
 
@@ -202,7 +202,7 @@ public class TextDataRepository {
 
     /* Remove results based on Field Name */
     public String removeTextDataByFieldName(String field_name) {
-        UUID field_uuid = isTextFieldUUIDExist(field_name);
+        UUID field_uuid = this.fieldRegistryRepository.checkFieldExists(field_name);
         if(!field_uuid.toString().equals("0")) {
             String query = "DELETE FROM text_data WHERE text_field_id = ?";
             this.jdbcTemplate.update(query, field_uuid);
@@ -243,15 +243,6 @@ public class TextDataRepository {
                 if(textData.getDB_ID().toString().isEmpty()) { return false; } else { return true; }
             } else { return false; }
         } catch (Exception e) { return false; }
-    }
-
-    /* Check if parsed field name exist in the FieldRegisrty table */
-    private UUID isTextFieldUUIDExist(String text_field_name) {
-        try {
-            String query = "SELECT * FROM field_registry WHERE field_name = ?";
-            this.fieldRegistry = this.jdbcTemplate.queryForObject(query, FieldRegistryRepository.fieldRegistryRowMapper, text_field_name);
-            return fieldRegistry.getFIELD_ID();
-        } catch (Exception e) { return new UUID(0L,0L);}
     }
 
     /* Map data from the database to the TextData model */
