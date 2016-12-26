@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,37 +17,45 @@ import java.util.UUID;
 public class FieldRegistryRepository {
 
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+    private ProgramRepository programRepository = new ProgramRepository();
 
 
     /* GETTERS */
 
     /* Find a Field by ID */
-    public FieldRegistry getFieldByID(String uuid) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM field_registry WHERE field_id = ?",
+    public List<FieldRegistry> getFieldByID(String uuid) {
+        return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE field_id = ?",
                     fieldRegistryRowMapper, UUID.fromString(uuid));
-        } catch (Exception e) { return new FieldRegistry(); }
     }
 
     /* Find a Field by Name */
-    public FieldRegistry getFieldByName(String field_name) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM field_registry WHERE field_name = ?",
+    public List<FieldRegistry> getFieldByName(String field_name) {
+        return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE field_name = ?",
                     fieldRegistryRowMapper, field_name);
-        } catch (Exception e) { return new FieldRegistry(); }
     }
 
-    /* Find a Program id in the Program table based on a parsed name */
-    private Long getProgramIDByNames(String program_name, String module_name) {
-        String query = "SELECT * FROM programs WHERE program_name = ? AND module_name = ?";
-        try {
-            /* Find a program with a parsed name */
-            List<Programs> programs = this.jdbcTemplate.query(query, ProgramRepository.programsRowMapper, program_name, module_name);
-            if(programs.size() == 0) {
-                return 0L;
-            } else { return programs.get(0).getDB_ID(); }
-        } catch (Exception e) { return 0L;}
+    /* Find a Field by a Program ID */
+    public List<FieldRegistry> getFieldByProgramID(String program_id) {
+        Long prograam_long = Long.parseLong(program_id);
+        return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE program_mod_id = ?",
+                fieldRegistryRowMapper, prograam_long);
+    }
+
+    /* Find a Field by both a Program Name and a Module Name */
+    public List<FieldRegistry> getFieldByProgramName(String program_name, String module_name) {
+        Long program_long = this.programRepository.getProgramIDByNames(program_name, module_name);
+        if(program_long != 0) {
+            return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE program_mod_id = ?",
+                    fieldRegistryRowMapper, program_long);
+        } else { return new ArrayList<>(); }
+    }
+
+    /* Find a Field by Descriptions */
+    public List<FieldRegistry> getFieldByDescriptions(String description) {
+        return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE LIKE %?% IN (field_description_one, " +
+                        "field_description_two, field_description_three)",
+                    fieldRegistryRowMapper, description);
     }
 
 
@@ -63,7 +72,7 @@ public class FieldRegistryRepository {
     public String create(String field_desc_one, String field_desc_two, String field_desc_three, String field_name,
                          String program_name, String module_name, String type) {
 
-        Long program_id = getProgramIDByNames(program_name, module_name);
+        Long program_id = this.programRepository.getProgramIDByNames(program_name, module_name);
 
         /* Generate a new UUID for the field_id column */
         UUID uuid = UUID.randomUUID();

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("fr")
 public class FieldRegistryController {
@@ -15,12 +17,12 @@ public class FieldRegistryController {
     private FieldRegistryRepository fieldRegistryRepository;
 
     @RequestMapping(value = "gname", produces = "application/json")
-    public FieldRegistry getFieldByName(@RequestParam("name") String field_name) {
+    public List<FieldRegistry> getFieldByName(@RequestParam("name") String field_name) {
         return this.fieldRegistryRepository.getFieldByName(field_name);
     }
 
     @RequestMapping(value = "gid", produces = "application/json")
-    public FieldRegistry getFieldByID(@RequestParam("id") String field_id) {
+    public List<FieldRegistry> getFieldByID(@RequestParam("id") String field_id) {
         return this.fieldRegistryRepository.getFieldByID(field_id);
     }
 
