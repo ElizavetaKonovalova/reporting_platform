@@ -15,11 +15,20 @@ import java.util.*;
 @Repository
 public class NumberDataRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public NumberDataRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
-    private final ParticipantRepository participantRepository = new ParticipantRepository();
-    private final FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository();
+
+    @Autowired
+    private final ParticipantRepository participantRepository = new ParticipantRepository(jdbcTemplate);
+
+    @Autowired
+    private final FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository(jdbcTemplate);
 
 
     /* CREATORS */

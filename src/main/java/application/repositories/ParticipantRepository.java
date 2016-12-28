@@ -16,10 +16,17 @@ import java.util.TimeZone;
 @Repository
 public class ParticipantRepository {
 
+    private JdbcTemplate jdbcTemplate;
+
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
-    private JobRepository jobRepository = new JobRepository();
-    private JobStructuralMapRepository jobStructuralMapRepository = new JobStructuralMapRepository();
+    public ParticipantRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    private JobRepository jobRepository = new JobRepository(jdbcTemplate);
+    @Autowired
+    private JobStructuralMapRepository jobStructuralMapRepository = new JobStructuralMapRepository(jdbcTemplate);
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
 

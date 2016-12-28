@@ -18,11 +18,21 @@ import java.util.UUID;
 @Repository
 public class DemoDataRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository();
-    private ParticipantRepository participantRepository = new ParticipantRepository();
-    private CohortRepository cohortRepository = new CohortRepository();
+
+    @Autowired
+    public DemoDataRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    private FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository(jdbcTemplate);
+
+    @Autowired
+    private ParticipantRepository participantRepository = new ParticipantRepository(jdbcTemplate);
+
+    @Autowired
+    private CohortRepository cohortRepository = new CohortRepository(jdbcTemplate);
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
     private String date_modified_formated = sampledate.format(new java.util.Date());
 

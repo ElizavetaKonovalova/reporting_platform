@@ -12,11 +12,10 @@ import java.sql.SQLException;
 @Repository("surveyTypes")
 public class SurveyTypeRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    public SurveyTypeRepository() {
+    @Autowired
+    public SurveyTypeRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = new JdbcTemplate();
     }
 

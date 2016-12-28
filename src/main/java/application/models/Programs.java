@@ -12,9 +12,11 @@ public class Programs {
     @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
-    @Column(length = 100) @Size(max = 100)
+    @Column(length = 100, nullable = false)
+    @Size(max = 100)
     private String PROGRAM_NAME;
-    @Column(length = 100) @Size(max = 100)
+    @Column(length = 100, nullable = false)
+    @Size(max = 100)
     private String MODULE_NAME;
     @OneToMany(mappedBy = "PROGRAM", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, targetEntity = FieldRegistry.class)

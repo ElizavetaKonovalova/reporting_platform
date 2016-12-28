@@ -2,10 +2,12 @@ package application.repositories;
 
 import application.models.Programs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,8 +15,12 @@ import java.util.List;
 @Repository
 public class ProgramRepository {
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    protected JdbcTemplate jdbcTemplate;
+    public ProgramRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
 
     /* GETTERS */
@@ -28,14 +34,32 @@ public class ProgramRepository {
         } catch (Exception e) { return new Programs(); }
     }
 
-    /* Find a program by its name */
-    public Programs getProgramByName(String program_name) {
+    /* Find a program by its program name */
+    public Programs getProgramByProgName(String program_name) {
         try {
             return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ?",
                     programsRowMapper, program_name);
         } catch (Exception e) { return new Programs(); }
     }
 
+    /* Find a program by its module name */
+    public Programs getProgramByModName(String module_name) {
+        try {
+            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE module_name = ?",
+                    programsRowMapper, module_name);
+        } catch (Exception e) { return new Programs(); }
+    }
+
+
+    /* REMOVALS */
+
+    /* Remove a combination program module by both names */
+    public void removeProgramByNames(String program_name, String module_name) {
+        Long program_id = this.getProgramIDByNames(program_name, module_name);
+        if(program_id != 0) {
+            this.jdbcTemplate.update("DELETE FROM programs WHERE db_id = ?", program_id);
+        }
+    }
 
     /* CREATORS */
 
@@ -52,14 +76,11 @@ public class ProgramRepository {
 
     /* Find a Program id in the Program table based on a parsed name */
     public Long getProgramIDByNames(String program_name, String module_name) {
-        String query = "SELECT * FROM programs WHERE program_name = ? AND module_name = ?";
         try {
-            /* Find a program with a parsed name */
-            List<Programs> programs = this.jdbcTemplate.query(query, programsRowMapper, program_name, module_name);
-            if(programs.size() == 0) {
-                return 0L;
-            } else { return programs.get(0).getDB_ID(); }
-        } catch (Exception e) { return 0L;}
+             Programs programs = this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ? AND module_name = ?",
+                    programsRowMapper, program_name, module_name);
+            return programs.getDB_ID();
+        } catch (Exception e) { return 0L; }
     }
 
 

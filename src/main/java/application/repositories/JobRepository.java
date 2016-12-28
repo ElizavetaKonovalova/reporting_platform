@@ -14,10 +14,17 @@ import java.util.*;
 @Repository
 public class JobRepository  {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private OrganisationRepository organisationRepository = new OrganisationRepository();
-    private SurveyTypeRepository surveyTypeRepository;
+
+    @Autowired
+    public JobRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    private OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
+    @Autowired
+    private SurveyTypeRepository surveyTypeRepository = new SurveyTypeRepository(jdbcTemplate);
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
 
@@ -104,7 +111,6 @@ public class JobRepository  {
 
     /* Select all jobs with a Survey Type Name */
     public List<Jobs> getJobsBySurveyTypeName(String type_name) {
-        this.surveyTypeRepository = new SurveyTypeRepository();
         SurveyTypes surveyTypes = this.surveyTypeRepository.surveyTypeExist(type_name);
         if(surveyTypes.getTYPE_NAME() != null) {
             return this.jdbcTemplate.query("SELECT * FROM jobs WHERE surveytype_id = ?", jobMapper, surveyTypes.getSURVEYTYPE_ID());

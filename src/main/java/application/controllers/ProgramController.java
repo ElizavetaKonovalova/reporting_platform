@@ -14,15 +14,29 @@ public class ProgramController {
     @Autowired
     private ProgramRepository programRepository;
 
-    @RequestMapping(value = "gname", produces = "application/json")
-    public Programs getProgramByName(@RequestParam("name") String program_name) {
-        return this.programRepository.getProgramByName(program_name);
+    /* GETTERS */
+
+    @RequestMapping(value = "get", produces = "application/json")
+    public Programs get(@RequestParam("value") String value, @RequestParam("target") String target) {
+        switch (target) {
+            case "prog" : return this.programRepository.getProgramByProgName(value);
+            case "mod" : return this.programRepository.getProgramByModName(value);
+            case "id": return this.programRepository.getProgramByID(value);
+            default: return new Programs();
+        }
     }
 
-    @RequestMapping(value = "gid", produces = "application/json")
-    public Programs getProgramByID(@RequestParam("id") String program_id) {
-        return this.programRepository.getProgramByID(program_id);
+
+    /* REMOVALS */
+
+
+    @RequestMapping(value = {"/remove","/delete"}, produces = "application/json")
+    public void remove(@RequestParam("pname") String program_name, @RequestParam("mname") String module_name) {
+        this.programRepository.removeProgramByNames(program_name, module_name);
     }
+
+
+    /* CREATORS */
 
     @RequestMapping(value = "create", produces = "application/json")
     public String create(@RequestParam("pname") String program_name, @RequestParam("mname") String module_name) throws Exception {

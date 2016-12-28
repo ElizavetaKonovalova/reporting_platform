@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public class OrganisationRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public OrganisationRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /* GETTERS */
 

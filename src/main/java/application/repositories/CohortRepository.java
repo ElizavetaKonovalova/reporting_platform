@@ -14,8 +14,12 @@ import java.util.List;
 @Repository
 public class CohortRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public CohortRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /* CREATORS */
 

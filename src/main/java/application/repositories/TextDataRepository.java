@@ -1,7 +1,5 @@
 package application.repositories;
 
-import application.models.FieldRegistry;
-import application.models.Participants;
 import application.models.TextData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,10 +15,18 @@ import java.util.*;
 @Repository
 public class TextDataRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository();
-    private ParticipantRepository participantRepository = new ParticipantRepository();
+
+    @Autowired
+    public TextDataRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+
+    @Autowired
+    private FieldRegistryRepository fieldRegistryRepository = new FieldRegistryRepository(jdbcTemplate);
+    @Autowired
+    private ParticipantRepository participantRepository = new ParticipantRepository(jdbcTemplate);
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
 
 

@@ -13,9 +13,12 @@ import java.util.List;
 @Repository
 public class JobStructuralMapRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public JobStructuralMapRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /* GETTERS */
 

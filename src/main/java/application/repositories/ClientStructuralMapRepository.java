@@ -13,9 +13,12 @@ import java.util.List;
 @Repository
 public class ClientStructuralMapRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    public ClientStructuralMapRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /* GETTERS */
 
