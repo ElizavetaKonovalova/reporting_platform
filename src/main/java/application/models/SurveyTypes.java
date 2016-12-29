@@ -1,6 +1,7 @@
 package application.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -11,8 +12,11 @@ public class SurveyTypes {
     @Column(name ="surveytype_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long SURVEYTYPE_ID;
-    @Column(unique = true)
+    @Column(nullable = false, length = 100)
+    @Size(max = 100)
     private String SUBTYPE_NAME;
+    @Column(nullable = false, length = 100)
+    @Size(max = 100)
     private String TYPE_NAME;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "SURVEY_SUBTYPEID")
     private List<Jobs> JOBS;
