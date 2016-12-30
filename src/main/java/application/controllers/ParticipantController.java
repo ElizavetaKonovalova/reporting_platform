@@ -15,7 +15,8 @@ public class ParticipantController {
 
     @RequestMapping(value = "create", produces = "application/json")
     public String create(@RequestParam("name") String participant_name, @RequestParam("jc") String job_code,
-                         @RequestParam("pas") String password, @RequestParam("stat") String status,
+                         @RequestParam(value = "pas", required = false) String password,
+                         @RequestParam(value = "stat", required = false) String status,
                          @RequestParam("email") String participant_email, @RequestParam("wuc") String wu_code) throws Exception {
         return this.participantRepository.create(participant_email, participant_name, job_code, password, status, wu_code);
     }

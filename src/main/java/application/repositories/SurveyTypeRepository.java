@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,6 +18,11 @@ public class SurveyTypeRepository {
     @Autowired
     public SurveyTypeRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = new JdbcTemplate();
+    }
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 

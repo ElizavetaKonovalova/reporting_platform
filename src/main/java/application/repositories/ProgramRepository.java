@@ -15,7 +15,12 @@ import java.util.List;
 @Repository
 public class ProgramRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Autowired
     public ProgramRepository(JdbcTemplate jdbcTemplate) {

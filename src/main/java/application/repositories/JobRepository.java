@@ -6,6 +6,8 @@ import application.models.SurveyTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
 import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
 import java.sql.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,11 @@ public class JobRepository  {
     @Autowired
     public JobRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Autowired

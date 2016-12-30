@@ -17,20 +17,24 @@ public class Participants {
     @Column(length = 100) @Size(max = 100)
     private String PARTICIPANT_NAME;
 
-    @Column(length = 100, unique = true) @Size(max = 100)
+    @Column(length = 100, unique = true)
+    @Size(max = 100)
     private String PARTICIPANT_EMAIL;
-
-    @Column(length = 40) @Size(max = 40)
     private String PASSWORD;
 
-    private char STATUS;
+    @Column(length = 40, nullable = false)
+    @Size(max = 40)
+    private String STATUS;
 
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false,
+            nullable = false)
     private Long WU_CODE;
 
-    @Column(insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false,
+            nullable = false)
     private Long JOB_ID;
 
+    @Column(nullable = false)
     private Date DATE_MODIFIED;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -57,7 +61,7 @@ public class Participants {
     public String getPARTICIPANT_NAME() { return this.PARTICIPANT_NAME; }
     public String getPARTICIPANT_EMAIL() { return this.PARTICIPANT_EMAIL; }
     public String getPASSWORD() { return this.PASSWORD; }
-    public char getSTATUS() { return this.STATUS; }
+    public String getSTATUS() { return this.STATUS; }
     public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
     public Long getWU_CODE() { return this.WU_CODE; }
 
@@ -70,7 +74,7 @@ public class Participants {
     public void setPARTICIPANT_NAME( String participant_name ) { this.PARTICIPANT_NAME = participant_name;}
     public void setPARTICIPANT_EMAIL( String participant_email ) { this.PARTICIPANT_EMAIL = participant_email;}
     public void setPASSWORD( String password ) { this.PASSWORD = password;}
-    public void setSTATUS( char status ) { this.STATUS = status;}
+    public void setSTATUS( String status ) { this.STATUS = status;}
     public void setDATE_MODIFIED( Date date_modified ) { this.DATE_MODIFIED = date_modified;}
     public void setWU_CODE(Long wu_code) { this.WU_CODE = wu_code; }
 }

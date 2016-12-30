@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,6 +16,11 @@ import java.util.List;
 public class JobStructuralMapRepository {
 
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Autowired
     public JobStructuralMapRepository(JdbcTemplate jdbcTemplate) {
@@ -148,7 +155,7 @@ public class JobStructuralMapRepository {
     public Long isWUExists(Long job_id, String wu_code) {
         try {
             JobStructuralMaps jobs = this.jdbcTemplate.queryForObject(
-                    "SELECT wu_code FROM job_structural_maps WHERE job_id = ? AND wu_code = ?",
+                    "SELECT * FROM job_structural_maps WHERE job_id = ? AND wu_code = ?",
                     wuMapper, job_id, Long.parseLong(wu_code));
             return jobs.getWU_CODE();
         } catch (Exception e) { return 0L; }
