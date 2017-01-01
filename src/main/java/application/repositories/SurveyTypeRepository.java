@@ -102,6 +102,7 @@ public class SurveyTypeRepository {
             surveyTypes.setSURVEYTYPE_ID(rs.getLong("id"));
             surveyTypes.setSUBTYPE_NAME(rs.getString("subtype_name"));
             surveyTypes.setTYPE_NAME(rs.getString("type_name"));
+            surveyTypes.setDATE_MODIFIED(rs.getDate("date_modified"));
             return surveyTypes;
         }
     };

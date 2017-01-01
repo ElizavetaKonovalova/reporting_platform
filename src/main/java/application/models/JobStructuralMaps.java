@@ -2,6 +2,7 @@ package application.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class JobStructuralMaps {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
 
+    @Column(nullable = false)
+    private Date DATE_MODIFIED;
     private Long WU_CODE;
 
     @Column(nullable = false, length = 100) @Size(max = 100)
@@ -43,6 +46,7 @@ public class JobStructuralMaps {
     public String getNAME() { return this.WU_NAME; }
     public ClientsStructuralMaps getWU_ID() { return this.WU_ID; }
     public Long getWU_CODE() { return this.WU_CODE; }
+    public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
     public String getWU_LEVEL_ZERO() { return this.WU_LEVEL_ZERO; }
     public String getWU_LEVEL_ONE() { return this.WU_LEVEL_ONE; }
     public String getCOHORT() { return this.COHORT; }
@@ -60,6 +64,7 @@ public class JobStructuralMaps {
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
     public void setJOB_ID(Long id) { this.JOB_ID = id; }
+    public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
     public void setPARTICIPANT( Participants participant ) {this.PARTICIPANTS_PER_WU.add(participant); }
 
 }

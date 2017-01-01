@@ -94,6 +94,7 @@ public class OrganisationRepository {
             organisation.setCLIENT_ID(rs.getLong("client_id"));
             organisation.setORG_NAME(rs.getString("org_name"));
             organisation.setCLIENT_NAME(rs.getString("client_name"));
+            organisation.setDATE_MODIFIED(rs.getDate("date_modified"));
             return organisation;
         }
     };

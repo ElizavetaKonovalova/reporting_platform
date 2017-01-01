@@ -264,6 +264,7 @@ public class FieldRegistryRepository {
             fieldRegistry.setFIELD_NAME(rs.getString("field_name"));
             fieldRegistry.setPROGRAM_MOD_ID(rs.getLong("program_mod_id"));
             fieldRegistry.setTYPE(rs.getString("type"));
+            fieldRegistry.setDATE_MODIFIED(rs.getDate("date_modified"));
             return fieldRegistry;
         }
     };

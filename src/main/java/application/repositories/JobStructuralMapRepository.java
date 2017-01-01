@@ -164,16 +164,17 @@ public class JobStructuralMapRepository {
     /* Map data from the database to the JobStructuralMaps model */
     private static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
         public JobStructuralMaps mapRow(ResultSet rs, int rowNum) throws SQLException {
-            JobStructuralMaps JobStructuralMaps = new JobStructuralMaps();
-            JobStructuralMaps.setDB_ID(rs.getLong("db_id"));
-            JobStructuralMaps.setCOHORT(rs.getString("cohort"));
-            JobStructuralMaps.setDENOMINATOR(rs.getInt("denominator"));
-            JobStructuralMaps.setWU_LEVEL_ONE(rs.getString("wu_level_one"));
-            JobStructuralMaps.setWU_LEVEL_ZERO(rs.getString("wu_level_zero"));
-            JobStructuralMaps.setNAME(rs.getString("wu_name"));
-            JobStructuralMaps.setWU_CODE(rs.getLong("wu_code"));
-            JobStructuralMaps.setJOB_ID(rs.getLong("job_id"));
-            return JobStructuralMaps;
+            JobStructuralMaps jobStructuralMaps = new JobStructuralMaps();
+            jobStructuralMaps.setDB_ID(rs.getLong("db_id"));
+            jobStructuralMaps.setCOHORT(rs.getString("cohort"));
+            jobStructuralMaps.setDENOMINATOR(rs.getInt("denominator"));
+            jobStructuralMaps.setWU_LEVEL_ONE(rs.getString("wu_level_one"));
+            jobStructuralMaps.setWU_LEVEL_ZERO(rs.getString("wu_level_zero"));
+            jobStructuralMaps.setNAME(rs.getString("wu_name"));
+            jobStructuralMaps.setWU_CODE(rs.getLong("wu_code"));
+            jobStructuralMaps.setJOB_ID(rs.getLong("job_id"));
+            jobStructuralMaps.setDATE_MODIFIED(rs.getDate("date_modified"));
+            return jobStructuralMaps;
         }
     };
 }

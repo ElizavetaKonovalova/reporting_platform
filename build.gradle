@@ -2,6 +2,7 @@ group 'bpa'
 version '1.0-SNAPSHOT'
 
 buildscript {
+
     repositories {
         mavenCentral()
     }
@@ -20,6 +21,11 @@ repositories {
     mavenCentral()
 }
 
+//configurations.all {
+//    exclude group: "commons-logging"
+//    exclude group: "spring-boot-starter-logging"
+//}
+
 jar {
     baseName = 'online_reporting'
     version = '0.1.0'
@@ -33,10 +39,13 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-test')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile ('org.springframework.boot:spring-boot-starter-test')
+    compile ('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile ('org.springframework.boot:spring-boot-starter-data-rest')
     compile ('org.springframework.boot:spring-boot-starter-security')
-    compile('org.postgresql:postgresql')
-    compile("com.h2database:h2")
+    compile ('org.postgresql:postgresql')
+    compile ('com.h2database:h2')
+    compile ('org.slf4j:jcl-over-slf4j:1.7+')
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.7'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.7'
 }

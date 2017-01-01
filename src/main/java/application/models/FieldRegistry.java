@@ -4,6 +4,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +23,8 @@ public class FieldRegistry {
     @Column(length = 100, nullable = false, unique = true)
     @Size(max = 100)
     private String FIELD_NAME;
-
+    @Column(nullable = false)
+    private Date DATE_MODIFIED;
     private char TYPE;
 
     @Column(length = 200) @Size(max = 200)
@@ -60,6 +62,7 @@ public class FieldRegistry {
     public List<TextData> getTEXT_RESPONSES() { return this.TEXT_RESPONSES; }
     public List<NumberData> getNUMBER_RESPONSES() { return this.NUMBER_RESPONSES; }
     public List<DemoData> getDEMO_RESPONSES() { return this.DEMO_RESPONSES; }
+    public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
 
     /* Simple setters */
     public void setFIELD_ID(UUID field_id) { this.FIELD_ID = field_id; }
@@ -69,6 +72,7 @@ public class FieldRegistry {
     public void setFIELD_DESCRIPTION_ONE(String field_description_one) { this.FIELD_DESCRIPTION_ONE = field_description_one; }
     public void setFIELD_DESCRIPTION_TWO(String field_description_two) { this.FIELD_DESCRIPTION_TWO = field_description_two; }
     public void setFIELD_DESCRIPTION_THREE(String field_description_three) { this.FIELD_DESCRIPTION_THREE = field_description_three; }
+    public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
     public void setPROGRAM(Programs program) { this.PROGRAM = program; }
     public void setTEXT_RESPONSES(TextData text_responses) { this.TEXT_RESPONSES.add(text_responses); }
     public void setNUMBER_RESPONSES(NumberData number_responses) { this.NUMBER_RESPONSES.add(number_responses); }

@@ -2,6 +2,7 @@ package application.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -48,6 +49,8 @@ public class ClientsStructuralMaps {
     private String WU_LEVEL_FIVE;
     @Column(length = 100) @Size(max = 100)
     private String COHORT;
+    @Column(nullable = false)
+    private Date DATE_MODIFIED;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "CLIENT_ID")
@@ -79,6 +82,7 @@ public class ClientsStructuralMaps {
     public String getNICHE() { return this.NICHE; }
     public Long getCLIENT() { return this.CLIENT.getCLIENT_ID(); }
     public Set<JobStructuralMaps> getJOBS_STRUCTURAL_MAPS() { return this.JOBS_STRUCTURAL_MAPS; }
+    private Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
 
     public void setNAME( String name ) { this.WU_NAME = name; }
     public void setMATRIX_ONE(String matrix) { this.MATRIX_ONE = matrix; }
@@ -100,4 +104,5 @@ public class ClientsStructuralMaps {
     public void setNICHE(String niche) { this.NICHE = niche; }
     public void setCLIENT(Long client) { this.CLIENT.setCLIENT_ID(client); }
     public void setJOBS_STRUCTURAL_MAPS(JobStructuralMaps jobs_structural_maps) { this.JOBS_STRUCTURAL_MAPS.add(jobs_structural_maps); }
+    public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
 }

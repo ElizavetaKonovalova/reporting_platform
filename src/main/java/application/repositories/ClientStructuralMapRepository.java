@@ -46,23 +46,20 @@ public class ClientStructuralMapRepository {
     /* Select a Work Unit by its Work Unit ID */
     public ClientsStructuralMaps getWorkUnitByWUID(String wuid) {
         try {
-            Integer workunitid = Integer.parseInt(wuid);
-            String query = "SELECT * FROM client_structural_maps WHERE wu_id = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, workunitid);
+            return this.jdbcTemplate.queryForObject( "SELECT * FROM client_structural_maps WHERE wu_id = ?",
+                    wuMapper, Integer.parseInt(wuid));
         } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
     /* Select Work Units by Level */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByLevel(String level) {
-        String query = "SELECT * FROM client_structural_maps WHERE ? IN (wu_level_zero, wu_level_one, " +
-                "wu_level_two, wu_level_three, wu_level_four, wu_level_five)";
-        return this.jdbcTemplate.query( query, wuMapper, level);
+        return this.jdbcTemplate.query( "SELECT * FROM client_structural_maps WHERE ? IN (wu_level_zero, wu_level_one, " +
+                "wu_level_two, wu_level_three, wu_level_four, wu_level_five)", wuMapper, level);
     }
 
     /* Select Work Units by their Cohort */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByCohort(String wucohort) {
-        String query = "SELECT * FROM client_structural_maps WHERE cohort = ?";
-        return this.jdbcTemplate.query( query, wuMapper, wucohort);
+        return this.jdbcTemplate.query( "SELECT * FROM client_structural_maps WHERE cohort = ?", wuMapper, wucohort);
     }
 
     /* Select Work Units by their Matrix */
@@ -296,6 +293,7 @@ public class ClientStructuralMapRepository {
             client_structural_maps.setWU_LEVEL_ZERO(rs.getString("wu_level_zero"));
             client_structural_maps.setNAME(rs.getString("wu_name"));
             client_structural_maps.setCLIENT(rs.getLong("client_id"));
+            client_structural_maps.setDATE_MODIFIED(rs.getDate("date_modified"));
             return client_structural_maps;
         }
     };

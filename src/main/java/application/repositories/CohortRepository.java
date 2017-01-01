@@ -153,6 +153,7 @@ public class CohortRepository {
             cohorts.setCOHORT_NAME(rs.getString("cohort_name"));
             cohorts.setDESCRIPTION(rs.getString("description"));
             cohorts.setPARENT_ID(rs.getLong("parent_id"));
+            cohorts.setDATE_MODIFIED(rs.getDate("date_modified"));
             return cohorts;
         }
     };

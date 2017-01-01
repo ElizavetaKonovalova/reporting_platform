@@ -33,6 +33,7 @@ public class DemoData {
             updatable = false, insertable = false)
     private Long DEMO_COHORT_ID;
 
+    @Column(nullable = false)
     private Date DATE_MODIFIED;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Cohorts.class,

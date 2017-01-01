@@ -433,6 +433,7 @@ public class JobRepository  {
                 job.setJOB_CODE(rs.getString("job_code"));
                 job.setTARGET_RESPONSE_RATE(rs.getShort("target_response_rate"));
                 job.setJOB_NAME(rs.getString("job_name"));
+                job.setDATE_MODIFIED(rs.getDate("date_modified"));
                 return job;
         }
     };

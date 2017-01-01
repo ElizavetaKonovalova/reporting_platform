@@ -96,6 +96,7 @@ public class ProgramRepository {
             programs.setDB_ID(rs.getLong("db_id"));
             programs.setPROGRAM_NAME(rs.getString("program_name"));
             programs.setMODULE_NAME(rs.getString("module_name"));
+            programs.setDATE_MODIFIED(rs.getDate("date_modified"));
             return programs;
         }
     };

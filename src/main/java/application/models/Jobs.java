@@ -24,6 +24,8 @@ public class Jobs {
     private Date CENSUS_END;
     private Date DELIVERY_DATE;
     private Date PRESENTATION_DATE;
+    @Column(nullable = false)
+    private Date DATE_MODIFIED;
     @Column(nullable = false, columnDefinition = "CHAR NOT NULL DEFAULT 'A'")
     private char STATUS;
     private Integer SAMPLE_SIZE;
@@ -58,6 +60,7 @@ public class Jobs {
     public Short getRESPONSE_RATE() { return this.RESPONSE_RATE; }
     public Short getTARGET_RESPONSE_RATE() { return this.TARGET_RESPONSE_RATE; }
     public Long getJOB_ID() { return this.JOB_ID; }
+    public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
     public SurveyTypes getSURVEY_SUBTYPEID() { return this.SURVEY_SUBTYPEID; }
     public List<Participants> getPARTICIPANTS() { return this.PARTICIPANTS; }
 
@@ -76,6 +79,7 @@ public class Jobs {
     public void setRESPONSE_RATE(Short responserate ) { this.RESPONSE_RATE = responserate; }
     public void setTARGET_RESPONSE_RATE(Short target_response_rate ) { this.TARGET_RESPONSE_RATE = target_response_rate; }
     public void setJOB_ID(Long id) { this.JOB_ID = id; }
+    public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
     public void setSURVEY_SUBTYPEID(SurveyTypes id) { this.SURVEY_SUBTYPEID = id; }
     public void setPARTICIPANTS(Participants participants) {this.PARTICIPANTS.add(participants);}
 }

@@ -2,6 +2,7 @@ package application.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,8 @@ public class Cohorts {
     @Column(length = 100, nullable = false, unique = true)
     @Size(max = 100)
     private String COHORT_NAME;
-
+    @Column(nullable = false)
+    private Date DATE_MODIFIED;
     private Long PARENT_ID;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
@@ -29,6 +31,7 @@ public class Cohorts {
 
     /* Simple getters */
     public Long getCOHORT_ID() { return this.COHORT_ID; }
+    public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
     public Long getPARENT_ID() { return this.PARENT_ID; }
     public String getDESCRIPTION() { return this.DESCRIPTION; }
     public String getCOHORT_NAME() { return this.COHORT_NAME; }
@@ -38,4 +41,5 @@ public class Cohorts {
     public void setDESCRIPTION( String description ) { this.DESCRIPTION = description; }
     public void setCOHORT_NAME( String cohort_name ) { this.COHORT_NAME = cohort_name; }
     public void setPARENT_ID( Long parent_id ) { this.PARENT_ID = parent_id; }
+    public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
 }

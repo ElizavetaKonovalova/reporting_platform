@@ -33,6 +33,7 @@ public class NumberData {
     @JoinColumn(name = "participant_id", referencedColumnName = "participant_id")
     private Participants PARTICIPANTS;
 
+    @Column(nullable = false)
     private Date DATE_MODIFIED;
 
     private Short RESPONSE_VALUE;

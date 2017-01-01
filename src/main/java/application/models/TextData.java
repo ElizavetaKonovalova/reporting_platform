@@ -30,7 +30,7 @@ public class TextData {
 
     @Column(length = 600) @Size(max = 600)
     private String RESPONSE_VALUE;
-
+    @Column(nullable = false)
     private Date DATE_MODIFIED;
     private String SHADOW_STATUS;
 
