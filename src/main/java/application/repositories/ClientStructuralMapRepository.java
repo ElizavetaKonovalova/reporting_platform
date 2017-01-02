@@ -7,9 +7,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class ClientStructuralMapRepository {
@@ -25,6 +28,11 @@ public class ClientStructuralMapRepository {
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    @Autowired
+    private final OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
+    private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+    private String date_modified_formated = sampledate.format(new java.util.Date());
 
     /* GETTERS */
 
@@ -153,121 +161,183 @@ public class ClientStructuralMapRepository {
 
 
     /* Null Niche */
-    public void nullNiche(String niche) {
-        String query = "UPDATE client_structural_maps SET niche = NULL WHERE niche = ?";
-        this.jdbcTemplate.update(query, niche);
+    public void nullNiche(String niche) throws Exception {
+        String query = "UPDATE client_structural_maps SET niche = NULL, date_modified = ?  WHERE niche = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), niche);
     }
 
     /* Null Matrix One by its Name */
-    public void nullMatrixOne(String matrix_one) {
-        String query = "UPDATE client_structural_maps SET matrix_one = NULL WHERE matrix_one = ?";
-        this.jdbcTemplate.update(query, matrix_one);
+    public void nullMatrixOne(String matrix_one) throws Exception {
+        String query = "UPDATE client_structural_maps SET matrix_one = NULL, date_modified = ? WHERE matrix_one = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix_one);
     }
 
     /* Null Matrix Two by its Name */
-    public void nullMatrixTwo(String matrix_two) {
-        String query = "UPDATE client_structural_maps SET matrix_two = NULL WHERE matrix_two = ?";
-        this.jdbcTemplate.update(query, matrix_two);
+    public void nullMatrixTwo(String matrix_two) throws Exception {
+        String query = "UPDATE client_structural_maps SET matrix_two = NULL, date_modified = ? WHERE matrix_two = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix_two);
     }
 
     /* Null Matrix Three by its Name */
-    public void nullMatrixThree(String matrix) {
-        String query = "UPDATE client_structural_maps SET matrix_three = NULL WHERE matrix_three = ?";
-        this.jdbcTemplate.update(query, matrix);
+    public void nullMatrixThree(String matrix) throws Exception {
+        String query = "UPDATE client_structural_maps SET matrix_three = NULL, date_modified = ? WHERE matrix_three = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Matrix Four by its Name */
-    public void nullMatrixFour(String matrix) {
-        String query = "UPDATE client_structural_maps SET matrix_four = NULL WHERE matrix_four = ?";
-        this.jdbcTemplate.update(query, matrix);
+    public void nullMatrixFour(String matrix) throws Exception {
+        String query = "UPDATE client_structural_maps SET matrix_four = NULL, date_modified = ? WHERE matrix_four = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Matrix Five by its Name */
-    public void nullMatrixFive(String matrix) {
-        String query = "UPDATE client_structural_maps SET matrix_five = NULL WHERE matrix_five = ?";
-        this.jdbcTemplate.update(query, matrix);
+    public void nullMatrixFive(String matrix) throws Exception {
+        String query = "UPDATE client_structural_maps SET matrix_five = NULL, date_modified = ? WHERE matrix_five = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Level Zero by its Name */
-    public void nullLevelZero(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_zero = NULL WHERE wu_level_zero = ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelZero(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_zero = NULL, date_modified = ? WHERE wu_level_zero = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level One by its Name */
-    public void nullLevelOne(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_one = NULL WHERE wu_level_one = ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelOne(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_one = NULL, date_modified = ? WHERE wu_level_one = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Two by its Name */
-    public void nullLevelTwo(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_two = NULL WHERE wu_level_two = ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelTwo(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_two = NULL, date_modified = ? WHERE wu_level_two = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Three by its Name */
-    public void nullLevelThree(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_three = NULL WHERE wu_level_three = ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelThree(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_three = NULL, date_modified = ? WHERE wu_level_three = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Four by its Name */
-    public void nullLevelFour(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_four = NULL WHERE wu_level_four= ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelFour(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_four = NULL, date_modified = ? WHERE wu_level_four= ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Five by its Name */
-    public void nullLevelFive(String level) {
-        String query = "UPDATE client_structural_maps SET wu_level_five = NULL WHERE wu_level_five = ?";
-        this.jdbcTemplate.update(query, level);
+    public void nullLevelFive(String level) throws Exception {
+        String query = "UPDATE client_structural_maps SET wu_level_five = NULL, date_modified = ? WHERE wu_level_five = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Cohort */
-    public void nullCohort(String cohort) {
-        String query = "UPDATE client_structural_maps SET cohort = NULL WHERE cohort = ?";
-        this.jdbcTemplate.update(query, cohort);
+    public void nullCohort(String cohort) throws Exception {
+        String query = "UPDATE client_structural_maps SET cohort = NULL, date_modified = ? WHERE cohort = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), cohort);
     }
 
     /* Null Sector */
-    public void nullSector(String sector) {
-        String query = "UPDATE client_structural_maps SET sector = NULL WHERE sector = ?";
-        this.jdbcTemplate.update(query, sector);
+    public void nullSector(String sector) throws Exception {
+        String query = "UPDATE client_structural_maps SET sector = NULL, date_modified = ? WHERE sector = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), sector);
     }
 
     /* Null Location */
-    public void nullLocation(String location) {
-        String query = "UPDATE client_structural_maps SET location = NULL WHERE location = ?";
-        this.jdbcTemplate.update(query, location);
+    public void nullLocation(String location) throws Exception {
+        String query = "UPDATE client_structural_maps SET location = NULL, date_modified = ? WHERE location = ?";
+        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), location);
     }
 
 
+    /* UPDATERS */
+
+
+    /* Update a Cohort by a database ID and a new Cohort Name */
+    /* Update a Location by a database ID */
+    /* Update a Matrix One by a database ID and a new Matrix Name */
+    /* Update a Matrix Two by a database ID and a new Matrix Name */
+    /* Update a Matrix Three by a database ID and a new Matrix Name */
+    /* Update a Matrix Four by a database ID and a new Matrix Name */
+    /* Update a Matrix Five by a database ID and a new Matrix Name */
+    /* Update a Niche by a database ID */
+    /* Update a Sector by a database ID */
+    /* Update a Client ID by a database ID and a new Client Name */
+    /* Update a Cohort by a database ID and a new Cohort Name */
+
+
+
     /* CREATORS */
+
+
+    /* Create a new table for a Client */
+    public String createAClientTable(String client_name) {
+
+        this.jdbcTemplate.execute("DROP TABLE IF EXISTS clients_structural_maps CASCADE;");
+
+        /* Check if a specified client exists */
+        Long check_client = this.organisationRepository.checkClientExists(client_name);
+
+        if(check_client != 0) {
+            try {
+                this.jdbcTemplate.execute("create table " + client_name.toLowerCase() + "_structural_map (\n" +
+                        " db_id  bigserial not null,\n cohort varchar(100),\n  date_modified date not null,\n" +
+                        " location varchar(50),\n matrix_five varchar(20),\n matrix_four varchar(20),\n" +
+                        " matrix_one varchar(20),\n matrix_three varchar(20),\n matrix_two varchar(20),\n" +
+                        " niche varchar(100),\n sector varchar(50),\n wu_id int4 not null,\n" +
+                        " wu_level_five varchar(100),\n wu_level_four varchar(100),\n wu_level_one varchar(100),\n" +
+                        " wu_level_three varchar(100),\n wu_level_two varchar(100),\n wu_level_zero varchar(100),\n" +
+                        " wu_name varchar(100) not null,\n client_id SERIAL not null,\n primary key (db_id)\n);" +
+
+                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
+                        "CustomIndex unique (wu_id);" +
+
+                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
+                        "_clients_fk \n foreign key (client_id) \n references clients; " +
+
+                        "alter table job_structural_maps \n add constraint " + client_name.toLowerCase() + "_job_structural_map_fk \n" +
+                        "foreign key (wu_id) \n references " + client_name.toLowerCase() + "_structural_map (wu_id)");
+
+                return "Created";
+
+            } catch (Exception e) { return "A table for this client already exists!"; }
+        } else { return "There is no such client in the database!";}
+    }
+
 
 
     /* Create a Work Unit */
     public String create(String cohort, String location, String niche, String matrixone, String matrixtwo,
                        String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
                        String sector, String wu_level_five, String wu_level_four, String wu_level_one,
-                       String wu_level_three, String wu_level_two, String wu_level_zero, String client_id) throws Exception {
+                       String wu_level_three, String wu_level_two, String wu_level_zero, String client_name) throws Exception {
 
-        Integer client_id_int = Integer.parseInt(client_id);
-        Integer wu_id_int = Integer.parseInt(wu_id);
+        /* Check if a specified client exists */
+        Long check_client = this.organisationRepository.checkClientExists(client_name);
 
-        String query = "INSERT INTO client_structural_maps (cohort, location, " +
-                "matrix_five, matrix_four, matrix_one, matrix_three, matrix_two, niche, sector, wu_id, " +
-                "wu_level_five, wu_level_four, wu_level_one, wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id)" +
-                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        this.jdbcTemplate.update(query, cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
-                matrixtwo, niche, sector, wu_id_int, wu_level_five, wu_level_four, wu_level_one,
-                wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id_int);
+        if(check_client != 0) {
 
-        return "Created";
+            try {
+                this.jdbcTemplate.update("INSERT INTO client_structural_map (cohort, location, " +
+                                "matrix_five, matrix_four, matrix_one, matrix_three, matrix_two, niche, sector, wu_id, " +
+                                "wu_level_five, wu_level_four, wu_level_one, wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id, date_modified)" +
+                                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
+                        matrixtwo, niche, sector, Integer.parseInt(wu_id), wu_level_five, wu_level_four, wu_level_one,
+                        wu_level_three, wu_level_two, wu_level_zero, wu_name, check_client,
+                        new Date(sampledate.parse(date_modified_formated).getTime()));
+
+                return "Created";
+            } catch (Exception e) { return "There is no such table in the database!"; }
+        } else { return "There is no such client in the database!";}
     }
 
 
     /* HELPERS */
+
+    private Boolean checkClientStructuralMapAlreadyInDB() {
+        return false;
+    }
 
 
     /* Map data from the database to the ClientsStructuralMaps model */

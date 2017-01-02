@@ -36,7 +36,7 @@ public class OrganisationController {
 
     /* Create an organisation */
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("orgname") String orgname, @RequestParam("cname") String clientname) {
+    public String create(@RequestParam("orgname") String orgname, @RequestParam("cname") String clientname) throws Exception {
         List<Organisations>  organisations = this.organisationRepository.getOrgByClientName(clientname);
 
         if(organisations.size() != 0) { return "This organisation already exists"; }

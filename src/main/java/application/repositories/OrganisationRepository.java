@@ -6,9 +6,12 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class OrganisationRepository {
@@ -24,6 +27,9 @@ public class OrganisationRepository {
     public OrganisationRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+    private String date_modified_formated = sampledate.format(new java.util.Date());
 
     /* GETTERS */
 
@@ -50,9 +56,9 @@ public class OrganisationRepository {
     /* CREATORS */
 
     /* Create an organisation */
-    public void create(String orgname, String clientname) {
-        this.jdbcTemplate.update("INSERT INTO clients (org_name, client_name) VALUES (?,?)",
-                orgname, clientname);
+    public void create(String orgname, String clientname) throws Exception {
+        this.jdbcTemplate.update("INSERT INTO clients (org_name, client_name,date_modified) VALUES (?,?,?)",
+                orgname, clientname, new Date(sampledate.parse(date_modified_formated).getTime()));
     }
 
 

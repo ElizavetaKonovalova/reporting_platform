@@ -130,109 +130,118 @@ public class ClientStructuralMapController {
 
     /* Remove Matrix One by its Name */
     @RequestMapping(value = "rwumtx1", produces = "application/json")
-    public void removeMatrixOne(@RequestParam("name") String matrix_one) {
+    public void removeMatrixOne(@RequestParam("name") String matrix_one) throws Exception {
         this.clientStructuralMapRepository.nullMatrixOne(matrix_one);
     }
 
     /* Remove Matrix Two by its Name */
     @RequestMapping(value = "rwumtx2", produces = "application/json")
-    public void removeMatrixTwo(@RequestParam("name") String matrix_two) {
+    public void removeMatrixTwo(@RequestParam("name") String matrix_two) throws Exception {
         this.clientStructuralMapRepository.nullMatrixTwo(matrix_two);
     }
 
     /* Remove Matrix Three by its Name */
     @RequestMapping(value = "rwumtx3", produces = "application/json")
-    public void removeMatrixThree(@RequestParam("name") String matrix_three) {
+    public void removeMatrixThree(@RequestParam("name") String matrix_three) throws Exception {
         this.clientStructuralMapRepository.nullMatrixThree(matrix_three);
     }
 
     /* Remove Matrix Four by its Name */
     @RequestMapping(value = "rwumtx4", produces = "application/json")
-    public void removeMatrixFour(@RequestParam("name") String matrix) {
+    public void removeMatrixFour(@RequestParam("name") String matrix) throws Exception {
         this.clientStructuralMapRepository.nullMatrixFour(matrix);
     }
 
     /* Remove Matrix Five by its Name */
     @RequestMapping(value = "rwumtx5", produces = "application/json")
-    public void removeMatrixFive(@RequestParam("name") String matrix) {
+    public void removeMatrixFive(@RequestParam("name") String matrix) throws Exception {
         this.clientStructuralMapRepository.nullMatrixFive(matrix);
     }
 
     /* Remove Level Zero by its Name */
     @RequestMapping(value = "rwulvl0", produces = "application/json")
-    public void removeLevelZero(@RequestParam("name") String level) {
+    public void removeLevelZero(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelZero(level);
     }
 
     /* Remove Level One by its Name */
     @RequestMapping(value = "rwulvl1", produces = "application/json")
-    public void removeLevelOne(@RequestParam("name") String level) {
+    public void removeLevelOne(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelOne(level);
     }
 
     /* Remove Level Two by its Name */
     @RequestMapping(value = "rwulvl2", produces = "application/json")
-    public void removeLevelTwo(@RequestParam("name") String level) {
+    public void removeLevelTwo(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelTwo(level);
     }
 
     /* Remove Level Three by its Name */
     @RequestMapping(value = "rwulvl3", produces = "application/json")
-    public void removeLevelThree(@RequestParam("name") String level) {
+    public void removeLevelThree(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelThree(level);
     }
 
     /* Remove Level Two by its Name */
     @RequestMapping(value = "rwulvl4", produces = "application/json")
-    public void removeLevelFour(@RequestParam("name") String level) {
+    public void removeLevelFour(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelFour(level);
     }
 
     /* Remove Level Two by its Name */
     @RequestMapping(value = "rwulvl5", produces = "application/json")
-    public void removeLevelFive(@RequestParam("name") String level) {
+    public void removeLevelFive(@RequestParam("name") String level) throws Exception {
         this.clientStructuralMapRepository.nullLevelFive(level);
     }
 
     /* Remove Niche */
     @RequestMapping(value = "rniche", produces = "application/json")
-    public void removeNiche(@RequestParam("name") String niche) {
+    public void removeNiche(@RequestParam("name") String niche) throws Exception {
         this.clientStructuralMapRepository.nullNiche(niche);
     }
 
     /* Remove Cohort */
     @RequestMapping(value = "rcohort", produces = "application/json")
-    public void removeCohort(@RequestParam("name") String cohort) {
+    public void removeCohort(@RequestParam("name") String cohort) throws Exception {
         this.clientStructuralMapRepository.nullCohort(cohort);
     }
 
     /* Remove Sector */
     @RequestMapping(value = "rsector", produces = "application/json")
-    public void removeSector(@RequestParam("name") String sector) {
+    public void removeSector(@RequestParam("name") String sector) throws Exception {
         this.clientStructuralMapRepository.nullSector(sector);
     }
 
     /* Remove Location */
     @RequestMapping(value = "rloc", produces = "application/json")
-    public void removeLocation(@RequestParam("name") String location) {
+    public void removeLocation(@RequestParam("name") String location) throws Exception {
         this.clientStructuralMapRepository.nullLocation(location);
     }
 
 
 
     /* CREATORS */
+
+
+    /* Create a new Client Table */
+    @RequestMapping(value = "createtable", produces = "application/json")
+    public String createTable(@RequestParam("cname") String client_name) {
+        return this.clientStructuralMapRepository.createAClientTable(client_name);
+    }
+
+    /* Create a new Work Unit */
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
+    public String createWU(@RequestParam("cohort") String cohort, @RequestParam("loc") String location, @RequestParam("niche") String niche,
                        @RequestParam("m1") String matrixone, @RequestParam("m2") String matrixtwo,
                        @RequestParam("m3") String matrixthree, @RequestParam("m4") String matrixfour,
                        @RequestParam("m5") String matrixfive, @RequestParam("wun") String wu_name, @RequestParam("wuid") String wu_id,
                        @RequestParam("sector") String sector, @RequestParam("lvl0") String wu_level_zero,
                        @RequestParam("lvl1") String wu_level_one, @RequestParam("lvl2") String wu_level_two,
                        @RequestParam("lvl3") String wu_level_three, @RequestParam("lvl4") String wu_level_four,
-                       @RequestParam("lvl5") String wu_level_five, @RequestParam("cid") String client_id) throws Exception {
+                       @RequestParam("lvl5") String wu_level_five, @RequestParam("cname") String client_name) throws Exception {
 
         return this.clientStructuralMapRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
                 matrixfour, matrixfive, wu_name, wu_id, sector, wu_level_five, wu_level_four, wu_level_one, wu_level_three,
-                wu_level_two, wu_level_zero, client_id);
+                wu_level_two, wu_level_zero, client_name);
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "client_structural_maps", indexes = {@Index(name = "clienttrmapsIndex", unique = true, columnList = "wu_id")})
+@Table(indexes = {@Index(name = "clienttrmapsIndex", unique = true, columnList = "wu_id")})
 public class ClientsStructuralMaps {
 
     @Id
