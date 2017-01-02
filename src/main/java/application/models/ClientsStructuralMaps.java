@@ -51,16 +51,16 @@ public class ClientsStructuralMaps {
     private String COHORT;
     @Column(nullable = false)
     private Date DATE_MODIFIED;
+    @Column(nullable = false, insertable = false, updatable = false)
+    private Long CLIENT_ID;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "CLIENT_ID")
+    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "CLIENT_ID")
     private Organisations CLIENT;
 
     @Column(unique = true, nullable = false, name = "wu_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "WU_ID")
     private Set<JobStructuralMaps> JOBS_STRUCTURAL_MAPS;
-
-    public ClientsStructuralMaps() {}
 
     public String getNAME() { return this.WU_NAME; }
     public String getMATRIX_ONE() { return this.MATRIX_ONE; }
@@ -80,7 +80,7 @@ public class ClientsStructuralMaps {
     public String getLOCATION() { return this.LOCATION; }
     public String getSECTOR() { return this.SECTOR; }
     public String getNICHE() { return this.NICHE; }
-    public Long getCLIENT() { return this.CLIENT.getCLIENT_ID(); }
+    public Long getCLIENT_ID() { return this.CLIENT_ID; }
     public Set<JobStructuralMaps> getJOBS_STRUCTURAL_MAPS() { return this.JOBS_STRUCTURAL_MAPS; }
     private Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
 
@@ -102,7 +102,7 @@ public class ClientsStructuralMaps {
     public void setLOCATION(String location) { this.LOCATION = location; }
     public void setSECTOR(String sector) { this.SECTOR = sector; }
     public void setNICHE(String niche) { this.NICHE = niche; }
-    public void setCLIENT(Long client) { this.CLIENT.setCLIENT_ID(client); }
+    public void setCLIENT(Long client) { this.CLIENT_ID = client; }
     public void setJOBS_STRUCTURAL_MAPS(JobStructuralMaps jobs_structural_maps) { this.JOBS_STRUCTURAL_MAPS.add(jobs_structural_maps); }
     public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
 }

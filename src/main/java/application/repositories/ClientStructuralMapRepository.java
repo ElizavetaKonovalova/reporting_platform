@@ -37,67 +37,62 @@ public class ClientStructuralMapRepository {
     /* GETTERS */
 
     /* Select a Work Unit by its ID in the database */
-    public ClientsStructuralMaps getWorkUnitByDBID(String id) {
+    public ClientsStructuralMaps getWorkUnitByDBID(String id, String client_name) {
         try {
-            Long db_id_long = Long.parseLong(id);
-            String query = "SELECT * FROM client_structural_maps WHERE db_id = ?";
-            return this.jdbcTemplate.queryForObject( query, wuMapper, db_id_long);
+            return this.jdbcTemplate.queryForObject("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE db_id = ?",
+                    wuMapper, Long.parseLong(id));
         } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
     /* Select a Work Unit by its Name */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByName(String name) {
-        String query = "SELECT * FROM client_structural_maps WHERE wu_name = ?";
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByName(String name, String client_name) {
+        String query = "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_name = ?";
         return this.jdbcTemplate.query( query, wuMapper, name);
     }
 
     /* Select a Work Unit by its Work Unit ID */
-    public ClientsStructuralMaps getWorkUnitByWUID(String wuid) {
+    public ClientsStructuralMaps getWorkUnitByWUID(String wuid, String client_name) {
         try {
-            return this.jdbcTemplate.queryForObject( "SELECT * FROM client_structural_maps WHERE wu_id = ?",
+            return this.jdbcTemplate.queryForObject( "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_id = ?",
                     wuMapper, Integer.parseInt(wuid));
         } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
     /* Select Work Units by Level */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByLevel(String level) {
-        return this.jdbcTemplate.query( "SELECT * FROM client_structural_maps WHERE ? IN (wu_level_zero, wu_level_one, " +
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByLevel(String level, String client_name) {
+        return this.jdbcTemplate.query( "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE ? IN (wu_level_zero, wu_level_one, " +
                 "wu_level_two, wu_level_three, wu_level_four, wu_level_five)", wuMapper, level);
     }
 
     /* Select Work Units by their Cohort */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByCohort(String wucohort) {
-        return this.jdbcTemplate.query( "SELECT * FROM client_structural_maps WHERE cohort = ?", wuMapper, wucohort);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByCohort(String wucohort, String client_name) {
+        return this.jdbcTemplate.query( "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE cohort = ?", wuMapper, wucohort);
     }
 
     /* Select Work Units by their Matrix */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByMatrix(String matrix) {
-        String query = "SELECT * FROM client_structural_maps WHERE ? IN (matrix_one, matrix_two, matrix_three, matrix_four, matrix_five)";
-        return this.jdbcTemplate.query( query, wuMapper, matrix);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByMatrix(String matrix, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE ? IN (matrix_one, matrix_two," +
+                " matrix_three, matrix_four, matrix_five)", wuMapper, matrix);
     }
 
     /* Select Work Units by their Niche */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByNiche(String niche) {
-        String query = "SELECT * FROM client_structural_maps WHERE niche = ?";
-        return this.jdbcTemplate.query( query, wuMapper, niche);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByNiche(String niche, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE niche = ?", wuMapper, niche);
     }
 
     /* Select Work Units by their Sector */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsBySector(String sector) {
-        String query = "SELECT * FROM client_structural_maps WHERE sector = ?";
-        return this.jdbcTemplate.query( query, wuMapper, sector);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsBySector(String sector, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE sector = ?", wuMapper, sector);
     }
 
     /* Select Work Units by their Location */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByLocation(String location) {
-        String query = "SELECT * FROM client_structural_maps WHERE location = ?";
-        return this.jdbcTemplate.query( query, wuMapper, location);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByLocation(String location, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE location = ?", wuMapper, location);
     }
 
     /* Select Work Units by their Client ID */
-    public List<ClientsStructuralMaps> getClientsStructuralMapsByClientID(String client_id) {
-        String query = "SELECT * FROM client_structural_maps WHERE client_id = ?";
-        return this.jdbcTemplate.query( query, wuMapper, client_id);
+    public List<ClientsStructuralMaps> getClientsStructuralMapsByClientID(String client_id, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE client_id = ?", wuMapper, client_id);
     }
 
 
@@ -105,54 +100,43 @@ public class ClientStructuralMapRepository {
 
 
     /* Remove Work Units by Name */
-    public void removeWUByName(String wu_name) {
-        String query = "DELETE FROM client_structural_maps WHERE wu_name = ?";
-        this.jdbcTemplate.update(query, wu_name);
+    public void removeWUByName(String wu_name, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_name = ?", wu_name);
     }
 
     /* Remove Work Units by Work Unit ID */
-    public void removeWUByWUID(String wu_id) {
-        Integer wu_id_int = Integer.parseInt(wu_id);
-        String query = "DELETE FROM client_structural_maps WHERE wu_id = ?";
-        this.jdbcTemplate.update(query, wu_id);
+    public void removeWUByWUID(String wu_id, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_id = ?", Integer.parseInt(wu_id));
     }
 
     /* Remove Work Units by database ID */
-    public void removeWUByDBID(String db_id) {
-        Long db_id_long = Long.parseLong(db_id);
-        String query = "DELETE FROM client_structural_maps WHERE db_id = ?";
-        this.jdbcTemplate.update(query, db_id_long);
+    public void removeWUByDBID(String db_id, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE db_id = ?", Long.parseLong(db_id));
     }
 
     /* Remove Work Units by Client ID */
-    public void removeWUByClientID(String client_id) {
-        Integer client_id_int = Integer.parseInt(client_id);
-        String query = "DELETE FROM client_structural_maps WHERE client_id = ?";
-        this.jdbcTemplate.update(query, client_id_int);
+    public void removeWUByClientID(String client_id, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE client_id = ?", Integer.parseInt(client_id));
     }
 
     /* Remove Work Units by Location */
-    public void removeWUByLocation(String location) {
-        String query = "DELETE FROM client_structural_maps WHERE location = ?";
-        this.jdbcTemplate.update(query, location);
+    public void removeWUByLocation(String location, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE location = ?", location);
     }
 
     /* Remove Work Units by Cohort */
-    public void removeWUByCohort(String cohort) {
-        String query = "DELETE FROM client_structural_maps WHERE cohort = ?";
-        this.jdbcTemplate.update(query, cohort);
+    public void removeWUByCohort(String cohort, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE cohort = ?", cohort);
     }
 
     /* Remove Work Units by Sector */
-    public void removeWUBySector(String sector) {
-        String query = "DELETE FROM client_structural_maps WHERE sector = ?";
-        this.jdbcTemplate.update(query, sector);
+    public void removeWUBySector(String sector, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE sector = ?", sector);
     }
 
     /* Remove Work Units by Niche */
-    public void removeWUByNiche(String niche) {
-        String query = "DELETE FROM client_structural_maps WHERE niche = ?";
-        this.jdbcTemplate.update(query, niche);
+    public void removeWUByNiche(String niche, String client_name) {
+        this.jdbcTemplate.update("DELETE FROM " + client_name.toLowerCase() +"_structural_map WHERE niche = ?", niche);
     }
 
 
@@ -161,92 +145,92 @@ public class ClientStructuralMapRepository {
 
 
     /* Null Niche */
-    public void nullNiche(String niche) throws Exception {
-        String query = "UPDATE client_structural_maps SET niche = NULL, date_modified = ?  WHERE niche = ?";
-        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), niche);
+    public void nullNiche(String niche, String client_name) throws Exception {
+        this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() +"_structural_map SET niche = NULL, date_modified = ?  WHERE niche = ?",
+                new Date(sampledate.parse(date_modified_formated).getTime()), niche);
     }
 
     /* Null Matrix One by its Name */
-    public void nullMatrixOne(String matrix_one) throws Exception {
-        String query = "UPDATE client_structural_maps SET matrix_one = NULL, date_modified = ? WHERE matrix_one = ?";
-        this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix_one);
+    public void nullMatrixOne(String matrix_one, String client_name) throws Exception {
+        this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() +"_structural_map SET matrix_one = NULL, date_modified = ? WHERE matrix_one = ?",
+                new Date(sampledate.parse(date_modified_formated).getTime()), matrix_one);
     }
 
     /* Null Matrix Two by its Name */
-    public void nullMatrixTwo(String matrix_two) throws Exception {
-        String query = "UPDATE client_structural_maps SET matrix_two = NULL, date_modified = ? WHERE matrix_two = ?";
+    public void nullMatrixTwo(String matrix_two, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET matrix_two = NULL, date_modified = ? WHERE matrix_two = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix_two);
     }
 
     /* Null Matrix Three by its Name */
-    public void nullMatrixThree(String matrix) throws Exception {
-        String query = "UPDATE client_structural_maps SET matrix_three = NULL, date_modified = ? WHERE matrix_three = ?";
+    public void nullMatrixThree(String matrix, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET matrix_three = NULL, date_modified = ? WHERE matrix_three = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Matrix Four by its Name */
-    public void nullMatrixFour(String matrix) throws Exception {
-        String query = "UPDATE client_structural_maps SET matrix_four = NULL, date_modified = ? WHERE matrix_four = ?";
+    public void nullMatrixFour(String matrix, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET matrix_four = NULL, date_modified = ? WHERE matrix_four = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Matrix Five by its Name */
-    public void nullMatrixFive(String matrix) throws Exception {
-        String query = "UPDATE client_structural_maps SET matrix_five = NULL, date_modified = ? WHERE matrix_five = ?";
+    public void nullMatrixFive(String matrix, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET matrix_five = NULL, date_modified = ? WHERE matrix_five = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), matrix);
     }
 
     /* Null Level Zero by its Name */
-    public void nullLevelZero(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_zero = NULL, date_modified = ? WHERE wu_level_zero = ?";
+    public void nullLevelZero(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_zero = NULL, date_modified = ? WHERE wu_level_zero = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level One by its Name */
-    public void nullLevelOne(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_one = NULL, date_modified = ? WHERE wu_level_one = ?";
+    public void nullLevelOne(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_one = NULL, date_modified = ? WHERE wu_level_one = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Two by its Name */
-    public void nullLevelTwo(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_two = NULL, date_modified = ? WHERE wu_level_two = ?";
+    public void nullLevelTwo(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_two = NULL, date_modified = ? WHERE wu_level_two = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Three by its Name */
-    public void nullLevelThree(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_three = NULL, date_modified = ? WHERE wu_level_three = ?";
+    public void nullLevelThree(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_three = NULL, date_modified = ? WHERE wu_level_three = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Four by its Name */
-    public void nullLevelFour(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_four = NULL, date_modified = ? WHERE wu_level_four= ?";
+    public void nullLevelFour(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_four = NULL, date_modified = ? WHERE wu_level_four= ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Level Five by its Name */
-    public void nullLevelFive(String level) throws Exception {
-        String query = "UPDATE client_structural_maps SET wu_level_five = NULL, date_modified = ? WHERE wu_level_five = ?";
+    public void nullLevelFive(String level, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET wu_level_five = NULL, date_modified = ? WHERE wu_level_five = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), level);
     }
 
     /* Null Cohort */
-    public void nullCohort(String cohort) throws Exception {
-        String query = "UPDATE client_structural_maps SET cohort = NULL, date_modified = ? WHERE cohort = ?";
+    public void nullCohort(String cohort, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET cohort = NULL, date_modified = ? WHERE cohort = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), cohort);
     }
 
     /* Null Sector */
-    public void nullSector(String sector) throws Exception {
-        String query = "UPDATE client_structural_maps SET sector = NULL, date_modified = ? WHERE sector = ?";
+    public void nullSector(String sector, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() +"_structural_map SET sector = NULL, date_modified = ? WHERE sector = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), sector);
     }
 
     /* Null Location */
-    public void nullLocation(String location) throws Exception {
-        String query = "UPDATE client_structural_maps SET location = NULL, date_modified = ? WHERE location = ?";
+    public void nullLocation(String location, String client_name) throws Exception {
+        String query = "UPDATE " + client_name.toLowerCase() + "_structural_map SET location = NULL, date_modified = ? WHERE location = ?";
         this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), location);
     }
 
@@ -319,7 +303,7 @@ public class ClientStructuralMapRepository {
         if(check_client != 0) {
 
             try {
-                this.jdbcTemplate.update("INSERT INTO client_structural_map (cohort, location, " +
+                this.jdbcTemplate.update("INSERT INTO " + client_name.toLowerCase() + "_structural_map (cohort, location, " +
                                 "matrix_five, matrix_four, matrix_one, matrix_three, matrix_two, niche, sector, wu_id, " +
                                 "wu_level_five, wu_level_four, wu_level_one, wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id, date_modified)" +
                                 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
@@ -334,11 +318,6 @@ public class ClientStructuralMapRepository {
 
 
     /* HELPERS */
-
-    private Boolean checkClientStructuralMapAlreadyInDB() {
-        return false;
-    }
-
 
     /* Map data from the database to the ClientsStructuralMaps model */
     private static final RowMapper<ClientsStructuralMaps> wuMapper = new RowMapper<ClientsStructuralMaps>() {
