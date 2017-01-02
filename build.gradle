@@ -21,11 +21,6 @@ repositories {
     mavenCentral()
 }
 
-//configurations.all {
-//    exclude group: "commons-logging"
-//    exclude group: "log4j"
-//}
-
 jar {
     baseName = 'online_reporting'
     version = '0.1.0'
@@ -44,5 +39,4 @@ dependencies {
     compile ('org.springframework.boot:spring-boot-starter-data-rest')
     compile ('org.springframework.boot:spring-boot-starter-security:1.4.3+')
     compile ('org.postgresql:postgresql')
-    compile ('org.hibernate:hibernate-core')
 }

@@ -21,8 +21,6 @@ public class Organisations {
     @OneToMany(mappedBy = "CLIENT_ID", fetch = FetchType.LAZY, cascade = CascadeType.ALL,
             targetEntity = Jobs.class)
     private List<Jobs> JOBS;
-    @OneToMany(mappedBy = "CLIENT", targetEntity = ClientsStructuralMaps.class)
-    private List<ClientsStructuralMaps> STRUCTURAL_MAP;
 
     public Organisations() {}
 

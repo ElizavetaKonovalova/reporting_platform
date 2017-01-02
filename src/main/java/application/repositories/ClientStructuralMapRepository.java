@@ -258,8 +258,6 @@ public class ClientStructuralMapRepository {
     /* Create a new table for a Client */
     public String createAClientTable(String client_name) {
 
-        this.jdbcTemplate.execute("DROP TABLE IF EXISTS clients_structural_maps CASCADE;");
-
         /* Check if a specified client exists */
         Long check_client = this.organisationRepository.checkClientExists(client_name);
 
@@ -312,7 +310,7 @@ public class ClientStructuralMapRepository {
                         new Date(sampledate.parse(date_modified_formated).getTime()));
 
                 return "Created";
-            } catch (Exception e) { return "There is no such table in the database!"; }
+            } catch (Exception e) { return "There is either duplicate id or no such table in the database!"; }
         } else { return "There is no such client in the database!";}
     }
 

@@ -1,66 +1,29 @@
 package application.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Date;
-import java.util.List;
-import java.util.Set;
 
-@Entity
-@Table(indexes = {@Index(name = "clienttrmapsIndex", unique = true, columnList = "wu_id")})
 public class ClientsStructuralMaps {
 
-    @Id
-    @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
-    @Column(nullable = false, length = 100)
-    @Size(max = 100)
     private String WU_NAME;
-    @Column(unique = true, nullable = false)
     private Integer WU_ID;
-    @Column(length = 20) @Size(max = 20)
     private String MATRIX_ONE;
-    @Column(length = 20) @Size(max = 20)
     private String MATRIX_TWO;
-    @Column(length = 20) @Size(max = 20)
     private String MATRIX_THREE;
-    @Column(length = 20) @Size(max = 20)
     private String MATRIX_FOUR;
-    @Column(length = 20) @Size(max = 20)
     private String MATRIX_FIVE;
-    @Column(length = 50) @Size(max = 50)
     private String LOCATION;
-    @Column(length = 50) @Size(max = 50)
     private String SECTOR;
-    @Column(length = 100) @Size(max = 100)
     private String NICHE;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_ZERO;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_ONE;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_TWO;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_THREE;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_FOUR;
-    @Column(length = 100) @Size(max = 100)
     private String WU_LEVEL_FIVE;
-    @Column(length = 100) @Size(max = 100)
     private String COHORT;
-    @Column(nullable = false)
     private Date DATE_MODIFIED;
-    @Column(nullable = false, insertable = false, updatable = false)
     private Long CLIENT_ID;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "CLIENT_ID")
-    private Organisations CLIENT;
-
-    @Column(unique = true, nullable = false, name = "wu_id")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "WU_ID")
-    private Set<JobStructuralMaps> JOBS_STRUCTURAL_MAPS;
 
     public String getNAME() { return this.WU_NAME; }
     public String getMATRIX_ONE() { return this.MATRIX_ONE; }
@@ -81,7 +44,6 @@ public class ClientsStructuralMaps {
     public String getSECTOR() { return this.SECTOR; }
     public String getNICHE() { return this.NICHE; }
     public Long getCLIENT_ID() { return this.CLIENT_ID; }
-    public Set<JobStructuralMaps> getJOBS_STRUCTURAL_MAPS() { return this.JOBS_STRUCTURAL_MAPS; }
     private Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
 
     public void setNAME( String name ) { this.WU_NAME = name; }
@@ -103,6 +65,5 @@ public class ClientsStructuralMaps {
     public void setSECTOR(String sector) { this.SECTOR = sector; }
     public void setNICHE(String niche) { this.NICHE = niche; }
     public void setCLIENT(Long client) { this.CLIENT_ID = client; }
-    public void setJOBS_STRUCTURAL_MAPS(JobStructuralMaps jobs_structural_maps) { this.JOBS_STRUCTURAL_MAPS.add(jobs_structural_maps); }
     public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
 }
