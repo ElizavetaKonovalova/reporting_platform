@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("stype")
 public class SurveyTypeController {
@@ -14,52 +16,56 @@ public class SurveyTypeController {
     @Autowired
     private SurveyTypeRepository surveyTypeRepository;
 
-    /* Select a surveysubtype by its ID */
-    @RequestMapping(value = "gid", produces = "application/json")
-    public SurveyTypes getSurveyTypeByID(@RequestParam("id") String id) {
-        return this.surveyTypeRepository.getByID(id);
-    }
+    /* CREATORS */
 
-    /* Select a list of surveysubtypes by their Type Name */
-    @RequestMapping(value = "gtype", produces = "application/json")
-    public SurveyTypes getSurveyTypeByTypeName(@RequestParam("type") String typename) {
-        return this.surveyTypeRepository.getByTypeName(typename);
-    }
-
-    /* Select a a list of surveysubtypes by their SubType Name */
-    @RequestMapping(value = "gstype", produces = "application/json")
-    public SurveyTypes getSurveyTypeBySubTypeName(@RequestParam("stype") String subtype) {
-        return this.surveyTypeRepository.getBySubTypeName(subtype);
-    }
-
-    /* Create a work unit */
     @RequestMapping(value = "create", produces = "application/json")
-    public String createFullWorkUnit(@RequestParam("type") String typename, @RequestParam("stype") String subtypename) {
-        SurveyTypes surveyTypes = this.surveyTypeRepository.getBySubTypeName(subtypename);
-        if(surveyTypes.getSUBTYPE_NAME() != null) {
-            return "This work unit already exists";
-        } else {
-            this.surveyTypeRepository.create(subtypename, typename);
-            return "Created";
+    public String create(@RequestParam("type") String type_name, @RequestParam("sub") String sub_type_name) throws Exception {
+        return this.surveyTypeRepository.create(type_name, sub_type_name);
+    }
+
+    /* GETTERS */
+
+    @RequestMapping(value = {"get","find"}, produces = "application/json")
+    public List<SurveyTypes> get(@RequestParam("find") String find, @RequestParam("target") String target) {
+
+        target = (target == null) ? target = "": target;
+
+        switch (target) {
+
+            /* Select a a list of Survey Subtypes by their SubType Name */
+            case "sub": return this.surveyTypeRepository.getBySubTypeName(find);
+
+            /* Select a a list of Survey Subtypes by their Type Name */
+            case "type": return this.surveyTypeRepository.getByTypeName(find);
+
+            /* Select a a list of Survey Subtypes by their ID */
+            case "id": return this.surveyTypeRepository.getByID(find);
+
+            /* Select All Types by default */
+            default: return this.surveyTypeRepository.getAll();
         }
     }
 
-    /* Remove a survey type by its ID */
-    @RequestMapping(value = "rid", produces = "application/json")
-    public void removeByName(@RequestParam("id") String id) {
-        this.surveyTypeRepository.removeSubTypeByID(id);
-    }
 
-    /* Remove a survey type by its Survey SubType Name */
-    @RequestMapping(value = "rstype", produces = "application/json")
-    public void removeBySubTypeName(@RequestParam("stype") String stypename) {
-        this.surveyTypeRepository.removeSubTypeBySubName(stypename);
-    }
+    /* UPDATERS */
 
-    /* Remove a survey type by its Survey Type Name */
-    @RequestMapping(value = "rtype", produces = "application/json")
-    public void removeByTypeName(@RequestParam("type") String typename) {
-        this.surveyTypeRepository.removeSubTypeByTypeName(typename);
-    }
 
+
+    /* REMOVALS */
+
+    @RequestMapping(value = {"remove","delete"}, produces = "application/json")
+    public void remove(@RequestParam("find") String find,@RequestParam("target") String target) {
+        switch (target) {
+
+            /* Remove a survey type by its ID */
+            case "id": this.surveyTypeRepository.removeSubTypeByID(find);break;
+
+            /* Remove a survey type by its Survey SubType Name */
+            case "sub": this.surveyTypeRepository.removeSubTypeBySubName(find);break;
+
+            /* Remove a survey type by its Survey Type Name */
+            case "type": this.surveyTypeRepository.removeSubTypeByTypeName(find);break;
+            default: break;
+        }
+    }
 }

@@ -41,11 +41,6 @@ public class Participants {
     @JoinColumn(name="job_id", referencedColumnName = "job_id", insertable = false, updatable = false)
     private Jobs JOB;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, targetEntity = JobStructuralMaps.class)
-    @JoinColumn(name = "WU_CODE", referencedColumnName = "WU_CODE", nullable = false)
-    private JobStructuralMaps WU_FOR_PARTICIPANT;
-
     @OneToMany(mappedBy = "PARTICIPANTS", fetch = FetchType.LAZY, targetEntity = TextData.class)
     private List<TextData> TEXT_RESPONSES;
 

@@ -23,7 +23,10 @@ public class FieldRegistryController {
     @RequestMapping(value = "get", produces = "application/json")
     public List<FieldRegistry> get(@RequestParam(value = "value") String value,
                                    @RequestParam(value = "module", required = false) String module,
-                                   @RequestParam(value = "target") String target) {
+                                   @RequestParam(value = "target", required = false) String target) {
+
+        target = (target == null) ? target = "": target;
+
         switch (target) {
             case "name": return this.fieldRegistryRepository.getFieldByID(value);
             case "id": return this.fieldRegistryRepository.getFieldByName(value);
@@ -31,7 +34,7 @@ public class FieldRegistryController {
             case "pname": return this.fieldRegistryRepository.getFieldByProgramName(value, module);
             case "desc": return this.fieldRegistryRepository.getFieldByDescriptions(value);
             case "type": return this.fieldRegistryRepository.getFieldByType(value);
-            default: return new ArrayList<>();
+            default: return this.fieldRegistryRepository.getAll();
         }
     }
 

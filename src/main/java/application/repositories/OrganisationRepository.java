@@ -52,6 +52,11 @@ public class OrganisationRepository {
                     orgMapper, Long.parseLong(clientid));
     }
 
+    /* Select all Clients */
+    public List<Organisations> getAll() {
+        return this.jdbcTemplate.query("SELECT * FROM clients", orgMapper);
+    }
+
 
     /* CREATORS */
 
@@ -91,6 +96,12 @@ public class OrganisationRepository {
     public Long checkClientExists(String client_name) {
         List<Organisations> organisations = this.jdbcTemplate.query("SELECT * FROM clients WHERE client_name = ?", orgMapper, client_name);
         if(organisations.size() != 0) { return organisations.get(0).getCLIENT_ID(); } else { return 0L; }
+    }
+
+    /* Check if a Client is already linked to an Organisation */
+    public Boolean checkCombinationClientOrgExists(String client_name, String org_name) {
+        return (this.jdbcTemplate.query("SELECT * FROM clients WHERE client_name = ? AND org_name = ?",
+                orgMapper, client_name, org_name).size() != 0) ? true : false;
     }
 
     /* Map data from the database to the Organisations model */

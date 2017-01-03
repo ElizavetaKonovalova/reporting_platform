@@ -19,7 +19,7 @@ public class DemoDataController {
 
     /* CREATORS */
 
-    /*Create a new record in the Demo Data table */
+    /* Create a new record in the Demo Data table */
     @RequestMapping(value = {"/create", "/new"}, produces = "application/json")
     public String create(@RequestParam("fid") String field_id, @RequestParam("pid") String participant_id,
                          @RequestParam("response") String response_value) throws Exception {

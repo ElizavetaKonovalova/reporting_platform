@@ -35,6 +35,11 @@ public class FieldRegistryRepository {
 
     /* GETTERS */
 
+    /* Find All Fields */
+    public List<FieldRegistry> getAll() {
+        return this.jdbcTemplate.query("SELECT * FROM field_registry", fieldRegistryRowMapper);
+    }
+
     /* Find a Field by ID */
     public List<FieldRegistry> getFieldByID(String uuid) {
         return this.jdbcTemplate.query("SELECT * FROM field_registry WHERE field_id = ?",

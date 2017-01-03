@@ -97,6 +97,11 @@ public class CohortRepository {
 
     /* GETTERS */
 
+    /* Find all Cohorts */
+    public List<Cohorts> getAll() {
+        return this.jdbcTemplate.query("SELECT * FROM cohorts ", cohortsRowMapper);
+    }
+
     /* Find a Cohort by its Name */
     public List<Cohorts> getCohortByName(String cohort_name) {
         return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE cohort_name = ?", cohortsRowMapper, cohort_name);
@@ -117,8 +122,7 @@ public class CohortRepository {
 
     /* Find a Cohort by its DB ID */
     public List<Cohorts> getCohortByDBID(String db_id) {
-        Long db_id_long = Long.parseLong(db_id);
-        return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE cohort_id = ?", cohortsRowMapper, db_id_long);
+        return this.jdbcTemplate.query("SELECT * FROM cohorts WHERE cohort_id = ?", cohortsRowMapper, Long.parseLong(db_id));
     }
 
     /* HELPERS*/

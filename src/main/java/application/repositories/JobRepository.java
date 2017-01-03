@@ -32,7 +32,9 @@ public class JobRepository  {
     private OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
     @Autowired
     private SurveyTypeRepository surveyTypeRepository = new SurveyTypeRepository(jdbcTemplate);
+
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+    private String date_modified_formated = sampledate.format(new java.util.Date());
 
 
     /* GETTERS */
@@ -61,7 +63,7 @@ public class JobRepository  {
     /* Select all jobs with a specified Client Name */
     public List<Jobs> getJobsByClientName(String client_name) {
         Long client_id = this.organisationRepository.getOrgByClientName(client_name).get(0).getCLIENT_ID();
-        if(!client_id.toString().equals("0")) {
+        if(client_id != 0) {
             return this.jdbcTemplate.query( "SELECT * FROM jobs WHERE client_id = ?", jobMapper, client_id);
         } else { return new ArrayList<>(); }
     }
@@ -116,10 +118,10 @@ public class JobRepository  {
         return this.jdbcTemplate.query( "SELECT * FROM jobs WHERE surveytype_id = ?", jobMapper, Integer.parseInt(type_id));
     }
 
-    /* Select all jobs with a Survey Type Name */
-    public List<Jobs> getJobsBySurveyTypeName(String type_name) {
-        SurveyTypes surveyTypes = this.surveyTypeRepository.surveyTypeExist(type_name);
-        if(surveyTypes.getTYPE_NAME() != null) {
+    /* Select all jobs with a Survey SubType Name */
+    public List<Jobs> getJobsBySurveySubTypeName(String sub_type_name) {
+        SurveyTypes surveyTypes = this.surveyTypeRepository.getBySubTypeName(sub_type_name).get(0);
+        if(surveyTypes.getSUBTYPE_NAME() != null) {
             return this.jdbcTemplate.query("SELECT * FROM jobs WHERE surveytype_id = ?", jobMapper, surveyTypes.getSURVEYTYPE_ID());
         } else { return new ArrayList<>(); }
     }
@@ -185,15 +187,15 @@ public class JobRepository  {
     }
 
     /*Delete jobs by their Survey Type Name */
-    public void removeJobBySurveyType(String survey_type) {
-        SurveyTypes surveyTypes = this.surveyTypeRepository.surveyTypeExist(survey_type);
-        if(surveyTypes.getSUBTYPE_NAME() != null) {
+    public void removeJobBySurveyTypeName(String survey_sub_type_name) {
+        SurveyTypes surveyTypes = this.surveyTypeRepository.getBySubTypeName(survey_sub_type_name).get(0);
+        if(surveyTypes.getTYPE_NAME() != null) {
             this.jdbcTemplate.update("DELETE FROM jobs WHERE surveytype_id = " + surveyTypes.getSURVEYTYPE_ID());
         }
     }
 
     /*Delete a Job by a Survey Type ID */
-    public void removeJobBySurveyTypeName(String survey_type_id) {
+    public void removeJobBySurveyTypeID(String survey_type_id) {
         this.jdbcTemplate.update("DELETE FROM jobs WHERE surveytype_id = " + Integer.parseInt(survey_type_id));
     }
 
@@ -324,10 +326,10 @@ public class JobRepository  {
         } else { return "This Job Code does not exist";}
     }
 
-    /* Update a Survey Type ID with a specified Job Code and Survey Type Name */
-    public String updateJobSurveyTypeIDByName(String job_code, String stype_name) {
-        SurveyTypes surveyTypeRepositories = this.surveyTypeRepository.surveyTypeExist(stype_name);
-        if(isJobExists(job_code) != 0 && surveyTypeRepositories.getSUBTYPE_NAME() != null) {
+    /* Update a Survey Type ID with a specified Job Code and Survey SubType Name */
+    public String updateJobSurveyTypeIDByName(String job_code, String sub_type_name) {
+        SurveyTypes surveyTypeRepositories = this.surveyTypeRepository.getBySubTypeName(sub_type_name).get(0);
+        if(isJobExists(job_code) != 0 && surveyTypeRepositories.getTYPE_NAME() != null) {
             this.jdbcTemplate.update("UPDATE jobs SET surveytype_id = ? WHERE job_code = ?",
                     surveyTypeRepositories.getSURVEYTYPE_ID(), job_code);
             return "Updated";
@@ -349,49 +351,49 @@ public class JobRepository  {
 
 
     /* Create a new job in the database */
-    public void createJob(String jobcode, String jobname, String clientid, String deliverydate, String deliverytype, String censusstart,
-                          String censusend, String presentationdate, String responserate, String loggedin, String samplesize, String status,
-                          String surveysubtype, String target_response_rate) throws Exception {
+    public String createJob(String job_code, String job_name, String client_name, String delivery_date, String delivery_type, String census_start,
+                          String census_end, String presentation_date, String response, String logged, String sample, String status,
+                          String survey_sub_type, String target_response_rate) throws Exception {
 
-        /* Make a default date format */
-        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
+        /* Check if a specified Client exists */
+        Long client_id = this.organisationRepository.checkClientExists(client_name);
 
-        Integer loggedinint, samplesizeint, subtypeidint;
-        Short responserateshort, target_response_rate_short;
-        jobcode = jobcode.toUpperCase();
+        /* Check if a Job with this code is already in the database */
+        List<Jobs> check_job = this.getJobByCode(job_code);
 
-        if(status.isEmpty()) { status = "Active"; }
-        if(loggedin.isEmpty()) {  loggedinint = 0; } else { loggedinint = Integer.parseInt(loggedin); }
-        if(responserate.isEmpty()) { responserateshort = 0; } else { responserateshort = Short.parseShort(responserate); }
-        if(target_response_rate.isEmpty()) { target_response_rate_short = 0; }
-        else { target_response_rate_short = Short.parseShort(target_response_rate); }
-        if(samplesize.isEmpty()) { samplesizeint = 0; } else { samplesizeint = Integer.parseInt(samplesize); }
-        if(surveysubtype.isEmpty()) { subtypeidint = 0; } else { subtypeidint = Integer.parseInt(surveysubtype); }
-        if(deliverydate.isEmpty()) { deliverydate = sampledate.format(new java.util.Date()); }
-        else { deliverydate = sampledate.format(sampledate.parse(deliverydate)); }
-        if(censusstart.isEmpty()) { censusstart = sampledate.format(new java.util.Date()); }
-        else { censusstart = sampledate.format(sampledate.parse(censusstart)); }
-        if(censusend.isEmpty()) { censusend = sampledate.format(new java.util.Date()); }
-        else { censusend = sampledate.format(sampledate.parse(censusend)); }
-        if(presentationdate.isEmpty()) { presentationdate = sampledate.format(new java.util.Date()); }
-        else { presentationdate = sampledate.format(sampledate.parse(presentationdate)); }
+        /* Check if a specified Survey SubType exists in the database */
+        List<SurveyTypes> surveyTypes = this.surveyTypeRepository.getBySubTypeName(survey_sub_type);
 
-        /* Parse dates to the SQL Date format*/
-        java.util.Date csdate = sampledate.parse(censusstart);
-        Date censusstartdate = new Date(csdate.getTime());
-        java.util.Date cedate = sampledate.parse(censusend);
-        Date censusenddate = new Date(cedate.getTime());
-        java.util.Date ddate = sampledate.parse(deliverydate);
-        Date deliverdate = new Date(ddate.getTime());
-        java.util.Date pdate = sampledate.parse(presentationdate);
-        Date presentdate = new Date(pdate.getTime());
+        if(client_id != 0 && check_job.size() == 0 && surveyTypes.size() != 0) {
 
-        String query = "INSERT INTO jobs (census_end, census_start, delivery_date, delivery_type, " +
-                "job_code, job_name, logged_in, presentation_date, response_rate, sample_size, status, " +
-                "target_response_rate, client_id, surveytype_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            Integer logged_int, sample_int;
+            Short response_short, target_response_rate_short;
 
-        this.jdbcTemplate.update(query, censusenddate, censusstartdate, deliverdate, deliverytype, jobcode, jobname, loggedinint,
-                presentdate, responserateshort, samplesizeint, status.charAt(0), target_response_rate_short, Long.parseLong(clientid), subtypeidint);
+            if(status == null) { status = "Active"; }
+            if(logged == null) {  logged_int = 0; } else { logged_int = Integer.parseInt(logged); }
+            if(response == null) { response_short = 0; } else { response_short = Short.parseShort(response); }
+            if(target_response_rate == null) { target_response_rate_short = 0; }
+            else { target_response_rate_short = Short.parseShort(target_response_rate); }
+            if(sample == null) { sample_int = 0; } else { sample_int = Integer.parseInt(sample); }
+            if(delivery_date == null) { delivery_date = date_modified_formated; }
+            else { delivery_date = sampledate.format(sampledate.parse(delivery_date)); }
+            if(census_start == null) { census_start = date_modified_formated; }
+            else { census_start = sampledate.format(sampledate.parse(census_start)); }
+            if(census_end == null) { census_end = date_modified_formated; }
+            else { census_end = sampledate.format(sampledate.parse(census_end)); }
+            if(presentation_date == null) { presentation_date = date_modified_formated; }
+            else { presentation_date = sampledate.format(sampledate.parse(presentation_date)); }
+
+            this.jdbcTemplate.update("INSERT INTO jobs (census_end, census_start, delivery_date, delivery_type, job_code, job_name, logged_in, " +
+                            "presentation_date, response_rate, sample_size, status, target_response_rate, client_id, surveytype_id,date_modified) " +
+                            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", new Date(sampledate.parse(census_end).getTime()),
+                    new Date(sampledate.parse(census_start).getTime()), new Date(sampledate.parse(delivery_date).getTime()), delivery_type,
+                    job_code.toUpperCase(), job_name, logged_int, new Date(sampledate.parse(presentation_date).getTime()), response_short,
+                    sample_int, status.charAt(0), target_response_rate_short, client_id, surveyTypes.get(0).getSURVEYTYPE_ID(),
+                    new Date(sampledate.parse(date_modified_formated).getTime()));
+
+            return "Created";
+        } else { return "There is:\n 1) OR: no such client \n 2) OR: a job with this code is already in the database\n 3) OR: no such survey subtype"; }
     }
 
 
@@ -399,20 +401,17 @@ public class JobRepository  {
 
     /* Selects parsed dates from the Jobs database */
     private List<Jobs> dateSelector(String query, String date, String parameter) throws Exception {
-        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
-        String date_modified_formated = sampledate.format(date);
+        Date date_formatted = new Date(sampledate.parse(sampledate.format(date)).getTime());
         if(parameter.isEmpty()) {
-            return this.jdbcTemplate.query( query, jobMapper, new Date(sampledate.parse(date_modified_formated).getTime()));
+            return this.jdbcTemplate.query(query, jobMapper, date_formatted);
         } else {
-            return this.jdbcTemplate.query( query, jobMapper, new Date(sampledate.parse(date_modified_formated).getTime()), parameter);
+            return this.jdbcTemplate.query(query, jobMapper, date_formatted, parameter);
         }
     }
 
     /* Check if a job with a specified job code exists or not in the Jobs table. */
     public Long isJobExists(String job_code) {
-        try {
-            String query = "SELECT * FROM jobs WHERE job_code = ?";
-            return this.jdbcTemplate.queryForObject(query, jobMapper, job_code).getJOB_ID();
+        try { return this.jdbcTemplate.queryForObject("SELECT * FROM jobs WHERE job_code = ?", jobMapper, job_code).getJOB_ID();
         } catch (Exception e) { return 0L; }
     }
 

@@ -142,14 +142,14 @@ public class ParticipantRepository {
 
         /* Check if a participant is already in the database */
         Long check_participant = this.checkParticipantIDExists(participant_email);
+
+        /* Check if a job code is already in the database */
         Long check_job = this.jobRepository.isJobExists(job_code);
 
-        if(check_participant == 0 && check_job != 0 ) {
+        /* Check if a work unit is already in the database */
+        Long check_wu = this.jobStructuralMapRepository.isWUExists(wu_code, job_code);
 
-            Long check_wu = this.jobStructuralMapRepository.isWUExists(check_job, wu_code);
-
-            if(check_wu != 0L) {
-
+        if(check_participant == 0 && check_job != 0 && check_wu != 0) {
                 /* If a status is null set it to the default value */
                 status = ((status == null) ? "Not accessed" : status);
 
@@ -160,8 +160,7 @@ public class ParticipantRepository {
                                 "password, status, wu_code) VALUES (?,?,?,?,?,?,?)", new Date(sampledate.parse(date_modified_formated)
                                 .getTime()), check_job, participant_email, participant_name, password, status, check_wu);
                 return "Created";
-            } else { return "This work unit does not belong to this job"; }
-        } else { return "Either this participant is already in db, or this job does not exist!"; }
+        } else { return "Error:\n 1) participant is already in db\n 2) this job does not exist\n 3) there is no such work unit"; }
     }
 
 

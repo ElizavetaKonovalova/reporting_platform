@@ -36,12 +36,16 @@ public class ClientStructuralMapRepository {
 
     /* GETTERS */
 
+
+    /* Select All Work Units from a Client table */
+    public List<ClientsStructuralMaps> getAll(String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map", wuMapper);
+    }
+
     /* Select a Work Unit by its ID in the database */
-    public ClientsStructuralMaps getWorkUnitByDBID(String id, String client_name) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE db_id = ?",
+    public List<ClientsStructuralMaps> getWorkUnitByDBID(String id, String client_name) {
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE db_id = ?",
                     wuMapper, Long.parseLong(id));
-        } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
     /* Select a Work Unit by its Name */
@@ -51,11 +55,9 @@ public class ClientStructuralMapRepository {
     }
 
     /* Select a Work Unit by its Work Unit ID */
-    public ClientsStructuralMaps getWorkUnitByWUID(String wuid, String client_name) {
-        try {
-            return this.jdbcTemplate.queryForObject( "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_id = ?",
+    public List<ClientsStructuralMaps> getWorkUnitByWUID(String wuid, String client_name) {
+        return this.jdbcTemplate.query( "SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE wu_id = ?",
                     wuMapper, Integer.parseInt(wuid));
-        } catch (Exception e) { return new ClientsStructuralMaps(); }
     }
 
     /* Select Work Units by Level */
@@ -92,7 +94,8 @@ public class ClientStructuralMapRepository {
 
     /* Select Work Units by their Client ID */
     public List<ClientsStructuralMaps> getClientsStructuralMapsByClientID(String client_id, String client_name) {
-        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE client_id = ?", wuMapper, client_id);
+        return this.jdbcTemplate.query("SELECT * FROM " + client_name.toLowerCase() +"_structural_map WHERE client_id = ?",
+                wuMapper, Long.parseLong(client_id));
     }
 
 
@@ -270,16 +273,13 @@ public class ClientStructuralMapRepository {
                         " niche varchar(100),\n sector varchar(50),\n wu_id int4 not null,\n" +
                         " wu_level_five varchar(100),\n wu_level_four varchar(100),\n wu_level_one varchar(100),\n" +
                         " wu_level_three varchar(100),\n wu_level_two varchar(100),\n wu_level_zero varchar(100),\n" +
-                        " wu_name varchar(100) not null,\n client_id SERIAL not null,\n primary key (db_id)\n);" +
+                        " wu_name varchar(100) not null,\n client_id bigserial not null,\n primary key (db_id)\n);" +
 
                         "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
                         "CustomIndex unique (wu_id);" +
 
                         "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
-                        "_clients_fk \n foreign key (client_id) \n references clients; " +
-
-                        "alter table job_structural_maps \n add constraint " + client_name.toLowerCase() + "_job_structural_map_fk \n" +
-                        "foreign key (wu_id) \n references " + client_name.toLowerCase() + "_structural_map (wu_id)");
+                        "_clients_fk \n foreign key (client_id) \n references clients;");
 
                 return "Created";
 

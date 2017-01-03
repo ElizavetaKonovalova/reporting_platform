@@ -113,9 +113,13 @@ public class JobStructuralMapController {
         this.jobStructuralMapRepository.removeByDenominator(denominator);
     }
 
+
+
+    /* CREATORS */
+
     /* Create a work unit */
     @RequestMapping(value = "create", produces = "application/json")
-    public String createFullWorkUnit(@RequestParam("cohort") String cohort, @RequestParam("den") String denominator,
+    public String create(@RequestParam("cohort") String cohort, @RequestParam("den") String denominator,
                                      @RequestParam("lvl0") String level_zero, @RequestParam("lvl1") String level_one,
                                      @RequestParam("jid") String job_id, @RequestParam("wun") String wuname,
                                      @RequestParam("wucode") String workunitcode, @RequestParam("wui") String workunitid) throws Exception {
@@ -126,5 +130,11 @@ public class JobStructuralMapController {
             this.jobStructuralMapRepository.create(cohort, denominator, job_id, level_zero, level_one, wuname, workunitcode, workunitid);
             return "Created";
         }
+    }
+
+
+    @RequestMapping(value = "createtable", produces = "application/json")
+    public String createTable(@RequestParam("jcode") String job_code, @RequestParam("cname") String client_name) throws Exception {
+       return this.jobStructuralMapRepository.createTable(job_code, client_name);
     }
 }

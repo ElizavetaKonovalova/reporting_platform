@@ -17,145 +17,155 @@ public class JobController {
 
     /* GETTERS */
 
-    /* Return all Jobs */
-    @RequestMapping(value = "/", produces = "application/json")
-    public List<Jobs> getJobs() { return this.jobRepository.getAllJobs(); }
+    @RequestMapping(value = {"get","find"}, produces = "application/json")
+    public List<Jobs> get(@RequestParam(value = "find", required = false) String find,
+                          @RequestParam(value = "target", required = false) String target) throws Exception {
 
-    /* Find a  job by its Job Code */
-    @RequestMapping(value = "jobcode/{code:.+}", produces = "application/json")
-    public List<Jobs> getJobByCode(@PathVariable("code") String job_code) {
-        return this.jobRepository.getJobByCode(job_code);
-    }
+        target = (target == null) ? target = "": target;
 
-    /* Find a  job by its Job ID */
-    @RequestMapping(value = "jobid/{id:.+}", produces = "application/json")
-    public List<Jobs> getJobByID(@PathVariable("id") String job_id) {
-        return this.jobRepository.getJobByID(job_id);
-    }
+        switch (target) {
 
-    /* Find a  job by its Job Name */
-    @RequestMapping(value = "jobname/{name:.+}", produces = "application/json")
-    public List<Jobs> getJobByName(@PathVariable("name") String job_name) {
-        return this.jobRepository.getJobsByName(job_name);
-    }
+            /* Find a  job by its Job Code */
+            case "jcode": return this.jobRepository.getJobByCode(find);
 
-    /* Find a  job by its Client ID */
-    @RequestMapping(value = "clientid/{client:.+}", produces = "application/json")
-    public List<Jobs> getJobByClientID(@PathVariable("client") String client_id) {
-        return this.jobRepository.getJobsByClientID(client_id);
-    }
+            /* Find a  job by its Job ID */
+            case "jid": return this.jobRepository.getJobByID(find);
 
-    /* Find a  job by its Client Name */
-    @RequestMapping(value = "clientname/{name:.+}", produces = "application/json")
-    public List<Jobs> getJobByClientName(@PathVariable("name") String client_name) {
-        return this.jobRepository.getJobsByClientName(client_name);
-    }
+            /* Find a  job by its Job Name */
+            case "jname": return this.jobRepository.getJobsByName(find);
 
-    /* Find a  job by its Job Census Start */
-    @RequestMapping(value = "censtart/{date:.+}", produces = "application/json")
-    public List<Jobs> getJobByCensusStart(@PathVariable("date") String census_start) throws Exception {
-        return this.jobRepository.getJobsByCensusStart(census_start);
-    }
+           /* Find a  job by its Client ID */
+            case "cid": return this.jobRepository.getJobsByClientID(find);
 
-    /* Find a  job by its Job Census End */
-    @RequestMapping(value = "cenend/{date:.+}", produces = "application/json")
-    public List<Jobs> getJobByCensusEnd(@PathVariable("date") String census_end) throws Exception {
-        return this.jobRepository.getJobsByCensusEnd(census_end);
-    }
+            /* Find a  job by its Client Name */
+            case "cname": return this.jobRepository.getJobsByClientName(find);
 
-    /* Find a  job by its Job Delivery Date */
-    @RequestMapping(value = "delivery/{date:.+}", produces = "application/json")
-    public List<Jobs> getJobByDeliveryDate(@PathVariable("date") String delivery_date) throws Exception {
-        return this.jobRepository.getJobsByDeliveryDate(delivery_date);
-    }
+            /* Find a  job by its Job Census Start */
+            case "censtart": return this.jobRepository.getJobsByCensusStart(find);
 
-    /* Find a  job by its Job Presentation Date */
-    @RequestMapping(value = "present/{date:.+}", produces = "application/json")
-    public List<Jobs> getJobByPresentationDate(@PathVariable("date") String presentation) throws Exception {
-        return this.jobRepository.getJobsByPresentationDate(presentation);
-    }
+            /* Find a job by its Job Census End */
+            case "cenend": return this.jobRepository.getJobsByCensusEnd(find);
 
-    /* Find a  job by its Sample Size */
-    @RequestMapping(value = "sample/{size:.+}", produces = "application/json")
-    public List<Jobs> getJobBySampleSize(@PathVariable("size") String sample_size) {
-        return this.jobRepository.getJobsBySample(sample_size);
-    }
+            /* Find a  job by its Job Delivery Date */
+            case "deldate": return this.jobRepository.getJobsByDeliveryDate(find);
 
-    /* Find a  job by its Status */
-    @RequestMapping(value = "status/{name:.+}", produces = "application/json")
-    public List<Jobs> getJobByStatus(@PathVariable("name") String status) {
-        return this.jobRepository.getJobsByStatus(status);
-    }
+            /* Find a  job by its Job Delivery Type */
+            case "deltype": return this.jobRepository.getJobsByDeliveryType(find);
 
-    /* Find a  job by its Response Rate */
-    @RequestMapping(value = "rate/{number:.+}", produces = "application/json")
-    public List<Jobs> getJobByResponseRate(@PathVariable("number") String response_rate) {
-        return this.jobRepository.getJobsByResponseRate(response_rate);
-    }
+            /* Find a  job by its Job Presentation Date */
+            case "present": return this.jobRepository.getJobsByPresentationDate(find);
 
-    /* Find a  job by its Logged In Number */
-    @RequestMapping(value = "logged/{number:.+}", produces = "application/json")
-    public List<Jobs> getJobByLoggedIn(@PathVariable("number") String logged_in) {
-        return this.jobRepository.getJobsByLoggedIn(logged_in);
-    }
+            /* Find a  job by its Sample Size */
+            case "sample": return this.jobRepository.getJobsBySample(find);
 
-    /* Find a  job by its Target Response Rate */
-    @RequestMapping(value = "targetrr/{rate:.+}", produces = "application/json")
-    public List<Jobs> getJobByTargetResponseRate(@PathVariable("rate") String target_response_rate) {
-        return this.jobRepository.getJobsByTargetRR(target_response_rate);
-    }
+            /* Find a  job by its Status */
+            case "status": return this.jobRepository.getJobsByStatus(find);
 
-    /* Find a  job by its Survey Type ID */
-    @RequestMapping(value = "stypeid/{id:.+}", produces = "application/json")
-    public List<Jobs> getJobBySurveyTypeID(@PathVariable("id") String survey_type_id) {
-        return this.jobRepository.getJobsBySurveyTypeID(survey_type_id);
-    }
+            /* Find a  job by its Response Rate */
+            case "rr": return this.jobRepository.getJobsByResponseRate(find);
 
-    /* Find a  job by its Survey Type Name */
-    @RequestMapping(value = "stypename/{name:.+}", produces = "application/json")
-    public List<Jobs> getJobBySurveyTypeName(@PathVariable("name") String survey_name) {
-        return this.jobRepository.getJobsBySurveyTypeName(survey_name);
+            /* Find a  job by its Logged In Number */
+            case "log": return this.jobRepository.getJobsByLoggedIn(find);
+
+            /* Find a  job by its Target Response Rate */
+            case "trr": return this.jobRepository.getJobsByTargetRR(find);
+
+            /* Find a  job by its Survey Type ID */
+            case "stypeid": return this.jobRepository.getJobsBySurveyTypeID(find);
+
+            /* Find a  job by its Survey Type Name */
+            case "subname": return this.jobRepository.getJobsBySurveySubTypeName(find);
+
+            /* Select ALL Jobs */
+            default: return this.jobRepository.getAllJobs();
+        }
     }
 
 
+    /* UPDATERS */
 
 
     /* REMOVALS */
 
-    /* Remove a  job by its Job ID */
-    @RequestMapping(value = "remjobid", produces = "application/json")
-    public void removeByID(@PathVariable("id") String job_id) {
-        this.jobRepository.removeJobByID(job_id);
-    }
+    @RequestMapping(value = {"remove", "delete"}, produces = "application/json")
+    public void remove(@RequestParam(value = "find", required = false) String find, @RequestParam(value = "target", required = false) String target) {
 
-    /* Remove a  job by its Job Code */
-    @RequestMapping(value = "remjobcode", produces = "application/json")
-    public void removeByCode(@PathVariable("code") String job_code) {
-        this.jobRepository.removeJobByCode(job_code);
+        switch (target) {
+
+            /* Remove a  job by its Job ID */
+            case "jid": this.jobRepository.removeJobByID(find);break;
+
+            /* Remove a  job by its Job Code */
+            case "jcode": this.jobRepository.removeJobByCode(find);break;
+
+            /* Remove a  job by its Client ID */
+            case "cid": this.jobRepository.removeJobByClientID(find);break;
+
+            /* Remove a  job by its Survey SubType Name */
+            case "subname": this.jobRepository.removeJobBySurveyTypeName(find);break;
+
+            /* Remove a  job by its Survey Type ID */
+            case "stid": this.jobRepository.removeJobBySurveyTypeID(find);break;
+            default: break;
+        }
     }
 
 
     /* NULLERS */
 
+    @RequestMapping(value = "null", produces = "application/json")
+    public void nuller(@RequestParam(value = "find", required = false) String find,
+                          @RequestParam(value = "target", required = false) String target) throws Exception {
+
+        target = (target == null) ? target = "": target;
+
+        switch (target) {
+
+            /* Find a  job by its Job Census Start */
+            case "censtart": this.jobRepository.nullCensusStart(find);break;
+
+            /* Find a job by its Job Census End */
+            case "cenend": this.jobRepository.nullCensusEnd(find);break;
+
+            /* Find a  job by its Job Delivery Date */
+            case "deldate": this.jobRepository.nullDeliveryDate(find);break;
+
+            /* Find a  job by its Job Delivery Type */
+            case "deltype": this.jobRepository.nullDeliveryType(find);break;
+
+            /* Find a  job by its Job Presentation Date */
+            case "present": this.jobRepository.nullPresentationDate(find);break;
+
+            /* Find a  job by its Sample Size */
+            case "sample": this.jobRepository.nullSampleSize(find);break;
+
+            /* Find a  job by its Response Rate */
+            case "rr": this.jobRepository.nullResponseRates(find);break;
+
+            /* Find a  job by its Logged In Number */
+            case "log": this.jobRepository.nullLoggedIn(find);break;
+
+            /* Find a  job by its Target Response Rate */
+            case "trr": this.jobRepository.getJobsByTargetRR(find); break;
+            default: break;
+        }
+    }
+
 
     /* CREATORS*/
 
-    /* Create a new job. */
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("code") String jobcode, @RequestParam("name") String jobname, @RequestParam("client") String clientid,
-                          @RequestParam("ddate") String deliverydate, @RequestParam("dtype") String deliverytype,
-                          @RequestParam("cstart") String censusstart, @RequestParam("cend") String censusend,
-                          @RequestParam("pdate") String presentationdate, @RequestParam("rrate") String responserate,
-                          @RequestParam("trate") String target_responserate, @RequestParam("lin") String loggedin,
-                          @RequestParam("ssize") String samplesize, @RequestParam("status") String status, @RequestParam("stype") String subtypeid) throws Exception {
+    public String create(@RequestParam("jcode") String job_code, @RequestParam("jname") String job_name, @RequestParam("cname") String client_name,
+                         @RequestParam(value = "ddate", required = false) String delivery_date,
+                         @RequestParam(value = "dtype", required = false) String delivery_type,
+                         @RequestParam(value = "cstart", required = false) String census_start, @RequestParam(value = "cend", required = false) String census_end,
+                         @RequestParam(value = "pdate", required = false) String presentation_date,
+                         @RequestParam(value = "rrate", required = false) String response_rate,
+                         @RequestParam(value = "trate", required = false) String target_response_rate,
+                         @RequestParam(value = "lin", required = false) String logged_in, @RequestParam(value = "sample", required = false) String sample_size,
+                         @RequestParam("status") String status, @RequestParam("sub") String sub_type_name) throws Exception {
 
-        List<Jobs> checkjob = this.jobRepository.getJobByCode(jobcode);
-        if(checkjob.size() != 0) {
-            return "This job already exists";
-        } else {
-            this.jobRepository.createJob(jobcode, jobname, clientid, deliverydate, deliverytype, censusstart, censusend, presentationdate,
-                    responserate, loggedin, samplesize, status, subtypeid, target_responserate);
-            return "Created";
-        }
+            return this.jobRepository.createJob(job_code, job_name, client_name, delivery_date, delivery_type, census_start, census_end, presentation_date,
+                    response_rate, logged_in, sample_size, status, sub_type_name, target_response_rate);
     }
 }

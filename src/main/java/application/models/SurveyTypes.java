@@ -10,7 +10,7 @@ import java.util.List;
 public class SurveyTypes {
 
     @Id
-    @Column(name ="surveytype_id", columnDefinition = "SERIAL", nullable = false)
+    @Column(name ="survey_type_id", columnDefinition = "SERIAL", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long SURVEYTYPE_ID;
     @Column(nullable = false, length = 100)

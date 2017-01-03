@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", columnList = "job_code, status, census_start, census_end, response_rate")})
+@Table(name = "jobs", indexes = {@Index(name = "jobsIndex", columnList = "job_code, status, census_start, census_end, response_rate, client_id")})
 public class Jobs {
 
     @Id

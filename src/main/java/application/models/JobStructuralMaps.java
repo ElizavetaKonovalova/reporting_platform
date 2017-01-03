@@ -1,45 +1,19 @@
 package application.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.sql.Date;
-import java.util.Collection;
-import java.util.List;
 
-@Entity
-@Table(name = "job_structural_maps", indexes = {@Index(name = "jobstrmapsIndex", unique = true, columnList = "wu_id, wu_code")},
-        uniqueConstraints = {@UniqueConstraint(columnNames = "wu_code")})
 public class JobStructuralMaps {
 
-    @Id @Column(name ="db_id", columnDefinition = "SERIAL", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long DB_ID;
-
-    @Column(nullable = false)
     private Date DATE_MODIFIED;
     private Long WU_CODE;
-
-    @Column(nullable = false, length = 100) @Size(max = 100)
     private String WU_NAME;
-
-    @Column(nullable = false, updatable = false, insertable = false)
     private Long WU_ID;
-
-    @OneToMany(targetEntity = Participants.class,
-            fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "WU_FOR_PARTICIPANT")
-    private List<Participants> PARTICIPANTS_PER_WU;
-
     private String WU_LEVEL_ZERO;
     private String WU_LEVEL_ONE;
-
-    @Column(length = 100) @Size(max = 100)
     private String COHORT;
-
     private Integer DENOMINATOR;
-
-    private Long JOB_ID;
-
-    public JobStructuralMaps() {}
+    private Long PARTICIPANT_ID;
 
     public String getNAME() { return this.WU_NAME; }
     public Long getWU_ID() { return this.WU_ID; }
@@ -50,8 +24,6 @@ public class JobStructuralMaps {
     public String getCOHORT() { return this.COHORT; }
     public Integer getDENOMINATOR() { return this.DENOMINATOR; }
     public Long getDB_ID() { return this.DB_ID; }
-    public Collection<Participants> getPARTICIPANT() { return this.PARTICIPANTS_PER_WU; }
-    public Long getJOB_ID() { return this.JOB_ID; }
 
     public void setNAME( String name ) { this.WU_NAME = name; }
     public void setWU_ID(Long workunitid ) { this.WU_ID = workunitid; }
@@ -61,8 +33,7 @@ public class JobStructuralMaps {
     public void setDENOMINATOR(Integer denominator) { this.DENOMINATOR = denominator; }
     public void setCOHORT(String cohort) { this.COHORT = cohort; }
     public void setDB_ID(Long id) { this.DB_ID = id; }
-    public void setJOB_ID(Long id) { this.JOB_ID = id; }
     public void setDATE_MODIFIED(Date date_modified) { this.DATE_MODIFIED = date_modified; }
-    public void setPARTICIPANT( Participants participant ) {this.PARTICIPANTS_PER_WU.add(participant); }
+    public void setPARTICIPANT_ID(Long participant_id) { this.PARTICIPANT_ID = participant_id; }
 
 }
