@@ -1,16 +1,18 @@
 package application.repositories;
 
 import application.models.JobStructuralMaps;
-import application.models.Jobs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 @Repository
 public class JobStructuralMapRepository {
@@ -33,11 +35,15 @@ public class JobStructuralMapRepository {
     @Autowired
     private final OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
 
+    private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
+    private String date_modified_formated = sampledate.format(new java.util.Date());
+
     /* GETTERS */
 
     /* Select a work unit by its ID in the database */
-    public List<JobStructuralMaps> getWorkUnitByID(Long id, String job_code) {
-        return this.jdbcTemplate.query( "SELECT * FROM "+ job_code.toUpperCase() + "_structural_maps WHERE db_id = ?", wuMapper, id);
+    public List<JobStructuralMaps> getWorkUnitByID(String id, String job_code) {
+        return this.jdbcTemplate.query( "SELECT * FROM "+ job_code.toUpperCase() + "_structural_maps WHERE db_id = ?",
+                wuMapper, Long.parseLong(id));
     }
 
     /* Select a work unit by its Name */
@@ -51,10 +57,9 @@ public class JobStructuralMapRepository {
                     wuMapper, Integer.parseInt(wu_code));
     }
 
-    /* Select a work unit by its Job ID */
-    public List<JobStructuralMaps> getWUByJobID(String job_id, String job_code) {
-        return this.jdbcTemplate.query( "SELECT * FROM "+ job_code.toUpperCase() + "_structural_maps WHERE job_id = ?",
-                    wuMapper, Long.parseLong(job_id));
+    /* Select All Work Units */
+    public List<JobStructuralMaps> getAll(String job_code) {
+        return this.jdbcTemplate.query( "SELECT * FROM "+ job_code.toUpperCase() + "_structural_maps", wuMapper);
     }
 
     /* Select a work unit by its Work Unit ID */
@@ -108,11 +113,6 @@ public class JobStructuralMapRepository {
         this.jdbcTemplate.update(query, cohort);
     }
 
-    /* Remove Work Units by their Job ID */
-    public void removeByJobID(String job_id, String job_code) {
-        this.jdbcTemplate.update("DELETE FROM "+ job_code.toUpperCase() + "_structural_maps WHERE job_id = ?", Long.parseLong(job_id));
-    }
-
     /* Remove Work Units by level one */
     public void removeByLevelOne(String wu_lvl_one, String job_code) {
         this.jdbcTemplate.update("DELETE FROM "+ job_code.toUpperCase() + "_structural_maps WHERE wu_level_one = ?", wu_lvl_one);
@@ -127,6 +127,12 @@ public class JobStructuralMapRepository {
     public void removeByDenominator(String denominator, String job_code) {
         this.jdbcTemplate.update("DELETE FROM "+ job_code.toUpperCase() + "_structural_maps WHERE denominator = ?", Integer.parseInt(denominator));
     }
+
+    /* Remove a table by its Job Code  */
+    public void removeTable(String job_code) {
+        this.jdbcTemplate.execute("DROP TABLE IF EXISTS "+ job_code.toUpperCase() + "_structural_maps CASCADE;");
+    }
+
 
 
     /* NULLERS */
@@ -151,8 +157,7 @@ public class JobStructuralMapRepository {
             try {
                 this.jdbcTemplate.execute("create table "+ job_code.toUpperCase() + "_structural_maps (\n db_id  bigserial not null," +
                         "\n cohort varchar(100),\n date_modified date not null,\n denominator int4,\n wu_code int8,\n wu_id bigserial not null,\n" +
-                        " wu_level_one varchar(255),\n wu_level_zero varchar(255),\n wu_name varchar(100) not null,\n participant_id bigserial,\n" +
-                        " primary key (db_id)\n); " +
+                        " wu_level_one varchar(255),\n wu_level_zero varchar(255),\n wu_name varchar(100) not null,\n primary key (db_id)\n); " +
 
                     /* Creation of a unique constraint */
                         "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint " + job_code.toUpperCase() +
@@ -160,15 +165,11 @@ public class JobStructuralMapRepository {
 
                     /* Creation of Indexes */
                         "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint "+ job_code.toUpperCase()+
-                        "StrMapIndex unique (wu_id, wu_code);" +
+                        "StrMapIndex UNIQUE (wu_id, wu_code, wu_name);" +
 
                     /* Foreign Key relationship with the Participants Table by a Work Unit Code */
-                        "alter table participants \n add constraint " + job_code.toUpperCase() + "_participants_wu_code_fk \n foreign key (wu_code) \n"
-                        + "references " + job_code.toUpperCase() + "_structural_maps (wu_code);" +
-
-                    /* Foreign Key relationship with the Participants Table by a Participant ID */
-                        "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint " + job_code.toUpperCase()
-                        + "_participant_id_fk \n foreign key (participant_id) \n references participants;" +
+                        "alter table participants \n add constraint " + job_code.toUpperCase() + "_participants_wu_code_fk \n " +
+                        "foreign key (wu_code) \n references " + job_code.toUpperCase() + "_structural_maps (wu_code);" +
 
                     /* Foreign Key relationship with a Client Table by a Work Unit ID */
                         "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint " + client_name.toLowerCase() +
@@ -181,25 +182,24 @@ public class JobStructuralMapRepository {
     }
 
     /* Create a work unit */
-    public void create(String cohort, String denominator, String job_id, String level_zero, String level_one,
-                       String name, String workunitcode, String workunitid, String job_code) throws Exception {
+    public String create(String cohort, String denominator, String level_zero, String level_one,
+                       String work_unit_name, String work_unit_code, String work_unit_id, String job_code) throws Exception {
 
-        this.jdbcTemplate.update("INSERT INTO "+ job_code.toUpperCase() + "_structural_maps (cohort, denominator, job_id, wu_code, wu_level_one, " +
-                        "wu_level_zero, wu_name, wu_id) VALUES (?,?,?,?,?,?,?,?)", cohort, Integer.parseInt(denominator), Long.parseLong(job_id),
-                Integer.parseInt(workunitcode), level_one, level_zero, name, Integer.parseInt(workunitid));
+        if(this.getWorkUnitByWUCode(work_unit_code, job_code).size() == 0) {
+
+            denominator = (denominator == null) ? "0": denominator;
+
+            this.jdbcTemplate.update("INSERT INTO "+ job_code.toUpperCase() + "_structural_maps (cohort, denominator, wu_code, " +
+                            "wu_level_one, wu_level_zero, wu_name, wu_id, date_modified) VALUES (?,?,?,?,?,?,?,?)", cohort,
+                    Integer.parseInt(denominator), Integer.parseInt(work_unit_code), level_one, level_zero, work_unit_name,
+                    Integer.parseInt(work_unit_id), new Date(sampledate.parse(date_modified_formated).getTime()));
+            return "Created";
+
+        } else { return "This work unit code already exists"; }
     }
 
 
     /* HELPERS */
-
-
-    /* Check if a work unit code exists in a parsed job. */
-    public Long isWUExists(String wu_code, String job_code) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM "+ job_code.toUpperCase() + "_structural_maps WHERE wu_code = ?",
-                    wuMapper, Long.parseLong(wu_code)).getWU_CODE();
-        } catch (Exception e) { return 0L; }
-    }
 
     /* Map data from the database to the JobStructuralMaps model */
     private static final RowMapper<JobStructuralMaps> wuMapper = new RowMapper<JobStructuralMaps>() {
@@ -214,7 +214,6 @@ public class JobStructuralMapRepository {
             jobStructuralMaps.setWU_CODE(rs.getLong("wu_code"));
             jobStructuralMaps.setWU_ID(rs.getLong("wu_id"));
             jobStructuralMaps.setDATE_MODIFIED(rs.getDate("date_modified"));
-            jobStructuralMaps.setPARTICIPANT_ID(rs.getLong("participant_id"));
             return jobStructuralMaps;
         }
     };

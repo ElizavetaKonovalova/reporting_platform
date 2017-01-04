@@ -30,6 +30,7 @@ public class JobRepository  {
 
     @Autowired
     private OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
+
     @Autowired
     private SurveyTypeRepository surveyTypeRepository = new SurveyTypeRepository(jdbcTemplate);
 

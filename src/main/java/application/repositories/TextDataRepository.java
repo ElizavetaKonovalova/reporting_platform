@@ -1,5 +1,6 @@
 package application.repositories;
 
+import application.models.Participants;
 import application.models.TextData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -104,10 +105,10 @@ public class TextDataRepository {
 
     /* Find results based on Participant Email */
     public List<TextData> getDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.participantRepository.checkParticipantIDExists(participant_email);
-        if(participant_id != 0) {
+        List<Participants> participant = this.participantRepository.getParticipantByEmail(participant_email);
+        if(participant.size() != 0) {
             String query = "SELECT * FROM text_data WHERE participant_id = ?";
-            List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant_id);
+            List<TextData> result = this.jdbcTemplate.query(query, textDataRowMapper, participant.get(0).getPARTICIPANT_ID());
             if(result.isEmpty()) { return new ArrayList<>(); } else { return result; }
         } else { return new ArrayList<>(); }
     }
@@ -120,8 +121,7 @@ public class TextDataRepository {
 
         sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
         UUID text_field_id = this.fieldRegistryRepository.checkFieldExists(text_field_name);
-        Long participants_id = this.participantRepository.checkParticipantIDExists(participant_email);
-        Boolean response_exists = isResponseAlreadyInDB(participants_id, text_field_id);
+        List<Participants> participant = this.participantRepository.getParticipantByEmail(participant_email);
 
         String query = "INSERT INTO text_data (date_modified, redflag_status, response_value, shadow_status, text_field_id, participant_id)" +
                 " VALUES (?,?,?,?,?,?)";
@@ -129,12 +129,15 @@ public class TextDataRepository {
         String date_modified_formated = sampledate.format(new java.util.Date());
 
         if(!text_field_id.toString().isEmpty() ) {
-            if(participants_id != 0L) {
+            if(participant.size() != 0) {
+
+                Boolean response_exists = isResponseAlreadyInDB(participant.get(0).getPARTICIPANT_ID(), text_field_id);
+
                 if(!response_exists) {
 
                     /* Create a new Text Data field */
                     this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), red_flag_status,
-                            response_value, shadow_status, text_field_id, participants_id);
+                            response_value, shadow_status, text_field_id, participant.get(0).getPARTICIPANT_ID());
                     return "Created";
                 } else {
 
@@ -142,7 +145,7 @@ public class TextDataRepository {
                     String update_query = "UPDATE text_data SET date_modified = ?, redflag_status = ?, response_value = ?, " +
                             "shadow_status = ? WHERE participant_id = ?";
                     this.jdbcTemplate.update(update_query, new Date(sampledate.parse(date_modified_formated).getTime()), red_flag_status, response_value,
-                            shadow_status, participants_id);
+                            shadow_status, participant.get(0).getPARTICIPANT_ID());
                     return "Updated the response";
                 }
             } else { return "There is no such participant"; }
@@ -204,10 +207,10 @@ public class TextDataRepository {
 
     /* Remove responses for a Participant by Email */
     public String removeTextDataByParticipantEmail(String participant_email) {
-        Long participant_id = this.participantRepository.checkParticipantIDExists(participant_email);
-        if(participant_id != 0) {
+        List<Participants> participant = this.participantRepository.getParticipantByEmail(participant_email);
+        if(participant.size() != 0) {
             String query = "DELETE FROM text_data WHERE participant_id = ?";
-            this.jdbcTemplate.update(query, participant_id);
+            this.jdbcTemplate.update(query, participant.get(0).getPARTICIPANT_ID());
             return "Deleted";
         } else { return "Could not delete this participant"; }
     }

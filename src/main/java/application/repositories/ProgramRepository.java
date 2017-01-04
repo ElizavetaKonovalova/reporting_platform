@@ -31,28 +31,26 @@ public class ProgramRepository {
     /* GETTERS */
 
     /* Find a program by its id */
-    public Programs getProgramByID(String program_id) {
-        try {
-            Long p_id = Long.parseLong(program_id);
-            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE db_id = ?",
-                    programsRowMapper, p_id);
-        } catch (Exception e) { return new Programs(); }
+    public List<Programs> getProgramByID(String program_id) {
+        return this.jdbcTemplate.query("SELECT * FROM programs WHERE db_id = ?",
+                programsRowMapper, Long.parseLong(program_id));
     }
 
     /* Find a program by its program name */
-    public Programs getProgramByProgName(String program_name) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ?",
-                    programsRowMapper, program_name);
-        } catch (Exception e) { return new Programs(); }
+    public List<Programs> getProgramByProgName(String program_name) {
+        return this.jdbcTemplate.query("SELECT * FROM programs WHERE program_name = ?",
+                programsRowMapper, program_name);
     }
 
     /* Find a program by its module name */
-    public Programs getProgramByModName(String module_name) {
-        try {
-            return this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE module_name = ?",
-                    programsRowMapper, module_name);
-        } catch (Exception e) { return new Programs(); }
+    public List<Programs> getProgramByModName(String module_name) {
+        return this.jdbcTemplate.query("SELECT * FROM programs WHERE module_name = ?",
+                programsRowMapper, module_name);
+    }
+
+    /* Select All Programs */
+    public List<Programs> getAll() {
+        return this.jdbcTemplate.query("SELECT * FROM programs", programsRowMapper);
     }
 
 
@@ -82,7 +80,7 @@ public class ProgramRepository {
     /* Find a Program id in the Program table based on a parsed name */
     public Long getProgramIDByNames(String program_name, String module_name) {
         try {
-             Programs programs = this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ? AND module_name = ?",
+            Programs programs = this.jdbcTemplate.queryForObject("SELECT * FROM programs WHERE program_name = ? AND module_name = ?",
                     programsRowMapper, program_name, module_name);
             return programs.getDB_ID();
         } catch (Exception e) { return 0L; }

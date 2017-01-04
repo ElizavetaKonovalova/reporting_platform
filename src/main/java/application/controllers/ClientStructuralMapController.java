@@ -17,6 +17,35 @@ public class ClientStructuralMapController {
     @Autowired
     private ClientStructuralMapRepository clientStructuralMapRepository;
 
+
+     /* CREATORS */
+
+
+    /* Create a new Client Table */
+    @RequestMapping(value = {"createtable","newtable"}, produces = "application/json")
+    public String createTable(@RequestParam("cname") String client_name) {
+        return this.clientStructuralMapRepository.createAClientTable(client_name);
+    }
+
+    /* Create a new Work Unit */
+    @RequestMapping(value = {"create","new"}, produces = "application/json")
+    public String createWU(@RequestParam(value = "cohort", required = false) String cohort, @RequestParam(value = "loc", required = false) String location,
+                           @RequestParam(value = "niche", required = false) String niche, @RequestParam(value = "m1", required = false) String matrixone,
+                           @RequestParam(value = "m2", required = false) String matrixtwo, @RequestParam(value = "m3", required = false) String matrixthree,
+                           @RequestParam(value = "m4", required = false) String matrixfour, @RequestParam(value = "m5", required = false) String matrixfive,
+                           @RequestParam("wun") String wu_name, @RequestParam("wuid") String wu_id,
+                           @RequestParam(value = "sector", required = false) String sector, @RequestParam(value = "lvl0", required = false) String wu_level_zero,
+                           @RequestParam(value = "lvl1", required = false) String wu_level_one, @RequestParam(value = "lvl2", required = false) String wu_level_two,
+                           @RequestParam(value = "lvl3", required = false) String wu_level_three, @RequestParam(value = "lvl4", required = false) String wu_level_four,
+                           @RequestParam(value = "lvl5", required = false) String wu_level_five, @RequestParam("cname") String client_name) throws Exception {
+
+        return this.clientStructuralMapRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
+                matrixfour, matrixfive, wu_name, wu_id, sector, wu_level_five, wu_level_four, wu_level_one, wu_level_three,
+                wu_level_two, wu_level_zero, client_name);
+    }
+
+
+
     /* GETTERS */
 
     @RequestMapping(value = "get", produces = "application/json")
@@ -159,32 +188,4 @@ public class ClientStructuralMapController {
 
 
     /* UPDATERS */
-
-
-
-    /* CREATORS */
-
-
-    /* Create a new Client Table */
-    @RequestMapping(value = "createtable", produces = "application/json")
-    public String createTable(@RequestParam("cname") String client_name) {
-        return this.clientStructuralMapRepository.createAClientTable(client_name);
-    }
-
-    /* Create a new Work Unit */
-    @RequestMapping(value = "create", produces = "application/json")
-    public String createWU(@RequestParam(value = "cohort", required = false) String cohort, @RequestParam(value = "loc", required = false) String location,
-                           @RequestParam(value = "niche", required = false) String niche, @RequestParam(value = "m1", required = false) String matrixone,
-                           @RequestParam(value = "m2", required = false) String matrixtwo, @RequestParam(value = "m3", required = false) String matrixthree,
-                           @RequestParam(value = "m4", required = false) String matrixfour, @RequestParam(value = "m5", required = false) String matrixfive,
-                           @RequestParam("wun") String wu_name, @RequestParam("wuid") String wu_id,
-                           @RequestParam(value = "sector", required = false) String sector, @RequestParam(value = "lvl0", required = false) String wu_level_zero,
-                           @RequestParam(value = "lvl1", required = false) String wu_level_one, @RequestParam(value = "lvl2", required = false) String wu_level_two,
-                           @RequestParam(value = "lvl3", required = false) String wu_level_three, @RequestParam(value = "lvl4", required = false) String wu_level_four,
-                           @RequestParam(value = "lvl5", required = false) String wu_level_five, @RequestParam("cname") String client_name) throws Exception {
-
-        return this.clientStructuralMapRepository.create(cohort, location, niche, matrixone, matrixtwo, matrixthree,
-                matrixfour, matrixfive, wu_name, wu_id, sector, wu_level_five, wu_level_four, wu_level_one, wu_level_three,
-                wu_level_two, wu_level_zero, client_name);
-    }
 }

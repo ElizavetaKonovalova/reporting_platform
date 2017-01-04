@@ -14,10 +14,11 @@ public class ParticipantController {
     private ParticipantRepository participantRepository;
 
     @RequestMapping(value = "create", produces = "application/json")
-    public String create(@RequestParam("name") String participant_name, @RequestParam("jc") String job_code,
+    public String create(@RequestParam("name") String participant_name, @RequestParam("jcode") String job_code,
+                         @RequestParam("wucode") String work_unit_code,
                          @RequestParam(value = "pas", required = false) String password,
-                         @RequestParam(value = "stat", required = false) String status,
-                         @RequestParam("email") String participant_email, @RequestParam("wuc") String wu_code) throws Exception {
-        return this.participantRepository.create(participant_email, participant_name, job_code, password, status, wu_code);
+                         @RequestParam(value = "status", required = false) String status,
+                         @RequestParam("email") String participant_email) throws Exception {
+        return this.participantRepository.create(participant_email, participant_name, job_code, password, status, work_unit_code);
     }
 }

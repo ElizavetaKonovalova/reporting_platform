@@ -14,7 +14,5 @@ public class Application {
     private final Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Autowired
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+    public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 }

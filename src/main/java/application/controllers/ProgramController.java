@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("program")
 public class ProgramController {
@@ -17,12 +19,15 @@ public class ProgramController {
     /* GETTERS */
 
     @RequestMapping(value = "get", produces = "application/json")
-    public Programs get(@RequestParam("value") String value, @RequestParam("target") String target) {
+    public List<Programs> get(@RequestParam("value") String value, @RequestParam("target") String target) {
+
+        target = (target == null) ? target = "": target;
+
         switch (target) {
             case "prog" : return this.programRepository.getProgramByProgName(value);
             case "mod" : return this.programRepository.getProgramByModName(value);
             case "id": return this.programRepository.getProgramByID(value);
-            default: return new Programs();
+            default: return this.programRepository.getAll();
         }
     }
 
