@@ -163,13 +163,13 @@ public class JobStructuralMapRepository {
                         "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint " + job_code.toUpperCase() +
                         "_wu_code unique (wu_code);" +
 
-                    /* Creation of Indexes */
-                        "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint "+ job_code.toUpperCase()+
-                        "StrMapIndex UNIQUE (wu_id, wu_code, wu_name);" +
+                        /* Creation of NON-UNIQUE Indexes */
+                        "create index " + job_code.toUpperCase() + "_structural_maps_wu_id_Index on "
+                        + job_code.toUpperCase() + "_structural_maps (wu_id) where wu_id is not null;\n"+
 
-                    /* Foreign Key relationship with the Participants Table by a Work Unit Code */
-                        "alter table participants \n add constraint " + job_code.toUpperCase() + "_participants_wu_code_fk \n " +
-                        "foreign key (wu_code) \n references " + job_code.toUpperCase() + "_structural_maps (wu_code);" +
+                    /* Creation of UNIQUE Indexes */
+                        "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint "+ job_code.toUpperCase()+
+                        "StrMapIndex UNIQUE (wu_code, wu_name);\n" +
 
                     /* Foreign Key relationship with a Client Table by a Work Unit ID */
                         "alter table " + job_code.toUpperCase() + "_structural_maps \n add constraint " + client_name.toLowerCase() +
@@ -177,7 +177,7 @@ public class JobStructuralMapRepository {
                         + "_structural_map (wu_id);");
 
                 return "Created";
-            } catch (Exception e) { return "Oops, could not create a new table"; }
+            } catch (Exception e) { return "Ooops, could not create a new table!"; }
         } else { return "There is no job with this code or a client with this name"; }
     }
 

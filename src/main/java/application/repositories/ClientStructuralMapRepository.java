@@ -242,6 +242,7 @@ public class ClientStructuralMapRepository {
 
 
     /* Update a Cohort by a database ID and a new Cohort Name */
+
     /* Update a Location by a database ID */
     /* Update a Matrix One by a database ID and a new Matrix Name */
     /* Update a Matrix Two by a database ID and a new Matrix Name */
