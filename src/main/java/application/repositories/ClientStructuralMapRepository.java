@@ -339,7 +339,7 @@ public class ClientStructuralMapRepository {
             client_structural_maps.setWU_LEVEL_THREE(rs.getString("wu_level_three"));
             client_structural_maps.setWU_LEVEL_TWO(rs.getString("wu_level_two"));
             client_structural_maps.setWU_LEVEL_ZERO(rs.getString("wu_level_zero"));
-            client_structural_maps.setNAME(rs.getString("wu_name"));
+            client_structural_maps.setWU_NAME(rs.getString("wu_name"));
             client_structural_maps.setCLIENT(rs.getLong("client_id"));
             client_structural_maps.setDATE_MODIFIED(rs.getDate("date_modified"));
             return client_structural_maps;

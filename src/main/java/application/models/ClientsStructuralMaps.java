@@ -25,7 +25,15 @@ public class ClientsStructuralMaps {
     private Date DATE_MODIFIED;
     private Long CLIENT_ID;
 
-    public String getNAME() { return this.WU_NAME; }
+    public ClientsStructuralMaps() {}
+
+    public ClientsStructuralMaps(Long db_id, String wu_name, Integer wu_id ) {
+        this.DB_ID = db_id;
+        this.WU_NAME = wu_name;
+        this.WU_ID = wu_id;
+    }
+
+    public String getWU_NAME() { return this.WU_NAME; }
     public String getMATRIX_ONE() { return this.MATRIX_ONE; }
     public String getMATRIX_TWO() { return this.MATRIX_TWO; }
     public String getMATRIX_THREE() { return this.MATRIX_THREE; }
@@ -46,7 +54,7 @@ public class ClientsStructuralMaps {
     public Long getCLIENT_ID() { return this.CLIENT_ID; }
     private Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
 
-    public void setNAME( String name ) { this.WU_NAME = name; }
+    public void setWU_NAME( String name ) { this.WU_NAME = name; }
     public void setMATRIX_ONE(String matrix) { this.MATRIX_ONE = matrix; }
     public void setMATRIX_TWO(String matrix) { this.MATRIX_TWO = matrix; }
     public void setMATRIX_THREE(String matrix) { this.MATRIX_THREE = matrix; }
