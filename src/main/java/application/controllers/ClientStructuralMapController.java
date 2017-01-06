@@ -252,7 +252,7 @@ public class ClientStructuralMapController {
     /* UPDATERS */
 
     @RequestMapping(value = "update", produces = "application/json")
-    public String update(@RequestParam("find") String find, @RequestParam("parameter") String parameter,
+    public String update(@RequestParam("find") String find, @RequestParam("new") String parameter,
                          @RequestParam("cname") String client_name, @RequestParam("target") String target) throws Exception {
 
         switch (target) {
