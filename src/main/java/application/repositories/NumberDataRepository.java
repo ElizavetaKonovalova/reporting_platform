@@ -50,7 +50,6 @@ public class NumberDataRepository {
         if(participant.size() != 0 && number_field_uuid != new UUID(0L,0L) ) {
             if(positivity_result.contains("positive") || positivity_result.contains("middle")
                     || positivity_result.contains("negative")) {
-                sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
                 String date_modified_formated = sampledate.format(new java.util.Date());
                 String query = "INSERT INTO number_data (date_modified, number_field_id, participant_id, positivity_result, response_value) VALUES (?,?,?,?,?)";
                 this.jdbcTemplate.update(query, new Date(sampledate.parse(date_modified_formated).getTime()), number_field_uuid,
@@ -80,39 +79,31 @@ public class NumberDataRepository {
 
     /* Find results by a Date they were Modified */
     public List<NumberData> getNumberDataByDate(String date_modified) throws Exception {
-        sampledate.setTimeZone(TimeZone.getTimeZone("AEST"));
-        String date_formated = sampledate.format(date_modified);
-        String query = "SELECT * FROM number_data WHERE date_modified = ?";
-        return this.jdbcTemplate.query(query, numberDataRowMapper, new Date(sampledate.parse(date_formated).getTime()));
+        return this.jdbcTemplate.query("SELECT * FROM number_data WHERE date_modified = ?",
+                numberDataRowMapper, new Date(sampledate.parse(sampledate.format(date_modified)).getTime()));
     }
 
     /* Find results by their Positivity */
     public List<NumberData> getNumberDataByPositivity(String positivity) {
-        String query = "SELECT * FROM number_data WHERE positivity_result = ?";
-        return this.jdbcTemplate.query(query, numberDataRowMapper, positivity.charAt(0));
+        return this.jdbcTemplate.query("SELECT * FROM number_data WHERE positivity_result = ?",
+                numberDataRowMapper, positivity.charAt(0));
     }
 
     /* Find results by their Response Values */
     public List<NumberData> getNumberDataByResponseValue(String response_value) {
-        Short response_short = Short.parseShort(response_value);
-        String query = "SELECT * FROM number_data WHERE response_value = ?";
-        return this.jdbcTemplate.query(query, numberDataRowMapper, response_short);
+        return this.jdbcTemplate.query("SELECT * FROM number_data WHERE response_value = ?", numberDataRowMapper, Short.parseShort(response_value));
     }
 
     /* Find results by their Participant Emails */
     public List<NumberData> getNumberDataByParticipantEmail(String participant_email) {
-            String query = "SELECT * FROM number_data INNER JOIN participants ON " +
-                    "number_data.participant_id = participants.participant_id WHERE participant_email = ?";
-            return this.jdbcTemplate.query(query, numberDataRowMapper, participant_email);
+            return this.jdbcTemplate.query("SELECT * FROM number_data INNER JOIN participants ON " +
+                    "number_data.participant_id = participants.participant_id WHERE participant_email = ?", numberDataRowMapper, participant_email);
     }
 
     /* Find results by their Field Name */
     public List<NumberData> getNumberDataByFieldName(String field_name) {
-        try {
-            String query = "SELECT * FROM number_data INNER JOIN field_registry ON " +
-                    "number_data.number_field_id = field_registry.field_id WHERE field_name = ?";
-            return this.jdbcTemplate.query(query, numberDataRowMapper, field_name);
-        } catch (Exception e) { return new ArrayList<>(); }
+        return this.jdbcTemplate.query("SELECT * FROM number_data INNER JOIN field_registry ON " +
+                    "number_data.number_field_id = field_registry.field_id WHERE field_name = ?", numberDataRowMapper, field_name);
     }
 
 

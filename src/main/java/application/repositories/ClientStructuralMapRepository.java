@@ -1,6 +1,7 @@
 package application.repositories;
 
 import application.models.ClientsStructuralMaps;
+import application.models.Cohorts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,8 +32,76 @@ public class ClientStructuralMapRepository {
 
     @Autowired
     private final OrganisationRepository organisationRepository = new OrganisationRepository(jdbcTemplate);
+
+    @Autowired
+    private final CohortRepository cohortRepository = new CohortRepository(jdbcTemplate);
+
     private SimpleDateFormat sampledate = new SimpleDateFormat("dd/MM/yyyy", new Locale("en-au", "AU"));
     private String date_modified_formated = sampledate.format(new java.util.Date());
+
+
+
+
+    /* CREATORS */
+
+
+    /* Create a new table for a Client */
+    public String createAClientTable(String client_name) {
+
+        /* Check if a specified client exists */
+        Long check_client = this.organisationRepository.checkClientExists(client_name);
+
+        if(check_client != 0) {
+            try {
+                this.jdbcTemplate.execute("create table " + client_name.toLowerCase() + "_structural_map (\n" +
+                        " db_id  bigserial not null,\n cohort INTEGER,\n  date_modified date not null,\n" +
+                        " location varchar(50),\n matrix_five varchar(20),\n matrix_four varchar(20),\n" +
+                        " matrix_one varchar(20),\n matrix_three varchar(20),\n matrix_two varchar(20),\n" +
+                        " niche varchar(100),\n sector varchar(50),\n wu_id int4 not null,\n" +
+                        " wu_level_five varchar(100),\n wu_level_four varchar(100),\n wu_level_one varchar(100),\n" +
+                        " wu_level_three varchar(100),\n wu_level_two varchar(100),\n wu_level_zero varchar(100),\n" +
+                        " wu_name varchar(100) not null,\n client_id bigserial not null,\n primary key (db_id)\n);" +
+
+                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
+                        "CustomIndex unique (wu_id);" +
+
+                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
+                        "_clients_fk \n foreign key (client_id) \n references clients;");
+
+                return "Created";
+
+            } catch (Exception e) { return "A table for this client already exists!"; }
+        } else { return "There is no such client in the database!";}
+    }
+
+
+
+    /* Create a Work Unit */
+    public String create(String cohort, String location, String niche, String matrixone, String matrixtwo,
+                         String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
+                         String sector, String wu_level_five, String wu_level_four, String wu_level_one,
+                         String wu_level_three, String wu_level_two, String wu_level_zero, String client_name) throws Exception {
+
+        /* Check if a specified client exists */
+        Long check_client = this.organisationRepository.checkClientExists(client_name);
+
+        if(check_client != 0) {
+
+            try {
+                this.jdbcTemplate.update("INSERT INTO " + client_name.toLowerCase() + "_structural_map (cohort, location, " +
+                                "matrix_five, matrix_four, matrix_one, matrix_three, matrix_two, niche, sector, wu_id, " +
+                                "wu_level_five, wu_level_four, wu_level_one, wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id, date_modified)" +
+                                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
+                        matrixtwo, niche, sector, Integer.parseInt(wu_id), wu_level_five, wu_level_four, wu_level_one,
+                        wu_level_three, wu_level_two, wu_level_zero, wu_name, check_client,
+                        new Date(sampledate.parse(date_modified_formated).getTime()));
+
+                return "Created";
+            } catch (Exception e) { return "There is either duplicate id or no such table in the database!"; }
+        } else { return "There is no such client in the database!";}
+    }
+
+
 
     /* GETTERS */
 
@@ -242,78 +311,119 @@ public class ClientStructuralMapRepository {
 
 
     /* Update a Cohort by a database ID and a new Cohort Name */
+    public String updateCohortByDBID(String db_id, String new_cohort_name, String client_name) throws Exception {
+        List<Cohorts> cohorts = this.cohortRepository.getCohortByName(new_cohort_name);
+        if(cohorts.size() != 0) {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET cohort = ?, date_modified = ? WHERE db_id = ?",
+                    cohorts.get(0).getCOHORT_ID(), new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } else { return "Could not update the cohort because there is no such cohort in the database!"; }
+    }
+
+    /* Update a Cohort by an old Cohort Name and a new Cohort Name */
+    public String updateCohortByCohortName(String old_cohort_name, String new_cohort_name, String client_name) throws Exception {
+        List<Cohorts> cohorts_check_old = this.cohortRepository.getCohortByName(old_cohort_name);
+        List<Cohorts> cohorts_check_new = this.cohortRepository.getCohortByName(new_cohort_name);
+
+        if(cohorts_check_new.size() !=0 && cohorts_check_old.size() != 0) {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "" +
+                    "_structural_map SET cohort = ?, date_modified = ? WHERE cohort = ?", Integer.parseInt(new_cohort_name),
+                    new Date(sampledate.parse(date_modified_formated).getTime()), Integer.parseInt(old_cohort_name));
+            return "Updated";
+        } else { return "Could not update the cohort because there is no such cohort in the database!"; }
+    }
 
     /* Update a Location by a database ID */
+    public String updateLocationByDBID(String db_id, String location, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET location = ?, date_modified = ? WHERE db_id = ?",
+                    location, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not update the value!"; }
+    }
+
+    /* Update Locations by an old Location */
+    public String updateLocationByLocation(String old_location, String new_location, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET location = ?, date_modified = ? WHERE db_id = ?",
+                    new_location, new Date(sampledate.parse(date_modified_formated).getTime()), old_location);
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Matrix One by a database ID and a new Matrix Name */
+    public String updateMtxOneByDBID(String db_id, String new_matrix, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_one = ?, date_modified = ? WHERE db_id = ?",
+                    new_matrix, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+
+    }
+
     /* Update a Matrix Two by a database ID and a new Matrix Name */
+    public String updateMtxTwoByDBID(String db_id, String new_matrix, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_two = ?, date_modified = ? WHERE db_id = ?",
+                    new_matrix, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Matrix Three by a database ID and a new Matrix Name */
+    public String updateMtxThreeByDBID(String db_id, String new_matrix, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_three = ?, date_modified = ? WHERE db_id = ?",
+                    new_matrix, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Matrix Four by a database ID and a new Matrix Name */
+    public String updateMtxFourByDBID(String db_id, String new_matrix, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_four = ?, date_modified = ? WHERE db_id = ?",
+                    new_matrix, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Matrix Five by a database ID and a new Matrix Name */
+    public String updateMtxFiveByDBID(String db_id, String new_matrix, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_five = ?, date_modified = ? WHERE db_id = ?",
+                    new_matrix, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Niche by a database ID */
+    public String updateNicheByDBID(String db_id, String new_niche, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET niche = ?, date_modified = ? WHERE db_id = ?",
+                    new_niche, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Sector by a database ID */
+    public String updateSectorByDBID(String db_id, String new_sector, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_one = ?, date_modified = ? WHERE db_id = ?",
+                    new_sector, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
+    }
+
     /* Update a Client ID by a database ID and a new Client Name */
-    /* Update a Cohort by a database ID and a new Cohort Name */
-
-
-
-    /* CREATORS */
-
-
-    /* Create a new table for a Client */
-    public String createAClientTable(String client_name) {
-
-        /* Check if a specified client exists */
-        Long check_client = this.organisationRepository.checkClientExists(client_name);
-
-        if(check_client != 0) {
-            try {
-                this.jdbcTemplate.execute("create table " + client_name.toLowerCase() + "_structural_map (\n" +
-                        " db_id  bigserial not null,\n cohort varchar(100),\n  date_modified date not null,\n" +
-                        " location varchar(50),\n matrix_five varchar(20),\n matrix_four varchar(20),\n" +
-                        " matrix_one varchar(20),\n matrix_three varchar(20),\n matrix_two varchar(20),\n" +
-                        " niche varchar(100),\n sector varchar(50),\n wu_id int4 not null,\n" +
-                        " wu_level_five varchar(100),\n wu_level_four varchar(100),\n wu_level_one varchar(100),\n" +
-                        " wu_level_three varchar(100),\n wu_level_two varchar(100),\n wu_level_zero varchar(100),\n" +
-                        " wu_name varchar(100) not null,\n client_id bigserial not null,\n primary key (db_id)\n);" +
-
-                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
-                        "CustomIndex unique (wu_id);" +
-
-                        "alter table " + client_name.toLowerCase() + "_structural_map \n add constraint " + client_name.toLowerCase() +
-                        "_clients_fk \n foreign key (client_id) \n references clients;");
-
-                return "Created";
-
-            } catch (Exception e) { return "A table for this client already exists!"; }
-        } else { return "There is no such client in the database!";}
+    public String updateClientIDByNameDBID(String db_id, String new_client, String client_name) throws Exception {
+        try {
+            this.jdbcTemplate.update("UPDATE " + client_name.toLowerCase() + "_structural_map SET matrix_one = ?, date_modified = ? WHERE db_id = ?",
+                    new_client, new Date(sampledate.parse(date_modified_formated).getTime()), Long.parseLong(db_id));
+            return "Updated";
+        } catch (Exception e) { return "Could not updated the value!"; }
     }
 
-
-
-    /* Create a Work Unit */
-    public String create(String cohort, String location, String niche, String matrixone, String matrixtwo,
-                       String matrixthree, String matrixfour, String matrixfive, String wu_name, String wu_id,
-                       String sector, String wu_level_five, String wu_level_four, String wu_level_one,
-                       String wu_level_three, String wu_level_two, String wu_level_zero, String client_name) throws Exception {
-
-        /* Check if a specified client exists */
-        Long check_client = this.organisationRepository.checkClientExists(client_name);
-
-        if(check_client != 0) {
-
-            try {
-                this.jdbcTemplate.update("INSERT INTO " + client_name.toLowerCase() + "_structural_map (cohort, location, " +
-                                "matrix_five, matrix_four, matrix_one, matrix_three, matrix_two, niche, sector, wu_id, " +
-                                "wu_level_five, wu_level_four, wu_level_one, wu_level_three, wu_level_two, wu_level_zero, wu_name, client_id, date_modified)" +
-                                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", cohort, location, matrixfive, matrixfour, matrixone, matrixthree,
-                        matrixtwo, niche, sector, Integer.parseInt(wu_id), wu_level_five, wu_level_four, wu_level_one,
-                        wu_level_three, wu_level_two, wu_level_zero, wu_name, check_client,
-                        new Date(sampledate.parse(date_modified_formated).getTime()));
-
-                return "Created";
-            } catch (Exception e) { return "There is either duplicate id or no such table in the database!"; }
-        } else { return "There is no such client in the database!";}
-    }
 
 
     /* HELPERS */

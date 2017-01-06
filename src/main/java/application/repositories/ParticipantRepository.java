@@ -184,6 +184,7 @@ public class ParticipantRepository {
             participants.setSTATUS(rs.getString("status"));
             participants.setJOB_ID(rs.getLong("job_id"));
             participants.setWU_CODE(rs.getLong("wu_code"));
+            participants.setPASSWORD_TWO(rs.getString("password_two"));
             return participants;
         }
     };

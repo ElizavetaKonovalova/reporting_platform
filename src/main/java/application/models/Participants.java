@@ -21,6 +21,7 @@ public class Participants {
     @Size(max = 100)
     private String PARTICIPANT_EMAIL;
     private String PASSWORD;
+    private String PASSWORD_TWO;
 
     @Column(length = 40, nullable = false)
     @Size(max = 40)
@@ -59,6 +60,7 @@ public class Participants {
     public String getSTATUS() { return this.STATUS; }
     public Date getDATE_MODIFIED() { return this.DATE_MODIFIED; }
     public Long getWU_CODE() { return this.WU_CODE; }
+    public String getPASSWORD_TWO() { return this.PASSWORD_TWO; }
 
     /* Simple setters */
     public void setPARTICIPANT_ID( Long participant_id ) { this.PARTICIPANT_ID = participant_id; }
@@ -72,4 +74,5 @@ public class Participants {
     public void setSTATUS( String status ) { this.STATUS = status;}
     public void setDATE_MODIFIED( Date date_modified ) { this.DATE_MODIFIED = date_modified;}
     public void setWU_CODE(Long wu_code) { this.WU_CODE = wu_code; }
+    public void setPASSWORD_TWO(String password_two) { this.PASSWORD_TWO = password_two; }
 }

@@ -1,5 +1,6 @@
 package application.repositories;
 
+import application.models.Cohorts;
 import application.models.DemoData;
 import application.models.Participants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,12 +166,12 @@ public class DemoDataRepository {
         DemoData demoData = checkParticipantFieldResponse(participant_id, field_id);
 
         /* Check if a specified cohort exists in the Cohort table */
-        Long check_cohort = this.cohortRepository.checkCohort(cohort_name);
-        if(check_cohort != 0 && demoData != null) {
+        List<Cohorts> check_cohort = this.cohortRepository.getCohortByName(cohort_name);
+        if(check_cohort.size() != 0 && demoData != null) {
 
             this.jdbcTemplate.update("UPDATE demo_data SET demo_cohort_id = ?, date_modified = ? " +
                             "WHERE participant_id = ? AND demo_field_id = ?",
-                    check_cohort, new Date(sampledate.parse(date_modified_formated).getTime()),
+                    check_cohort.get(0).getCOHORT_ID(), new Date(sampledate.parse(date_modified_formated).getTime()),
                     demoData.getPARTICIPANT_ID(), demoData.getFIELD_ID());
             return "Updated";
         } else { return "There is no such cohort"; }

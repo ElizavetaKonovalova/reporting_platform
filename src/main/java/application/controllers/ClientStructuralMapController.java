@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.io.Import;
 import application.models.ClientsStructuralMaps;
 import application.repositories.ClientStructuralMapRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,15 @@ import org.supercsv.prefs.CsvPreference;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.print.Book;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,29 +71,38 @@ public class ClientStructuralMapController {
     }
 
     @RequestMapping(value = "getcsv")
-    public void getCSV(HttpServletResponse response, @RequestParam(value = "find", required = false) String find, @RequestParam("client") String client_name,
+    public String getCSV(HttpServletResponse response, @RequestParam(value = "find", required = false) String find, @RequestParam("client") String client_name,
                        @RequestParam(value = "target", required = false) String target) throws IOException {
 
-        response.setContentType("text/csv");
+        List<ClientsStructuralMaps> list_structural_map = this.getter(target, client_name, find);
 
-        // creates mock data
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"",
-                client_name + target + ".csv");
-        response.setHeader(headerKey, headerValue);
+        if(list_structural_map.size() != 0) {
 
-        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),
-                CsvPreference.STANDARD_PREFERENCE);
+            response.setContentType("text/csv");
+            response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\"", client_name + target + ".csv"));
 
-        String[] header = {"DB_ID", "WU_NAME", "WU_ID"};
+            ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
-        csvWriter.writeHeader(header);
+            String[] header = {"DB_ID", "WU_NAME", "WU_ID", "MATRIX_ONE", "MATRIX_TWO", "MATRIX_THREE", "MATRIX_FOUR", "MATRIX_FIVE", "LOCATION", "SECTOR"};
 
-        for (ClientsStructuralMaps struct_maps : this.clientStructuralMapRepository.getAll(client_name)) {
-            csvWriter.write(struct_maps, header);
-        }
+            csvWriter.writeHeader(header);
 
-        csvWriter.close();
+            for (ClientsStructuralMaps struct_maps : list_structural_map) {
+                csvWriter.write(struct_maps, header);
+            }
+
+            csvWriter.close();
+
+            return "Done";
+        } else { return "Could not create a csv file"; }
+    }
+
+
+
+    @RequestMapping(value = "import")
+    public String importController(@RequestParam("file") String file_name) throws IOException {
+        Import import_csv = new Import();
+        return import_csv.readV2(file_name);
     }
 
 
@@ -231,6 +250,55 @@ public class ClientStructuralMapController {
 
 
     /* UPDATERS */
+
+    @RequestMapping(value = "update", produces = "application/json")
+    public String update(@RequestParam("find") String find, @RequestParam("parameter") String parameter,
+                         @RequestParam("cname") String client_name, @RequestParam("target") String target) throws Exception {
+
+        switch (target) {
+
+            case "cdbid":
+                return this.clientStructuralMapRepository.updateClientIDByNameDBID(find, parameter, client_name);
+
+            case "cohname":
+                this.clientStructuralMapRepository.updateCohortByCohortName(find, parameter, client_name);
+
+            case "cohdbid":
+                return this.clientStructuralMapRepository.updateCohortByDBID(find, parameter, client_name);
+
+            case "locloc":
+                return this.clientStructuralMapRepository.updateLocationByLocation(find, parameter, client_name);
+
+            case "locdbid":
+                return this.clientStructuralMapRepository.updateLocationByDBID(find, parameter, client_name);
+
+            case "mtx1":
+                return this.clientStructuralMapRepository.updateMtxOneByDBID(find, parameter, client_name);
+
+            case "mtx2":
+                return this.clientStructuralMapRepository.updateMtxTwoByDBID(find, parameter, client_name);
+
+            case "mtx3":
+                return this.clientStructuralMapRepository.updateMtxThreeByDBID(find, parameter, client_name);
+
+            case "mtx4":
+                return this.clientStructuralMapRepository.updateMtxFourByDBID(find, parameter, client_name);
+
+            case "mtx5":
+                return this.clientStructuralMapRepository.updateMtxFiveByDBID(find, parameter, client_name);
+
+            case "sector":
+                return this.clientStructuralMapRepository.updateSectorByDBID(find, parameter, client_name);
+
+            case "niche":
+                return this.clientStructuralMapRepository.updateNicheByDBID(find, parameter, client_name);
+
+            default: return "Please specify the parameters!";
+        }
+    }
+
+
+
 
     /* HELPERS */
 

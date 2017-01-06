@@ -9,12 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-/**
- * Created by ekonovalova on 12/5/2016.
- */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 public class TestDB {
